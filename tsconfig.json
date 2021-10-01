@@ -12,8 +12,22 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "preserve"
+    "jsx": "preserve",
+    "baseUrl": "./src",
+    "paths": {
+      "@/abis/*": ["abis/*"],
+      "@/assets/*": ["assets/*"],
+      "@/components/*": ["components/*"],
+      "@/connectors": ["connectors/index.ts"],
+      "@/constants/*": ["constants/*"],
+      "@/contexts*": ["contexts/index.ts"],
+      "@/hooks/*": ["hooks/*"],
+      "@/pages/*": ["pages/*"],
+      "@/stores/*": ["stores/*"],
+      "@/styles/*": ["styles/*"],
+      "@/utils/*": ["utils/*"],
+    }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules"],
 }
