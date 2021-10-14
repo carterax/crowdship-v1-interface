@@ -1,12 +1,11 @@
 import type { AppProps } from 'next/app'
-import { useEffect } from 'react';
-import { observer } from 'mobx-react'
-
-import getLibrary from '@/utils/getLibrary'
+import { ChakraProvider } from "@chakra-ui/react"
 
 const App = ({ Component, pageProps }: AppProps) => {
   return (
-    <Component {...pageProps} />
+    <ChakraProvider>
+      <Component {...pageProps} />
+    </ChakraProvider>
   );
 };
 

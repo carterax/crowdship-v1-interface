@@ -7,13 +7,15 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "contracts:compile": "typechain --target ethers-v5 --out-dir src/abis/types './src/abis/**/*.json'"
+    "contracts:compile": "typechain --target=web3-v1 --out-dir src/abis/types './src/abis/**/*.json'"
   },
   "dependencies": {
+    "@chakra-ui/icons": "^1.0.15",
     "@chakra-ui/react": "^1.6.8",
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
-    "ethers": "^5.4.7",
+    "@typechain/web3-v1": "^3.1.0",
+    "bnc-onboard": "^1.35.0",
     "framer-motion": "^4",
     "graphql": "^15.6.0",
     "graphql-request": "^3.5.0",
@@ -24,10 +26,10 @@
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "styled-components": "^5.3.1",
-    "ua-parser-js": "^0.7.28"
+    "ua-parser-js": "^0.7.28",
+    "web3": "^1.6.0"
   },
   "devDependencies": {
-    "@typechain/ethers-v5": "^7.1.2",
     "@types/lodash": "^4.14.175",
     "@types/react": "17.0.24",
     "@types/styled-components": "^5.1.14",
