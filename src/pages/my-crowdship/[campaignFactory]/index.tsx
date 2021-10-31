@@ -176,10 +176,9 @@ const MyCrowdship: NextPage = () => {
         actions={
           <>
             <InputGroup>
-              <InputLeftElement
-                pointerEvents='none'
-                children={<SearchIcon color='gray.600' />}
-              />
+              <InputLeftElement pointerEvents='none'>
+                <SearchIcon color='gray.600' />
+              </InputLeftElement>
               <Input
                 id='search'
                 variant='outlineAlt'
