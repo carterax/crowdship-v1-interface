@@ -73,12 +73,10 @@ const Home: NextPage = () => {
           )
           .send({ from: address });
 
-        FACTORY.events
-          .CampaignFactoryDeployed(
-            {},
-            { fromBlock: tx.blockNumber, toBlock: tx.blockNumber }
-          )
+        await FACTORY.events
+          .CampaignFactoryDeployed({}, { fromBlock: tx.blockNumber })
           .on('data', function (event: any) {
+            console.log(event);
             Router.push(`/my-crowdship/${event.returnValues.campaignFactory}`);
           })
           .on('error', console.error);
