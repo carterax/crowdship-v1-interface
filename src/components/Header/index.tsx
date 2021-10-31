@@ -88,10 +88,10 @@ export const Header = () => {
           <HStack spacing={8} alignItems={'center'}>
             <Box>
               <Image
-                src={'/logo.svg'}
+                src={'/logo-light.svg'}
                 alt='crowdship logo'
-                width='45'
-                height='45'
+                width='150'
+                height='48'
               />
             </Box>
             <HStack

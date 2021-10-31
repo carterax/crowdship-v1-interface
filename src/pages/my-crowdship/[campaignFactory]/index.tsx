@@ -13,6 +13,7 @@ import {
   Text,
   Heading,
   Spacer,
+  Center,
 } from '@chakra-ui/react';
 import { SearchIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import styled from 'styled-components';
@@ -123,6 +124,39 @@ const SectionHeader = ({
   </Flex>
 );
 
+const categoriesData = [
+  {
+    categoryTitle: 'Tech',
+    categoryPath: '#',
+    iconPath: '/cpu.svg',
+  },
+  {
+    categoryTitle: 'Sports',
+    categoryPath: '#',
+    iconPath: '/dribbble-logo.svg',
+  },
+  {
+    categoryTitle: 'Finance',
+    categoryPath: '#',
+    iconPath: '/bank.svg',
+  },
+  {
+    categoryTitle: 'Health',
+    categoryPath: '#',
+    iconPath: '/heartbeat.svg',
+  },
+  {
+    categoryTitle: 'Agriculture',
+    categoryPath: '#',
+    iconPath: '/tree.svg',
+  },
+  {
+    categoryTitle: 'Travel',
+    categoryPath: '#',
+    iconPath: '/airplane-tilt.svg',
+  },
+];
+
 const MyCrowdship: NextPage = () => {
   return (
     <StyledMyCrowdship>
@@ -188,6 +222,7 @@ const MyCrowdship: NextPage = () => {
           />
           <Box mt={37}>
             <CampaignCard
+              special
               heading='Silly folks'
               body='These fools are trying to raise funds to build their own water craft, you can support their foolishness...'
               image='/demo.jpg'
@@ -197,6 +232,62 @@ const MyCrowdship: NextPage = () => {
               badge='highest velocity'
             />
           </Box>
+        </Box>
+        <Box as='section' mt={55}>
+          <SectionHeader
+            heading='Outliers'
+            subheading='Folks doing crazy things'
+            action={
+              <Text display='flex' alignItems='center' as='a' href='#'>
+                <span>See all</span>
+                <ChevronRightIcon h={4} w={4} />
+              </Text>
+            }
+          />
+          <Box mt={37}>
+            <CampaignCard
+              heading='Silly folks'
+              body='These fools are trying to raise funds to build their own water craft, you can support their foolishness...'
+              image='/demo.jpg'
+              category='sports'
+              raised='10'
+              target='15'
+              badge='highest velocity'
+            />
+          </Box>
+        </Box>
+        <Box as='section' mt={70}>
+          <Center>
+            <SectionHeader heading='Categories' />
+          </Center>
+          <SimpleGrid
+            columns={[2, 3, categoriesData.length]}
+            spacing='121px'
+            mt={10}
+          >
+            {categoriesData.map(
+              ({ categoryTitle, categoryPath, iconPath }, idx) => (
+                <Box key={idx} as='a' href={categoryPath}>
+                  <Center
+                    bg='yellow.400'
+                    height='100px'
+                    width='100px'
+                    borderRadius='2xl'
+                  >
+                    <Image src={iconPath} alt='Tech' width='64' height='64' />
+                  </Center>
+                  <Text
+                    textAlign='center'
+                    mt={3}
+                    fontFamily='DM mono'
+                    fontWeight='500'
+                  >
+                    {categoryTitle}
+                  </Text>
+                </Box>
+              )
+            )}
+          </SimpleGrid>
         </Box>
       </Container>
     </StyledMyCrowdship>

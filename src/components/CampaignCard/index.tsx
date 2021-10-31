@@ -1,4 +1,3 @@
-import { ReactNode } from 'react';
 import Image from 'next/image';
 
 import { Box, Flex, Spacer, Text, Heading, Badge } from '@chakra-ui/react';

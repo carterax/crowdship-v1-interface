@@ -1,6 +1,8 @@
 import { ReactNode } from 'react';
-import { Header } from '@/components/Header';
 import { useRouter } from 'next/router';
+
+import { Header } from '@/components/Header';
+import { Footer } from '@/components/Footer';
 
 export const Layout = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
@@ -10,6 +12,7 @@ export const Layout = ({ children }: { children: ReactNode }) => {
     <main>
       {showHeader && <Header />}
       {children}
+      <Footer />
     </main>
   );
 };
