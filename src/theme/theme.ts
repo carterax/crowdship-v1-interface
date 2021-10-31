@@ -6,7 +6,7 @@ const overrides = extendTheme({
   styles: {
     global: {
       body: {
-        fontSize: 15,
+        fontSize: 16,
       },
     },
   },
