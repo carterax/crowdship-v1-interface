@@ -16,16 +16,14 @@
     "baseUrl": "./src",
     "paths": {
       "@/abis/*": ["abis/*"],
-      "@/assets/*": ["assets/*"],
       "@/components/*": ["components/*"],
       "@/connectors": ["connectors/index.ts"],
       "@/constants/*": ["constants/*"],
-      "@/contexts*": ["contexts/index.ts"],
-      "@/hooks/*": ["hooks/*"],
       "@/pages/*": ["pages/*"],
-      "@/stores/*": ["stores/*"],
+      "@/stores": ["stores/index.ts"],
       "@/styles/*": ["styles/*"],
       "@/utils/*": ["utils/*"],
+      "@/theme/*": ["theme/*"],
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

@@ -1,61 +1,82 @@
 import { ReactNode, useEffect } from 'react';
+import Image from 'next/image';
+import { useReactiveVar } from '@apollo/client';
 import {
   Box,
   Flex,
-  Avatar,
   HStack,
   Link,
   IconButton,
   Button,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  MenuDivider,
+  Text,
   useDisclosure,
-  useColorModeValue,
   Stack,
 } from '@chakra-ui/react';
 import { HamburgerIcon, CloseIcon, AddIcon } from '@chakra-ui/icons';
+import Avatar from 'boring-avatars';
 
-import { onboard } from '@/connectors'
+import { onboard } from '@/connectors';
+import { walletStore } from '@/stores';
 
-const Links = ['Discover'];
+const Links = [
+  { text: 'Discover', url: '#' },
+  { text: 'About', url: '#' },
+];
 
-const NavLink = ({ children }: { children: ReactNode }) => (
+const NavLink = ({
+  children,
+  linkTo,
+}: {
+  children: ReactNode;
+  linkTo?: string;
+}) => (
   <Link
     px={2}
     py={1}
     rounded={'md'}
     _hover={{
       textDecoration: 'none',
-      bg: useColorModeValue('gray.200', 'gray.700'),
+      bg: 'rgba(0, 0, 0, 0.06)',
     }}
-    href={'#'}>
+    _focus={{
+      boxShadow: 'none',
+    }}
+    href={linkTo}
+  >
     {children}
   </Link>
 );
 
 export const Header = () => {
+  const { walletReady, address, walletName, balance } =
+    useReactiveVar(walletStore);
+
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const connectWallet = async () => {
-    await onboard.walletSelect();
-    await onboard.walletCheck();
-  }
+    try {
+      await onboard.walletSelect();
+      await onboard.walletCheck();
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const disconnectWallet = async () => {
     await onboard.walletReset();
-  }
+  };
 
-  useEffect(() => {
-    const resetWallet = async () => await onboard.walletReset();
-    resetWallet();
-  }, [])
+  const generateSlicedAddress = () => {
+    return (
+      address.slice(0, 6) +
+      '...' +
+      address.slice(address.length - 4, address.length)
+    );
+  };
 
   return (
     <>
-      <Box bg={useColorModeValue('gray.100', 'gray.900')} px={4}>
+      <Box bg='transparent' px={4} position='absolute' w='full'>
         <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
           <IconButton
             size={'md'}
@@ -65,55 +86,69 @@ export const Header = () => {
             onClick={isOpen ? onClose : onOpen}
           />
           <HStack spacing={8} alignItems={'center'}>
-            <Box>Logo</Box>
+            <Box>
+              <Image
+                src={'/logo.svg'}
+                alt='crowdship logo'
+                width='45'
+                height='45'
+              />
+            </Box>
             <HStack
               as={'nav'}
               spacing={4}
-              display={{ base: 'none', md: 'flex' }}>
-              {Links.map((link) => (
-                <NavLink key={link}>{link}</NavLink>
+              display={{ base: 'none', md: 'flex' }}
+            >
+              {Links.map(({ url, text }) => (
+                <NavLink key={text} linkTo={url}>
+                  {text}
+                </NavLink>
               ))}
             </HStack>
           </HStack>
           <Flex alignItems={'center'}>
+            <NavLink>Search</NavLink>
             <Button
-              variant={'solid'}
-              colorScheme={'teal'}
-              size={'sm'}
+              variant={walletReady ? 'primary' : 'primaryAlt'}
+              ml={5}
               mr={4}
-              leftIcon={<AddIcon />}
-              onClick={connectWallet}>
-              Connect Wallet
+              size='lg'
+              fontSize='md'
+              borderRadius='2xl'
+              leftIcon={
+                walletReady ? (
+                  <Avatar
+                    size={30}
+                    name={address}
+                    variant='marble'
+                    colors={[
+                      '#A3A948',
+                      '#EDB92E',
+                      '#F85931',
+                      '#CE1836',
+                      '#009989',
+                    ]}
+                  />
+                ) : (
+                  <AddIcon w={3.5} h={3.5} />
+                )
+              }
+              onClick={connectWallet}
+            >
+              <Text as='span'>
+                {!walletReady ? 'Connect Wallet' : generateSlicedAddress()}
+              </Text>
             </Button>
-            <Menu>
-              <MenuButton
-                as={Button}
-                rounded={'full'}
-                variant={'link'}
-                cursor={'pointer'}
-                minW={0}>
-                <Avatar
-                  size={'sm'}
-                  src={
-                    'https://images.unsplash.com/photo-1493666438817-866a91353ca9?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9'
-                  }
-                />
-              </MenuButton>
-              <MenuList>
-                <MenuItem>Manage Account</MenuItem>
-                <MenuItem>Explorer</MenuItem>
-                <MenuDivider />
-                <MenuItem onClick={disconnectWallet}>Disconnect</MenuItem>
-              </MenuList>
-            </Menu>
           </Flex>
         </Flex>
 
         {isOpen ? (
           <Box pb={4} display={{ md: 'none' }}>
             <Stack as={'nav'} spacing={4}>
-              {Links.map((link) => (
-                <NavLink key={link}>{link}</NavLink>
+              {Links.map(({ url, text }) => (
+                <NavLink key={text} linkTo={url}>
+                  {text}
+                </NavLink>
               ))}
             </Stack>
           </Box>
@@ -121,4 +156,4 @@ export const Header = () => {
       </Box>
     </>
   );
-}
+};
