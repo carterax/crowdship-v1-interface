@@ -262,12 +262,19 @@ const MyCrowdship: NextPage = () => {
           </Center>
           <SimpleGrid
             columns={[2, 3, categoriesData.length]}
-            spacing='121px'
+            spacing='100px'
             mt={10}
           >
             {categoriesData.map(
               ({ categoryTitle, categoryPath, iconPath }, idx) => (
-                <Box key={idx} as='a' href={categoryPath}>
+                <Box
+                  key={idx}
+                  as='a'
+                  href={categoryPath}
+                  display='flex'
+                  alignItems='center'
+                  flexDirection='column'
+                >
                   <Center
                     bg='yellow.400'
                     height='100px'
@@ -276,12 +283,7 @@ const MyCrowdship: NextPage = () => {
                   >
                     <Image src={iconPath} alt='Tech' width='64' height='64' />
                   </Center>
-                  <Text
-                    textAlign='center'
-                    mt={3}
-                    fontFamily='DM mono'
-                    fontWeight='500'
-                  >
+                  <Text mt={3} fontFamily='DM mono' fontWeight='500'>
                     {categoryTitle}
                   </Text>
                 </Box>

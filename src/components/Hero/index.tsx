@@ -1,12 +1,5 @@
 import { ReactNode } from 'react';
-import {
-  Stack,
-  Heading,
-  Flex,
-  Text,
-  VStack,
-  useBreakpointValue,
-} from '@chakra-ui/react';
+import { Container, Box, Stack, Heading, Flex, Text } from '@chakra-ui/react';
 
 type HeroProps = {
   header: string;
@@ -41,26 +34,24 @@ export const Hero = ({
       backgroundPosition={bgPosition}
       backgroundRepeat={bgRepeat}
     >
-      <VStack w={'full'} px={useBreakpointValue({ base: 4, md: 8 })}>
-        <Stack
-          flex={1}
-          justify={'center'}
-          w={{ base: 'md', md: '2xl', lg: '6xl' }}
-        >
-          <Heading
-            lineHeight={1.3}
-            w='xl'
-            fontWeight={500}
-            fontSize={{ base: '2xl', md: '36px' }}
-          >
-            <Text>{header}</Text>
-          </Heading>
-          <Text color={'gray.500'}>{body}</Text>
-          <Stack w='300px' paddingTop='10px'>
-            {actions}
-          </Stack>
-        </Stack>
-      </VStack>
+      <Container maxW='1240px'>
+        <Box display='flex' flexDirection='column' justifyContent={'center'}>
+          <Box mt='9rem'>
+            <Heading
+              lineHeight={1.3}
+              w='xl'
+              fontWeight={500}
+              fontSize={{ base: '2xl', md: '36px' }}
+            >
+              <Text>{header}</Text>
+            </Heading>
+            <Text color={'gray.500'}>{body}</Text>
+            <Stack w='300px' paddingTop='20px'>
+              {actions}
+            </Stack>
+          </Box>
+        </Box>
+      </Container>
     </Flex>
   );
 };

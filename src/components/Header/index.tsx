@@ -20,7 +20,7 @@ import { walletStore } from '@/stores';
 
 const Links = [
   { text: 'Discover', url: '#' },
-  { text: 'About', url: '#' },
+  { text: 'Launch a campaign', url: '#' },
 ];
 
 const NavLink = ({
@@ -76,7 +76,7 @@ export const Header = () => {
 
   return (
     <>
-      <Box bg='transparent' px={4} position='absolute' w='full'>
+      <Box bg='transparent' px={6} py={4} position='absolute' w='full'>
         <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
           <IconButton
             size={'md'}
