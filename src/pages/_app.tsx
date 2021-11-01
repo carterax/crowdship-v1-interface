@@ -23,8 +23,8 @@ const App = ({ Component, pageProps }: AppProps) => {
       const previouslySelectedWallet =
         window.localStorage.getItem('selectedWallet');
 
-      if (previouslySelectedWallet != null) {
-        await onboard.walletSelect(previouslySelectedWallet);
+      if (previouslySelectedWallet != 'undefined') {
+        await onboard.walletSelect(previouslySelectedWallet || '');
         await onboard.walletCheck();
 
         const { address, wallet } = onboard.getState();

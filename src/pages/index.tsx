@@ -26,6 +26,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 
 import { onboard, FACTORY } from '@/connectors';
 import { walletStore } from '@/stores';
+
 import { V1_CAMPAIGN_FACTORY_IMPLEMENTATION } from '@/constants/addresses';
 
 const StyledHome = styled.div`
@@ -76,7 +77,6 @@ const Home: NextPage = () => {
         await FACTORY.events
           .CampaignFactoryDeployed({}, { fromBlock: tx.blockNumber })
           .on('data', function (event: any) {
-            console.log(event);
             Router.push(`/my-crowdship/${event.returnValues.campaignFactory}`);
           })
           .on('error', console.error);
