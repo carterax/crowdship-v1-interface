@@ -49,11 +49,12 @@ const schema = yup
 const Home: NextPage = () => {
   const { address } = useReactiveVar(walletStore);
   const [transactionError, setTransactionError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const {
     register,
     handleSubmit,
     setError,
-    formState: { errors, isSubmitting, isValid },
+    formState: { errors, isValid },
   } = useForm<formData>({
     resolver: yupResolver(schema),
   });
@@ -62,6 +63,7 @@ const Home: NextPage = () => {
     const { isValid, message } = isValidAddress(revenueWallet);
 
     if (isValid) {
+      setIsSubmitting(true);
       const { address } = onboard.getState();
 
       try {
@@ -80,9 +82,11 @@ const Home: NextPage = () => {
           .on('error', (err: any) => setTransactionError(err.message));
       } catch (error: any) {
         setTransactionError(error.message);
+        setIsSubmitting(false);
       }
     } else {
       setError('revenueWallet', { type: 'manual', message });
+      setIsSubmitting(false);
     }
   };
 
@@ -137,7 +141,7 @@ const Home: NextPage = () => {
           size='full'
           onClose={null}
           overlayBgColor='blackAlpha.800'
-          isOpen={isSubmitting && isValid}
+          isOpen={isSubmitting}
         >
           <Box
             minH='90vh'
