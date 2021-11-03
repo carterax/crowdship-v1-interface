@@ -1,4 +1,5 @@
 import type { NextPage } from 'next';
+import { useState } from 'react';
 import { useReactiveVar } from '@apollo/client';
 import Router from 'next/router';
 import Head from 'next/head';
@@ -16,25 +17,24 @@ import {
   Input,
   Stack,
   FormErrorMessage,
+  Alert,
+  AlertIcon,
+  AlertDescription,
+  CloseButton,
 } from '@chakra-ui/react';
+import Lottie from 'lottie-react';
+
 import { ChevronRightIcon, AddIcon } from '@chakra-ui/icons';
-import styled from 'styled-components';
 
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
+import { ModalDialog } from '@/components/ModalDialog';
 import { onboard, FACTORY } from '@/connectors';
 import { walletStore } from '@/stores';
-
 import { V1_CAMPAIGN_FACTORY_IMPLEMENTATION } from '@/constants/addresses';
-
-const StyledHome = styled.div`
-  .crowdship__map {
-    position: relative;
-    left: -250px;
-  }
-`;
+import Loading from '@/components/lottie/loading.json';
 
 type formData = {
   revenueWallet: string;
@@ -47,25 +47,23 @@ const schema = yup
   .required();
 
 const Home: NextPage = () => {
-  const { walletReady } = useReactiveVar(walletStore);
-
+  const { address } = useReactiveVar(walletStore);
+  const [transactionError, setTransactionError] = useState('');
   const {
     register,
     handleSubmit,
     setError,
-    formState: { errors },
+    formState: { errors, isSubmitting, isValid },
   } = useForm<formData>({
     resolver: yupResolver(schema),
   });
-
-  const setWalletState = (walletReady: boolean) =>
-    walletStore({ ...walletStore(), walletReady });
 
   const createDemo = async ({ revenueWallet }: formData) => {
     const { isValid, message } = isValidAddress(revenueWallet);
 
     if (isValid) {
       const { address } = onboard.getState();
+
       try {
         const tx = await FACTORY.methods
           .createCampaignFactory(
@@ -79,9 +77,9 @@ const Home: NextPage = () => {
           .on('data', function (event: any) {
             Router.push(`/my-crowdship/${event.returnValues.campaignFactory}`);
           })
-          .on('error', console.error);
-      } catch (error) {
-        console.log(error);
+          .on('error', (err: any) => setTransactionError(err.message));
+      } catch (error: any) {
+        setTransactionError(error.message);
       }
     } else {
       setError('revenueWallet', { type: 'manual', message });
@@ -104,13 +102,12 @@ const Home: NextPage = () => {
   };
 
   const connectWallet = async (e: any) => {
-    if (!walletReady) {
+    if (!address) {
       e.preventDefault();
       let error: any;
       try {
         await onboard.walletSelect();
         await onboard.walletCheck();
-        setWalletState(true);
       } catch (error) {
         error = error;
       }
@@ -119,11 +116,10 @@ const Home: NextPage = () => {
 
   const disconnectWallet = () => {
     onboard.walletReset();
-    setWalletState(false);
   };
 
   return (
-    <StyledHome>
+    <>
       <Head>
         <title>Crowdship - Create Demo</title>
         <meta
@@ -132,6 +128,32 @@ const Home: NextPage = () => {
         />
       </Head>
       <main>
+        <ModalDialog
+          isCentered
+          backgroundColor='transparent'
+          boxShadow='none'
+          closeOnEsc={false}
+          closeOnOverlayClick={false}
+          size='full'
+          onClose={null}
+          overlayBgColor='blackAlpha.800'
+          isOpen={isSubmitting && isValid}
+        >
+          <Box
+            minH='90vh'
+            display='flex'
+            alignItems='center'
+            justifyContent='center'
+            flexDirection='column'
+          >
+            <Box w='xs' mb={-5}>
+              <Lottie animationData={Loading} />
+            </Box>
+            <Box>
+              <Heading color='white'>Processing Transaction</Heading>
+            </Box>
+          </Box>
+        </ModalDialog>
         <Flex color='white' minH={'100vh'}>
           <Box
             w='400px'
@@ -165,6 +187,19 @@ const Home: NextPage = () => {
                 </Text>
                 <Spacer />
                 <form onSubmit={handleSubmit(createDemo)}>
+                  {transactionError && (
+                    <Alert status='error' variant='solid' bg='red.500' mb={3}>
+                      <AlertIcon />
+                      <AlertDescription>{transactionError}</AlertDescription>
+                      <CloseButton
+                        position='absolute'
+                        right='8px'
+                        top='8px'
+                        _focus={{ boxShadow: 'none' }}
+                        onClick={() => setTransactionError('')}
+                      />
+                    </Alert>
+                  )}
                   <FormControl
                     isInvalid={!!errors.revenueWallet?.message?.length}
                     isRequired
@@ -187,22 +222,22 @@ const Home: NextPage = () => {
                   <Stack mt={4}>
                     <Button
                       onClick={connectWallet}
-                      disabled={false}
+                      disabled={isSubmitting}
                       type='submit'
-                      variant={walletReady ? 'primary' : 'primaryAlt'}
+                      variant={address ? 'primary' : 'primaryAlt'}
                       size='lg'
                       leftIcon={
-                        walletReady ? (
+                        address ? (
                           <ChevronRightIcon />
                         ) : (
                           <AddIcon w={3.5} h={3.5} />
                         )
                       }
                     >
-                      {walletReady ? 'Proceed' : 'Connect Wallet'}
+                      {address ? 'Proceed' : 'Connect Wallet'}
                     </Button>
                     <Center>
-                      {walletReady ? (
+                      {address ? (
                         <Text
                           fontSize='sm'
                           color='blue.500'
@@ -223,7 +258,7 @@ const Home: NextPage = () => {
           </Box>
         </Flex>
       </main>
-    </StyledHome>
+    </>
   );
 };
 

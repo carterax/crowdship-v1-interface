@@ -23,22 +23,8 @@ const App = ({ Component, pageProps }: AppProps) => {
       const previouslySelectedWallet =
         window.localStorage.getItem('selectedWallet');
 
-      if (previouslySelectedWallet != 'undefined') {
+      if (previouslySelectedWallet != 'undefined')
         await onboard.walletSelect(previouslySelectedWallet || '');
-        await onboard.walletCheck();
-
-        const { address, wallet } = onboard.getState();
-        const balance = await web3.eth.getBalance(address);
-
-        if (address) {
-          walletStore({
-            walletReady: true,
-            address,
-            balance: web3.utils.fromWei(balance, 'ether'),
-            walletName: wallet.name || '',
-          });
-        }
-      }
     };
     walletSelection();
   }, []);

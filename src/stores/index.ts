@@ -1,15 +1,23 @@
 import { makeVar } from '@apollo/client';
 
 type walletStoreType = {
-  walletReady: boolean;
   address: string;
   balance: string;
   walletName: string;
 };
 
-export const initialState: { wallet: walletStoreType } = {
+type globalStoreType = {
+  openModal: boolean;
+};
+
+export const initialState: {
+  wallet: walletStoreType;
+  global: globalStoreType;
+} = {
+  global: {
+    openModal: false,
+  },
   wallet: {
-    walletReady: false,
     address: '',
     balance: '',
     walletName: '',
@@ -17,3 +25,4 @@ export const initialState: { wallet: walletStoreType } = {
 };
 
 export const walletStore = makeVar(initialState.wallet);
+export const globalStore = makeVar(initialState.global);

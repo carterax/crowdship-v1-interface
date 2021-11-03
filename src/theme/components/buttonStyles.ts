@@ -12,6 +12,9 @@ export const ButtonStyles = {
       color: 'white',
       _hover: {
         bg: whiten('black.500', 15),
+        _disabled: {
+          bg: whiten('black.500', 0),
+        },
       },
       _focus: {
         boxShadow: 'none',
@@ -22,6 +25,9 @@ export const ButtonStyles = {
       color: 'purple.100',
       _hover: {
         bg: whiten('purple.500', 15),
+        _disabled: {
+          bg: whiten('black.500', 0),
+        },
       },
       _focus: {
         boxShadow: 'none',

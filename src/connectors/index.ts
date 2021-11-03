@@ -6,6 +6,7 @@ import Campaign from '@/abis/Campaign.json';
 import CampaignRewards from '@/abis/CampaignRewards.json';
 import { V1_CORE_FACTORY_ADDRESS } from '@/constants/addresses';
 import { SupportedChainId } from '@/constants/chains';
+import { walletStore } from '@/stores';
 
 const DAPP_ID = 'f103de9f-3220-41f0-97c1-9ed286b86fc2';
 const PORTIS_ID = 'b0c1514e-eb13-4102-be08-85b6f02a5f34';
@@ -32,6 +33,14 @@ export const onboard = Onboard({
       web3 = new Web3(wallet.provider);
       FACTORY = new web3.eth.Contract(Factory as any, V1_CORE_FACTORY_ADDRESS);
       window.localStorage.setItem('selectedWallet', wallet.name);
+    },
+    address: async (address: string) => {
+      console.log(address);
+      walletStore({ ...walletStore(), address });
+    },
+    balance: async (balance: string) => {
+      console.log(balance);
+      walletStore({ ...walletStore(), balance });
     },
   },
 });

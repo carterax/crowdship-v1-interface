@@ -48,8 +48,7 @@ const NavLink = ({
 );
 
 export const Header = () => {
-  const { walletReady, address, walletName, balance } =
-    useReactiveVar(walletStore);
+  const { address, walletName, balance } = useReactiveVar(walletStore);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -109,14 +108,14 @@ export const Header = () => {
           <Flex alignItems={'center'}>
             <NavLink>Search</NavLink>
             <Button
-              variant={walletReady ? 'primary' : 'primaryAlt'}
+              variant={address ? 'primary' : 'primaryAlt'}
               ml={5}
               mr={4}
               size='lg'
               fontSize='md'
               borderRadius='2xl'
               leftIcon={
-                walletReady ? (
+                address ? (
                   <Avatar
                     size={30}
                     name={address}
@@ -136,7 +135,7 @@ export const Header = () => {
               onClick={connectWallet}
             >
               <Text as='span'>
-                {!walletReady ? 'Connect Wallet' : generateSlicedAddress()}
+                {!address ? 'Connect Wallet' : generateSlicedAddress()}
               </Text>
             </Button>
           </Flex>
