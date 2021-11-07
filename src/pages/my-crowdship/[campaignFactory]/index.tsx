@@ -171,7 +171,7 @@ const MyCrowdship: NextPage = () => {
         bgImage='/map-light.svg'
         bgColor='yellow.200'
         bgRepeat='no-repeat'
-        bgPosition='530px 40px'
+        bgPosition='530px 88px'
         bgSize='940px'
         actions={
           <>
@@ -223,7 +223,7 @@ const MyCrowdship: NextPage = () => {
             <CampaignCard
               special
               heading='Silly folks'
-              body='These fools are trying to raise funds to build their own water craft, you can support their foolishness...'
+              body='These fools are trying to raise funds to build their own water craft, you can support their foolishness'
               image='/demo.jpg'
               category='sports'
               raised='10'
@@ -245,8 +245,8 @@ const MyCrowdship: NextPage = () => {
           />
           <Box mt={37}>
             <CampaignCard
-              heading='Silly folks'
-              body='These fools are trying to raise funds to build their own water craft, you can support their foolishness...'
+              heading='Kayaking team'
+              body='These fools are trying to raise funds to build their own water craft, you can support their foolishness'
               image='/demo.jpg'
               category='sports'
               raised='10'

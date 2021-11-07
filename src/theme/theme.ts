@@ -2,6 +2,7 @@ import { extendTheme } from '@chakra-ui/react';
 import { ButtonStyles as Button } from '@/theme/components/buttonStyles';
 import { InputStyles as Input } from '@/theme/components/inputStyles';
 import { alertStyles as Alert } from '@/theme/components/alertStyles';
+import { progressStyles as Progress } from './components/progressStyle';
 
 const overrides = extendTheme({
   styles: {
@@ -43,11 +44,15 @@ const overrides = extendTheme({
     red: {
       500: '#E53E3E',
     },
+    green: {
+      300: '#68D391',
+    },
   },
   components: {
     Button,
     Input,
     Alert,
+    Progress,
   },
 });
 

@@ -1,4 +1,4 @@
-import { ReactNode, useEffect } from 'react';
+import { ReactNode } from 'react';
 import Image from 'next/image';
 import { useReactiveVar } from '@apollo/client';
 import {
@@ -11,12 +11,17 @@ import {
   Text,
   useDisclosure,
   Stack,
+  Kbd,
+  Input,
+  InputGroup,
+  InputRightElement,
 } from '@chakra-ui/react';
 import { HamburgerIcon, CloseIcon, AddIcon } from '@chakra-ui/icons';
 import Avatar from 'boring-avatars';
 
 import { onboard } from '@/connectors';
 import { walletStore } from '@/stores';
+import { generateSlicedAddress } from '@/utils/address';
 
 const Links = [
   { text: 'Discover', url: '#' },
@@ -65,14 +70,6 @@ export const Header = () => {
     await onboard.walletReset();
   };
 
-  const generateSlicedAddress = () => {
-    return (
-      address.slice(0, 6) +
-      '...' +
-      address.slice(address.length - 4, address.length)
-    );
-  };
-
   return (
     <>
       <Box bg='transparent' px={6} py={4} position='absolute' w='full'>
@@ -105,9 +102,33 @@ export const Header = () => {
               ))}
             </HStack>
           </HStack>
-          <Flex alignItems={'center'}>
-            <NavLink>Search</NavLink>
+          <Flex alignItems='center'>
+            <InputGroup size='lg' w='180px'>
+              <InputRightElement pointerEvents='none' mr='2'>
+                <Kbd
+                  display='flex'
+                  alignItems='center'
+                  backgroundColor='yellow.200'
+                  borderColor='#E3DAAD'
+                >
+                  <Text as='span' fontSize='18px' mr='2px'>
+                    ⌘
+                  </Text>
+                  K
+                </Kbd>
+              </InputRightElement>
+              <Input
+                id='search'
+                variant='outlineAlt'
+                cursor='pointer'
+                borderRadius='3xl'
+                disabled
+                _placeholder={{ color: 'blackAlpha.900' }}
+                placeholder='Search'
+              />
+            </InputGroup>
             <Button
+              w='180px'
               variant={address ? 'primary' : 'primaryAlt'}
               ml={5}
               mr={4}
@@ -135,7 +156,7 @@ export const Header = () => {
               onClick={connectWallet}
             >
               <Text as='span'>
-                {!address ? 'Connect Wallet' : generateSlicedAddress()}
+                {!address ? 'Connect Wallet' : generateSlicedAddress(address)}
               </Text>
             </Button>
           </Flex>

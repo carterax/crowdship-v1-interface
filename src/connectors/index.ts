@@ -35,11 +35,9 @@ export const onboard = Onboard({
       window.localStorage.setItem('selectedWallet', wallet.name);
     },
     address: async (address: string) => {
-      console.log(address);
       walletStore({ ...walletStore(), address });
     },
     balance: async (balance: string) => {
-      console.log(balance);
       walletStore({ ...walletStore(), balance });
     },
   },
