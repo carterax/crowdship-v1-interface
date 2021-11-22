@@ -4,8 +4,7 @@ import { ChakraProvider } from '@chakra-ui/react';
 import { Layout } from '@/components/Layout';
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 
-import { walletStore } from '@/stores';
-import { web3, onboard } from '@/connectors';
+import { onboard } from '@/connectors';
 import theme from '@/theme/theme';
 
 import '@fontsource/dm-sans/400.css';

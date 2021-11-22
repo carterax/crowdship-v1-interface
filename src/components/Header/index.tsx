@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import { useRouter } from 'next/router';
 import Image from 'next/image';
 import { useReactiveVar } from '@apollo/client';
 import {
@@ -22,11 +23,6 @@ import Avatar from 'boring-avatars';
 import { onboard } from '@/connectors';
 import { walletStore } from '@/stores';
 import { generateSlicedAddress } from '@/utils/address';
-
-const Links = [
-  { text: 'Discover', url: '#' },
-  { text: 'Launch a campaign', url: '#' },
-];
 
 const NavLink = ({
   children,
@@ -56,6 +52,13 @@ export const Header = () => {
   const { address, walletName, balance } = useReactiveVar(walletStore);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const { asPath } = useRouter();
+
+  const Links = [
+    { text: 'Discover', url: `/campaigns` },
+    { text: 'Launch a campaign', url: `/launch` },
+  ];
 
   const connectWallet = async () => {
     try {

@@ -1,10 +1,14 @@
 import Onboard from 'bnc-onboard';
 import Web3 from 'web3';
+
 import Factory from '@/abis/Factory.json';
 import CampaignFactory from '@/abis/CampaignFactory.json';
 import Campaign from '@/abis/Campaign.json';
-import CampaignRewards from '@/abis/CampaignRewards.json';
-import { V1_CORE_FACTORY_ADDRESS } from '@/constants/addresses';
+import CampaignReward from '@/abis/CampaignReward.json';
+import CampaignRequest from '@/abis/CampaignRequest.json';
+import CampaignVote from '@/abis/CampaignVote.json';
+
+import { V1_FACTORY_ADDRESS } from '@/constants/addresses';
 import { SupportedChainId } from '@/constants/chains';
 import { walletStore } from '@/stores';
 
@@ -16,22 +20,14 @@ export let web3: any;
 
 export let FACTORY: any;
 
-export const CAMPAIGN_FACTORY = (address: string) =>
-  new web3.eth.Contract(CampaignFactory as any, address);
-
-export const CAMPAIGN = (address: string) =>
-  new web3.eth.Contract(Campaign as any, address);
-
-export const CAMPAIGN_REWARDS = (address: string) =>
-  new web3.eth.Contract(CampaignRewards as any, address);
-
 export const onboard = Onboard({
   dappId: DAPP_ID,
-  networkId: SupportedChainId.RINKEBY,
+  networkId: SupportedChainId.LOCALHOST,
+  networkName: 'development',
   subscriptions: {
     wallet: async (wallet: any) => {
       web3 = new Web3(wallet.provider);
-      FACTORY = new web3.eth.Contract(Factory as any, V1_CORE_FACTORY_ADDRESS);
+      FACTORY = new web3.eth.Contract(Factory as any, V1_FACTORY_ADDRESS);
       window.localStorage.setItem('selectedWallet', wallet.name);
     },
     address: async (address: string) => {
@@ -42,3 +38,23 @@ export const onboard = Onboard({
     },
   },
 });
+
+export const CAMPAIGN_FACTORY = (address: string) => {
+  return new web3.eth.Contract(CampaignFactory as any, address);
+};
+
+export const CAMPAIGN = (address: string) => {
+  return new web3.eth.Contract(Campaign as any, address);
+};
+
+export const CAMPAIGN_REWARD = (address: string) => {
+  return new web3.eth.Contract(CampaignReward as any, address);
+};
+
+export const CAMPAIGN_REQUEST = (address: string) => {
+  return new web3.eth.Contract(CampaignRequest as any, address);
+};
+
+export const CAMPAIGN_VOTE = (address: string) => {
+  return new web3.eth.Contract(CampaignVote as any, address);
+};
