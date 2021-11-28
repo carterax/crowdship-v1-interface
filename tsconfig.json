@@ -23,7 +23,7 @@
       "@/stores": ["stores/index.ts"],
       "@/styles/*": ["styles/*"],
       "@/utils/*": ["utils/*"],
-      "@/theme/*": ["theme/*"],
+      "@/theme/*": ["theme/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

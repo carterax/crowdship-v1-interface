@@ -1,0 +1,15 @@
+.bn-onboard-modal {
+  font-family: 'DM Mono' !important;
+}
+
+.rounded-lg {
+  border-radius: 4px;
+}
+
+.go-to-shortcut {
+  display: none;
+}
+
+.campaign-search-card:hover .go-to-shortcut {
+  display: block;
+}

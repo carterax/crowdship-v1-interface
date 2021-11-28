@@ -5,15 +5,19 @@ import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 
 export const Layout = ({ children }: { children: ReactNode }) => {
-  const router = useRouter();
-  const showHeader = router.pathname === '/' ? false : true;
-  const showFooter = router.pathname === '/' ? false : true;
+  const { pathname } = useRouter();
+
+  const showComponent = (paths: string[]) => !paths.includes(pathname);
 
   return (
     <main>
-      {showHeader && <Header />}
+      {showComponent(['/', '/my-crowdship/[campaignFactory]/launch']) && (
+        <Header />
+      )}
       {children}
-      {showFooter && <Footer />}
+      {showComponent(['/', '/my-crowdship/[campaignFactory]/launch']) && (
+        <Footer />
+      )}
     </main>
   );
 };

@@ -2,26 +2,14 @@ import { ReactNode } from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 import { useReactiveVar } from '@apollo/client';
-import {
-  Box,
-  Flex,
-  HStack,
-  Link,
-  IconButton,
-  Button,
-  Text,
-  useDisclosure,
-  Stack,
-  Kbd,
-  Input,
-  InputGroup,
-  InputRightElement,
-} from '@chakra-ui/react';
-import { HamburgerIcon, CloseIcon, AddIcon } from '@chakra-ui/icons';
+import { Box, Flex, HStack, Link, Button, Text, Kbd } from '@chakra-ui/react';
+import { AddIcon } from '@chakra-ui/icons';
 import Avatar from 'boring-avatars';
 
+import { SearchModalDialog } from '@/components/SearchModalDialog';
+
 import { onboard } from '@/connectors';
-import { walletStore } from '@/stores';
+import { walletStore, globalStore } from '@/stores';
 import { generateSlicedAddress } from '@/utils/address';
 
 const NavLink = ({
@@ -49,15 +37,19 @@ const NavLink = ({
 );
 
 export const Header = () => {
-  const { address, walletName, balance } = useReactiveVar(walletStore);
+  const { address } = useReactiveVar(walletStore);
 
-  const { isOpen, onOpen, onClose } = useDisclosure();
-
-  const { asPath } = useRouter();
+  const { query } = useRouter();
 
   const Links = [
-    { text: 'Discover', url: `/campaigns` },
-    { text: 'Launch a campaign', url: `/launch` },
+    {
+      text: 'Discover',
+      url: `/my-crowdship/${query.campaignFactory}/campaigns`,
+    },
+    {
+      text: 'Launch a campaign',
+      url: `/my-crowdship/${query.campaignFactory}/launch`,
+    },
   ];
 
   const connectWallet = async () => {
@@ -75,15 +67,9 @@ export const Header = () => {
 
   return (
     <>
+      <SearchModalDialog />
       <Box bg='transparent' px={6} py={4} position='absolute' w='full'>
         <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
-          <IconButton
-            size={'md'}
-            icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
-            aria-label={'Open Menu'}
-            display={{ md: 'none' }}
-            onClick={isOpen ? onClose : onOpen}
-          />
           <HStack spacing={8} alignItems={'center'}>
             <Box>
               <Image
@@ -106,11 +92,33 @@ export const Header = () => {
             </HStack>
           </HStack>
           <Flex alignItems='center'>
-            <InputGroup size='lg' w='180px'>
-              <InputRightElement pointerEvents='none' mr='2'>
+            <Button
+              w='180px'
+              borderRadius='3xl'
+              variant='primary'
+              background='rgba(0, 0, 0, 0.06)'
+              _hover={{
+                backgroundColor: 'rgba(0, 0, 0, 0.06)',
+              }}
+              size='lg'
+              fontSize='md'
+              onClick={() =>
+                globalStore({ ...globalStore(), openSearchDialog: true })
+              }
+            >
+              <Box
+                w='full'
+                display='flex'
+                alignItems='center'
+                justifyContent='space-between'
+              >
+                <Text color='blackAlpha.400' fontWeight='400'>
+                  Search
+                </Text>
                 <Kbd
                   display='flex'
                   alignItems='center'
+                  color='blackAlpha.700'
                   backgroundColor='yellow.200'
                   borderColor='#E3DAAD'
                 >
@@ -119,25 +127,15 @@ export const Header = () => {
                   </Text>
                   K
                 </Kbd>
-              </InputRightElement>
-              <Input
-                id='search'
-                variant='outlineAlt'
-                cursor='pointer'
-                borderRadius='3xl'
-                disabled
-                _placeholder={{ color: 'blackAlpha.900' }}
-                placeholder='Search'
-              />
-            </InputGroup>
+              </Box>
+            </Button>
             <Button
-              w='180px'
               variant={address ? 'primary' : 'primaryAlt'}
               ml={5}
               mr={4}
               size='lg'
               fontSize='md'
-              borderRadius='2xl'
+              borderRadius='3xl'
               leftIcon={
                 address ? (
                   <Avatar
@@ -164,18 +162,6 @@ export const Header = () => {
             </Button>
           </Flex>
         </Flex>
-
-        {isOpen ? (
-          <Box pb={4} display={{ md: 'none' }}>
-            <Stack as={'nav'} spacing={4}>
-              {Links.map(({ url, text }) => (
-                <NavLink key={text} linkTo={url}>
-                  {text}
-                </NavLink>
-              ))}
-            </Stack>
-          </Box>
-        ) : null}
       </Box>
     </>
   );

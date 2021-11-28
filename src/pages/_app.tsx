@@ -7,17 +7,19 @@ import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 import { onboard } from '@/connectors';
 import theme from '@/theme/theme';
 
+import '@/styles/global.css';
 import '@fontsource/dm-sans/400.css';
 import '@fontsource/dm-sans/700.css';
 import '@fontsource/dm-mono/500.css';
 
 const client = new ApolloClient({
-  uri: 'http://localhost:8000/subgraphs/name/pelicandistress/crowdship',
+  uri: 'http://localhost:8000/subgraphs/name/carterax/crowdship',
   cache: new InMemoryCache(),
 });
 
 const App = ({ Component, pageProps }: AppProps) => {
   useEffect(() => {
+    // cache wallet selection
     const walletSelection = async () => {
       const previouslySelectedWallet =
         window.localStorage.getItem('selectedWallet');
@@ -26,7 +28,7 @@ const App = ({ Component, pageProps }: AppProps) => {
         await onboard.walletSelect(previouslySelectedWallet || '');
     };
     walletSelection();
-  }, []);
+  });
 
   return (
     <ApolloProvider client={client}>

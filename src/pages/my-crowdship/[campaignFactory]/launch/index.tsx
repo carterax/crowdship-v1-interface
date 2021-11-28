@@ -1,11 +1,20 @@
 import type { NextPage } from 'next';
-import { Box, Button } from '@chakra-ui/react';
+import Image from 'next/image';
+import { Box, SimpleGrid, Text, Center } from '@chakra-ui/react';
 
 const Launch: NextPage = () => {
   return (
-    <Box paddingTop='96px'>
-      <Button>Launch a campaign</Button>
-    </Box>
+    <SimpleGrid columns={[3, null, 3]} spacing='0'>
+      <Box bg='tomato' height='70px'>
+        <Center>1</Center>
+      </Box>
+      <Box bg='tomato' height='70px'>
+        <Center>2</Center>
+      </Box>
+      <Box bg='tomato' height='70px'>
+        <Center>3</Center>
+      </Box>
+    </SimpleGrid>
   );
 };
 

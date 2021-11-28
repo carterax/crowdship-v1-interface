@@ -8,7 +8,7 @@ type walletStoreType = {
 };
 
 type globalStoreType = {
-  openModal: boolean;
+  openSearchDialog: boolean;
 };
 
 export const initialState: {
@@ -16,7 +16,7 @@ export const initialState: {
   global: globalStoreType;
 } = {
   global: {
-    openModal: false,
+    openSearchDialog: false,
   },
   wallet: {
     address: '',

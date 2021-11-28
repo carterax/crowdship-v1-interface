@@ -23,12 +23,14 @@ export const ModalDialog = ({
   isCentered,
   onClose,
   overlayBgColor,
+  blockScrollOnMount,
   ...rest
 }: any) => {
   return (
     <>
       <Modal
-        isCentered
+        isCentered={isCentered}
+        blockScrollOnMount={blockScrollOnMount}
         isOpen={isOpen}
         onClose={onClose}
         size={size}

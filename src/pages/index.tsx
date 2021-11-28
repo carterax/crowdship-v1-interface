@@ -21,10 +21,22 @@ import {
   AlertIcon,
   AlertDescription,
   CloseButton,
+  useDisclosure,
+  Drawer,
+  DrawerBody,
+  DrawerHeader,
+  DrawerOverlay,
+  DrawerContent,
+  DrawerCloseButton,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+  NumberIncrementStepper,
+  NumberDecrementStepper,
 } from '@chakra-ui/react';
 import Lottie from 'lottie-react';
 
-import { ChevronRightIcon, AddIcon } from '@chakra-ui/icons';
+import { ChevronRightIcon, AddIcon, InfoOutlineIcon } from '@chakra-ui/icons';
 
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
@@ -37,19 +49,113 @@ import { V1_CAMPAIGN_FACTORY_IMPLEMENTATION } from '@/constants/addresses';
 import Loading from '@/components/lottie/loading.json';
 
 type formData = {
-  revenueWallet: string;
+  governance: string;
 };
 
 const schema = yup
   .object({
-    revenueWallet: yup.string().required('Required'),
+    governance: yup.string().required('Required'),
   })
   .required();
+
+const campaignRules = [
+  {
+    key: 'defaultCommission',
+    title: 'Default commission',
+    description: 'Lorem Ipsum',
+    value: 2,
+  },
+  {
+    key: 'deadlineStrikesAllowed',
+    title: 'Deadline extension threshold',
+    description: 'Lorem Ipsum',
+    value: 3,
+  },
+  {
+    key: 'minimumContributionAllowed',
+    title: 'Minimum contribution',
+    description: 'Lorem Ipsum',
+    value: 1,
+  },
+  {
+    key: 'maximumContributionAllowed',
+    title: 'Maximum contribution',
+    description: 'Lorem Ipsum',
+    value: 10000,
+  },
+  {
+    key: 'minimumRequestAmountAllowed',
+    title: 'Minimum request amount',
+    description: 'Lorem Ipsum',
+    value: 1000,
+  },
+  {
+    key: 'maximumRequestAmountAllowed',
+    title: 'Maximum request amount',
+    description: 'Lorem Ipsum',
+    value: 5000,
+  },
+  {
+    key: 'minimumCampaignTarget',
+    title: 'Minimum campaign target',
+    description: 'Lorem Ipsum',
+    value: 5000,
+  },
+  {
+    key: 'maximumCampaignTarget',
+    title: 'Maximum campaign target',
+    description: 'Lorem Ipsum',
+    value: 1000000,
+  },
+  {
+    key: 'maxDeadlineExtension',
+    title: 'Maximum deadline extension',
+    description: 'Lorem Ipsum',
+    value: 604800,
+  },
+  {
+    key: 'minDeadlineExtension',
+    title: 'Minimum deadline extension',
+    description: 'Lorem Ipsum',
+    value: 86400,
+  },
+  {
+    key: 'minRequestDuration',
+    title: 'Minimum request duration',
+    description: 'Lorem Ipsum',
+    value: 86400,
+  },
+  {
+    key: 'maxRequestDuration',
+    title: 'Maximum request duration',
+    description: 'Lorem Ipsum',
+    value: 604800,
+  },
+  {
+    key: 'reviewThresholdMark',
+    title: 'Review threshold',
+    description: 'Lorem Ipsum',
+    value: 80,
+  },
+  {
+    key: 'requestFinalizationThreshold',
+    title: 'Request finalization threshold',
+    description: 'Lorem Ipsum',
+    value: 51,
+  },
+  {
+    key: 'reportThresholdMark',
+    title: 'Report threshold',
+    description: 'Lorem Ipsum',
+    value: 51,
+  },
+];
 
 const Home: NextPage = () => {
   const { address } = useReactiveVar(walletStore);
   const [transactionError, setTransactionError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const {
     register,
     handleSubmit,
@@ -59,8 +165,8 @@ const Home: NextPage = () => {
     resolver: yupResolver(schema),
   });
 
-  const createDemo = async ({ revenueWallet }: formData) => {
-    const { isValid, message } = isValidAddress(revenueWallet);
+  const createDemo = async ({ governance }: formData) => {
+    const { isValid, message } = isValidAddress(governance);
 
     if (isValid) {
       setIsSubmitting(true);
@@ -68,10 +174,7 @@ const Home: NextPage = () => {
 
       try {
         const tx = await FACTORY.methods
-          .createCampaignFactory(
-            V1_CAMPAIGN_FACTORY_IMPLEMENTATION,
-            revenueWallet
-          )
+          .createCampaignFactory(V1_CAMPAIGN_FACTORY_IMPLEMENTATION, governance)
           .send({ from: address });
 
         await FACTORY.events
@@ -85,7 +188,7 @@ const Home: NextPage = () => {
         setIsSubmitting(false);
       }
     } else {
-      setError('revenueWallet', { type: 'manual', message });
+      setError('governance', { type: 'manual', message });
       setIsSubmitting(false);
     }
   };
@@ -205,23 +308,88 @@ const Home: NextPage = () => {
                     </Alert>
                   )}
                   <FormControl
-                    isInvalid={!!errors.revenueWallet?.message?.length}
+                    isInvalid={!!errors.governance?.message?.length}
                     isRequired
                   >
-                    <FormLabel htmlFor='revenueWallet' color='black'>
-                      Revenue Wallet
+                    <FormLabel htmlFor='governance' color='black'>
+                      Governance Address
                     </FormLabel>
                     <Input
-                      {...register('revenueWallet')}
-                      id='revenueWallet'
+                      {...register('governance')}
+                      id='governance'
                       variant='outlineAlt'
                       size='lg'
                       _placeholder={{ color: 'gray.500' }}
                       placeholder='0x0000000000000000000000000000000000000000'
                     />
                     <FormErrorMessage>
-                      {errors.revenueWallet?.message}
+                      {errors.governance?.message}
                     </FormErrorMessage>
+                  </FormControl>
+                  <FormControl>
+                    <Drawer
+                      isOpen={isOpen}
+                      onClose={onClose}
+                      placement='left'
+                      size='sm'
+                    >
+                      <DrawerOverlay />
+                      <DrawerContent>
+                        <DrawerCloseButton />
+                        <DrawerHeader fontFamily='DM mono'>
+                          Advanced Settings
+                        </DrawerHeader>
+                        <DrawerBody>
+                          {campaignRules.map(
+                            ({ key, title, value, description }) => (
+                              <Box
+                                key={key}
+                                display='flex'
+                                alignItems='center'
+                                justifyContent='space-between'
+                                padding={3}
+                              >
+                                <Box textTransform='capitalize'>{title}</Box>
+                                <Box>
+                                  <NumberInput
+                                    size='sm'
+                                    w='120px'
+                                    defaultValue={value}
+                                  >
+                                    <NumberInputField />
+                                    <NumberInputStepper>
+                                      <NumberIncrementStepper />
+                                      <NumberDecrementStepper />
+                                    </NumberInputStepper>
+                                  </NumberInput>
+                                </Box>
+                              </Box>
+                            )
+                          )}
+                        </DrawerBody>
+                      </DrawerContent>
+                    </Drawer>
+                    <Box display='flex' justifyContent='flex-end' mt={1}>
+                      <Box
+                        display='flex'
+                        alignItems='center'
+                        cursor='pointer'
+                        padding='0 10px'
+                        _active={{
+                          background: 'rgba(0, 0, 0, 0.06)',
+                          borderRadius: 'sm',
+                        }}
+                        _hover={{
+                          background: 'rgba(0, 0, 0, 0.06)',
+                          borderRadius: 'sm',
+                        }}
+                      >
+                        <InfoOutlineIcon color='black' w={3} h={3} mr={1} />
+                        <Text fontSize='sm' color='black' onClick={onOpen}>
+                          Advanced
+                        </Text>
+                      </Box>
+                    </Box>
                   </FormControl>
                   <Stack mt={4}>
                     <Button
