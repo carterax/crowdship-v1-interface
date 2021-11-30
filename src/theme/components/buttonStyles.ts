@@ -33,6 +33,32 @@ export const ButtonStyles = {
         boxShadow: 'none',
       },
     }),
+    secondary: () => ({
+      bg: 'yellow.500',
+      color: 'black.500',
+      _hover: {
+        bg: whiten('yellow.500', 15),
+        _disabled: {
+          bg: whiten('yellow.500', 0),
+        },
+      },
+      _focus: {
+        boxShadow: 'none',
+      },
+    }),
+    plain: () => ({
+      bg: 'gray.50',
+      color: 'black.500',
+      _hover: {
+        bg: whiten('gray.50', 15),
+        _disabled: {
+          bg: whiten('gray.50', 0),
+        },
+      },
+      _focus: {
+        boxShadow: 'none',
+      },
+    }),
   },
   defaultProps: {
     variant: 'primary',

@@ -15,11 +15,12 @@ type CampaignCardProps = {
   special?: boolean;
   heading: string;
   body: string;
-  image: string;
+  image?: string;
   category: string;
   raised: string;
   target: string;
-  badge: string;
+  badge?: string;
+  style?: Object;
 };
 
 const SpecialCampaignCard = ({
@@ -34,7 +35,7 @@ const SpecialCampaignCard = ({
   <Box
     h='452px'
     borderRadius='lg'
-    backgroundImage={image}
+    backgroundImage={image || '/default-campaign-banner.svg'}
     backgroundPosition='center center'
     backgroundSize='cover'
     backgroundRepeat='no-repeat'
@@ -91,51 +92,67 @@ const AltCampaignCard = ({
   raised,
   target,
   badge,
+  style,
 }: CampaignCardProps) => (
   <Box
-    h='430px'
+    h='450px'
     maxW='398px'
     borderWidth='1px'
     borderColor='rgba(0, 0, 0, 0.06)'
     borderRadius='lg'
     overflow='hidden'
     position='relative'
+    backgroundColor='white'
+    display='flex'
+    flexDirection='column'
+    style={style}
   >
-    <Image
-      src={image}
-      alt={heading}
-      width='398'
-      height='175'
-      objectFit={'cover'}
-    />
-    <Box px={4}>
+    <Box height='175px'>
+      <Image
+        src={image || '/default-campaign-banner.svg'}
+        alt={heading}
+        width='398'
+        height='175'
+        objectFit={'cover'}
+      />
+    </Box>
+    <Box px={4} h='full'>
       <Box display='flex' alignItems='center' pt='.68rem'>
         <Box display='flex' alignItems='center'>
           <Avatar h='24px' w='24px' />
           <Text
-            fontWeight='700'
+            fontWeight='500'
             textTransform='capitalize'
             fontSize='14px'
             ml='5px'
-            color='gray.500'
+            color='black.500'
           >
             0x6b92...94ef
           </Text>
         </Box>
         <Spacer />
-        <Badge w='auto' bg='yellow.500' px={3} py={1} borderRadius='sm'>
-          {category}
-        </Badge>
+        {category ? (
+          <Badge w='auto' bg='yellow.500' px={3} py={1} borderRadius='sm'>
+            {category}
+          </Badge>
+        ) : null}
       </Box>
-      <Box mt={3}>
-        <Heading fontSize='xl' textTransform='capitalize' fontWeight='500'>
+      <Box mt={4}>
+        <Heading
+          fontSize='lg'
+          textTransform='capitalize'
+          fontWeight='500'
+          noOfLines={2}
+        >
           {heading}
         </Heading>
-        <Text color='gray.500' mt={1} noOfLines={3}>
+        <Text color='gray.500' mt={3} noOfLines={3}>
           {body}
         </Text>
       </Box>
-      <Box mt={9} display='flex' alignItems='center'>
+    </Box>
+    <Box as='footer'>
+      <Box display='flex' alignItems='center' px={4} py={4}>
         <Text fontWeight='700' mr='7px' fontSize='12px'>
           5%
         </Text>
@@ -147,38 +164,63 @@ const AltCampaignCard = ({
           w='full'
         />
       </Box>
-    </Box>
-    <Box
-      position='absolute'
-      w='full'
-      bottom='0'
-      bgColor='gray.50'
-      borderTop='1px solid rgba(0, 0, 0, 0.06)'
-    >
-      <Box display='flex' alignItems='center' justifyContent='space-between'>
+      <Box
+        display='flex'
+        bgColor='gray.50'
+        borderTop='1px solid rgba(0, 0, 0, 0.06)'
+        alignItems='center'
+        justifyContent='space-between'
+      >
         <Box
           display='flex'
           alignItems='center'
           flex='1'
           p={2}
+          height='52px'
           borderRight='1px solid rgba(0, 0, 0, 0.06)'
         >
-          <Center backgroundColor='rgba(0, 0, 0, 6%)' borderRadius='md' p={2}>
-            <Image src='/pax.svg' height='20px' width='20px' alt='token' />
-          </Center>
-          <Text
-            as='span'
-            fontFamily='DM mono'
-            fontSize='xl'
-            fontWeight='500'
-            ml='2'
-          >
-            $4,698.89
-          </Text>
-          <Text as='span' fontSize='14px' ml='1'>
-            {' '}
-            of 1.2M raised
-          </Text>
+          {raised !== '0' ? (
+            <>
+              <Center
+                backgroundColor='rgba(0, 0, 0, 6%)'
+                borderRadius='md'
+                p={2}
+              >
+                <Image src='/pax.svg' height='20px' width='20px' alt='token' />
+              </Center>
+              <Text
+                as='span'
+                fontFamily='DM mono'
+                fontSize='xl'
+                fontWeight='500'
+                ml='2'
+              >
+                $4,698.89
+              </Text>
+              <Text as='span' fontSize='14px' ml='1'>
+                {' '}
+                of 1.2M raised
+              </Text>{' '}
+            </>
+          ) : (
+            <>
+              <Center
+                backgroundColor='rgba(0, 0, 0, 6%)'
+                borderRadius='md'
+                p={2}
+              >
+                <Image
+                  src='/logo-alt.svg'
+                  height='20px'
+                  width='20px'
+                  alt='token'
+                />
+              </Center>
+              <Text as='span' fontWeight='500' ml='2'>
+                Be the first!
+              </Text>
+            </>
+          )}
         </Box>
         <Box>
           <Center w='52px' cursor='pointer'>

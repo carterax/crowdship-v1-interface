@@ -34,6 +34,7 @@ import {
   NumberIncrementStepper,
   NumberDecrementStepper,
 } from '@chakra-ui/react';
+
 import Lottie from 'lottie-react';
 
 import { ChevronRightIcon, AddIcon, InfoOutlineIcon } from '@chakra-ui/icons';

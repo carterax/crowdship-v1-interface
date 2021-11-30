@@ -15,6 +15,14 @@ import {
   Spacer,
   Center,
 } from '@chakra-ui/react';
+import {
+  DribbbleLogo,
+  Cpu,
+  Bank,
+  Heartbeat,
+  Tree,
+  AirplaneTilt,
+} from 'phosphor-react';
 import { SearchIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import styled from 'styled-components';
 
@@ -128,32 +136,32 @@ const categoriesData = [
   {
     categoryTitle: 'Tech',
     categoryPath: '#',
-    iconPath: '/cpu.svg',
+    icon: <Cpu weight='duotone' size={40} />,
   },
   {
     categoryTitle: 'Sports',
     categoryPath: '#',
-    iconPath: '/dribbble-logo.svg',
+    icon: <DribbbleLogo weight='duotone' size={40} />,
   },
   {
     categoryTitle: 'Finance',
     categoryPath: '#',
-    iconPath: '/bank.svg',
+    icon: <Bank weight='duotone' size={40} />,
   },
   {
     categoryTitle: 'Health',
     categoryPath: '#',
-    iconPath: '/heartbeat.svg',
+    icon: <Heartbeat weight='duotone' size={40} />,
   },
   {
     categoryTitle: 'Agriculture',
     categoryPath: '#',
-    iconPath: '/tree.svg',
+    icon: <Tree weight='duotone' size={40} />,
   },
   {
     categoryTitle: 'Travel',
     categoryPath: '#',
-    iconPath: '/airplane-tilt.svg',
+    icon: <AirplaneTilt weight='duotone' size={40} />,
   },
 ];
 
@@ -261,11 +269,11 @@ const MyCrowdship: NextPage = () => {
           </Center>
           <SimpleGrid
             columns={[2, 3, categoriesData.length]}
-            spacing='100px'
+            spacing='50px'
             mt={10}
           >
             {categoriesData.map(
-              ({ categoryTitle, categoryPath, iconPath }, idx) => (
+              ({ categoryTitle, categoryPath, icon }, idx) => (
                 <Box
                   key={idx}
                   as='a'
@@ -276,11 +284,11 @@ const MyCrowdship: NextPage = () => {
                 >
                   <Center
                     bg='yellow.400'
-                    height='100px'
-                    width='100px'
+                    height='70px'
+                    width='70px'
                     borderRadius='2xl'
                   >
-                    <Image src={iconPath} alt='Tech' width='64' height='64' />
+                    {icon}
                   </Center>
                   <Text mt={3} fontFamily='DM mono' fontWeight='500'>
                     {categoryTitle}

@@ -1,4 +1,5 @@
 import { extendTheme } from '@chakra-ui/react';
+
 import { ButtonStyles as Button } from '@/theme/components/buttonStyles';
 import { InputStyles as Input } from '@/theme/components/inputStyles';
 import { alertStyles as Alert } from '@/theme/components/alertStyles';
