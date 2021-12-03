@@ -6,7 +6,6 @@ import {
   Heartbeat,
   Tree,
   AirplaneTilt,
-  CheckCircle,
 } from 'phosphor-react';
 
 export const CategoryIcon: FC<{

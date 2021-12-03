@@ -16,6 +16,7 @@ import {
   FormLabel,
   FormErrorMessage,
 } from '@chakra-ui/react';
+import Upload from 'rc-upload';
 import { ArrowBackIcon } from '@chakra-ui/icons';
 import { CheckCircle, Circle } from 'phosphor-react';
 
@@ -65,7 +66,13 @@ type formData = {
 const schema = yup
   .object({
     campaignName: yup.string().trim().required('Required'),
-    campaignDescription: yup.string().trim(),
+    campaignDescription: yup
+      .string()
+      .trim()
+      .when('campaignListing', {
+        is: (val: string) => 'public',
+        then: yup.string().required('Required'),
+      }),
     campaignCategory: yup.string().required('Required'),
     campaignListing: yup.string().required('Required'),
   })
@@ -80,6 +87,7 @@ const Launch: NextPage = () => {
     setError,
     clearErrors,
     getValues,
+    setValue,
     trigger,
     watch,
     control,
@@ -238,23 +246,151 @@ const Launch: NextPage = () => {
     },
   ];
 
+  const uploadProps = {
+    action: (data: any) => {
+      console.log(data);
+      return '';
+    },
+    multiple: false,
+    onStart(file: any) {
+      console.log('onStart', file, file.name);
+    },
+    onSuccess(ret: any) {
+      console.log('onSuccess', ret);
+    },
+    onError(err: any) {
+      console.log('onError', err);
+    },
+  };
+
   const steps = [
     {
-      content: () => (
+      header: (
         <Image src='/logo-single.svg' width='73' height='61' alt='Crowdship' />
+      ),
+      content: (
+        <Stack spacing={4} w={'full'} maxW={'3xl'} p={6}>
+          <RadioGroup
+            name='campaignListing'
+            control={control}
+            label={() => (
+              <>
+                Big decision, but <br /> you can change <br /> anytime.
+              </>
+            )}
+            options={listingOptions}
+            isRequired
+            columns={1}
+            spacing={5}
+            style={{
+              width: '100%',
+              borderWidth: '1px',
+              borderRadius: 'xl',
+              borderColor: 'blackAlpha.200',
+              color: 'blackAlpha.700',
+              height: '100px',
+              bg: 'white',
+              p: 4,
+              mb: 4,
+              transition: 'all ease-in 100ms',
+              _checked: {
+                bg: 'yellow.100',
+                borderColor: '',
+                border: '1px solid #F6E05E',
+              },
+            }}
+          />
+        </Stack>
       ),
       fields: ['campaignListing'],
     },
     {
-      content: () => (
+      header: (
         <Text fontWeight='500' fontFamily='DM Mono' fontSize='20px'>
           Step {activeStep + 1} of 3
         </Text>
       ),
+      content: (
+        <Box>
+          <Stack spacing={4} w={'full'} maxW={'lg'} p={6}>
+            <FormControl
+              pb='51px'
+              isInvalid={!!errors.campaignName?.message?.length}
+              isRequired
+            >
+              <FormLabel
+                htmlFor='campaignName'
+                color='black'
+                fontFamily='DM mono'
+                fontSize='24px'
+                lineHeight='120%'
+              >
+                Name your <br />
+                campaign
+              </FormLabel>
+              <Text color='gray.600' mb={3}>
+                Something memorable
+              </Text>
+              <Input
+                {...register('campaignName', {
+                  validate: (value) => {
+                    return !!value.trim();
+                  },
+                })}
+                id='campaignName'
+                variant='outline'
+                size='lg'
+                _placeholder={{ color: 'gray.500' }}
+                placeholder='e.g Air Fryer For Campers'
+              />
+              <FormErrorMessage>
+                {errors.campaignName?.message}
+              </FormErrorMessage>
+            </FormControl>
+            {watchAllFields.campaignListing === 'public' ? (
+              <FormControl
+                pb='51px'
+                isInvalid={!!errors.campaignDescription?.message?.length}
+                isRequired
+              >
+                <FormLabel
+                  htmlFor='campaignDescription'
+                  color='black'
+                  fontFamily='DM mono'
+                  fontSize='24px'
+                  lineHeight='120%'
+                >
+                  Tell us a <br />
+                  little bit more
+                </FormLabel>
+                <Text color='gray.600' mb={3}>
+                  In a few words describe your product
+                </Text>
+                <Textarea
+                  {...register('campaignDescription')}
+                  id='campaignDescription'
+                  variant='outline'
+                  size='lg'
+                  _placeholder={{ color: 'gray.500' }}
+                  placeholder='Here is a sample placeholder'
+                />
+                <FormErrorMessage>
+                  {errors.campaignDescription?.message}
+                </FormErrorMessage>
+              </FormControl>
+            ) : null}
+            <FormControl>
+              <Upload {...uploadProps}>
+                <Box>Upload</Box>
+              </Upload>
+            </FormControl>
+          </Stack>
+        </Box>
+      ),
       fields: ['campaignName'],
     },
     {
-      content: () => (
+      header: (
         <Text
           fontWeight='500'
           fontFamily='DM Mono'
@@ -264,173 +400,63 @@ const Launch: NextPage = () => {
           Cancel
         </Text>
       ),
+      content: (
+        <Stack spacing={4} w={'full'} maxW={'3xl'} p={6}>
+          <RadioGroup
+            name='campaignCategory'
+            control={control}
+            label={() => (
+              <>
+                How would you categorize <br /> your campaign?
+              </>
+            )}
+            options={categoryOptions}
+            isRequired
+            columns={[2, 3, 4]}
+            spacing={5}
+            style={{
+              borderRadius: 'xl',
+              color: 'blackAlpha.700',
+              width: '150px',
+              height: '150px',
+              bg: 'white',
+              border: 'none',
+              p: 4,
+              mb: 4,
+              transition: 'all ease-in 100ms',
+              boxShadow:
+                '0px 4px 6px -1px rgba(0, 0, 0, 0.1), 0px 2px 4px -1px rgba(0, 0, 0, 0.06)',
+              _hover: {
+                boxShadow:
+                  '0px 20px 25px -5px rgba(0, 0, 0, 0.1), 0px 10px 10px -5px rgba(0, 0, 0, 0.04)',
+              },
+              _checked: {
+                bg: 'yellow.100',
+                borderColor: '',
+                border: '1px solid #F6E05E',
+                boxShadow:
+                  '0px 4px 6px -1px rgba(0, 0, 0, 0.1), 0px 2px 4px -1px rgba(0, 0, 0, 0.06)',
+              },
+            }}
+          />
+        </Stack>
+      ),
       fields: ['campaignCategory'],
     },
   ];
 
-  const renderStep = () => {
-    switch (activeStep) {
-      case 0:
-        return (
-          <Stack spacing={4} w={'full'} maxW={'3xl'} p={6}>
-            <RadioGroup
-              name='campaignListing'
-              control={control}
-              label={() => (
-                <>
-                  Big decision, but <br /> you can change <br /> anytime.
-                </>
-              )}
-              options={listingOptions}
-              isRequired
-              columns={1}
-              spacing={5}
-              style={{
-                width: '100%',
-                borderWidth: '1px',
-                borderRadius: 'xl',
-                borderColor: 'blackAlpha.200',
-                color: 'blackAlpha.700',
-                height: '100px',
-                bg: 'white',
-                p: 4,
-                mb: 4,
-                transition: 'all ease-in 100ms',
-                _checked: {
-                  bg: 'yellow.100',
-                  borderColor: '',
-                  border: '1px solid #F6E05E',
-                },
-              }}
-            />
-          </Stack>
-        );
-      case 1:
-        return (
-          <Box>
-            <Stack spacing={4} w={'full'} maxW={'lg'} p={6}>
-              <FormControl
-                pb='51px'
-                isInvalid={!!errors.campaignName?.message?.length}
-                isRequired
-              >
-                <FormLabel
-                  htmlFor='campaignName'
-                  color='black'
-                  fontFamily='DM mono'
-                  fontSize='24px'
-                  lineHeight='120%'
-                >
-                  Name your <br />
-                  campaign
-                </FormLabel>
-                <Text color='gray.600' mb={3}>
-                  Something memorable
-                </Text>
-                <Input
-                  {...register('campaignName', {
-                    validate: (value) => {
-                      return !!value.trim();
-                    },
-                  })}
-                  id='campaignName'
-                  variant='outline'
-                  size='lg'
-                  _placeholder={{ color: 'gray.500' }}
-                  placeholder='e.g Air Fryer For Campers'
-                />
-                <FormErrorMessage>
-                  {errors.campaignName?.message}
-                </FormErrorMessage>
-              </FormControl>
-              {watchAllFields.campaignListing === 'public' ? (
-                <FormControl
-                  pb='51px'
-                  isInvalid={!!errors.campaignDescription?.message?.length}
-                  isRequired
-                >
-                  <FormLabel
-                    htmlFor='campaignDescription'
-                    color='black'
-                    fontFamily='DM mono'
-                    fontSize='24px'
-                    lineHeight='120%'
-                  >
-                    Tell us a <br />
-                    little bit more
-                  </FormLabel>
-                  <Text color='gray.600' mb={3}>
-                    In a few words describe your product
-                  </Text>
-                  <Textarea
-                    {...register('campaignDescription')}
-                    id='campaignDescription'
-                    variant='outline'
-                    size='lg'
-                    _placeholder={{ color: 'gray.500' }}
-                    placeholder='Here is a sample placeholder'
-                  />
-                  <FormErrorMessage>
-                    {errors.campaignDescription?.message}
-                  </FormErrorMessage>
-                </FormControl>
-              ) : null}
-            </Stack>
-          </Box>
-        );
-      case 2:
-        return (
-          <Stack spacing={4} w={'full'} maxW={'3xl'} p={6}>
-            <RadioGroup
-              name='campaignCategory'
-              control={control}
-              label={() => (
-                <>
-                  How would you categorize <br /> your campaign?
-                </>
-              )}
-              options={categoryOptions}
-              isRequired
-              columns={[2, 3, 4]}
-              spacing={5}
-              style={{
-                borderRadius: 'xl',
-                color: 'blackAlpha.700',
-                width: '150px',
-                height: '150px',
-                bg: 'white',
-                border: 'none',
-                p: 4,
-                mb: 4,
-                transition: 'all ease-in 100ms',
-                boxShadow:
-                  '0px 4px 6px -1px rgba(0, 0, 0, 0.1), 0px 2px 4px -1px rgba(0, 0, 0, 0.06)',
-                _hover: {
-                  boxShadow:
-                    '0px 20px 25px -5px rgba(0, 0, 0, 0.1), 0px 10px 10px -5px rgba(0, 0, 0, 0.04)',
-                },
-                _checked: {
-                  bg: 'yellow.100',
-                  borderColor: '',
-                  border: '1px solid #F6E05E',
-                  boxShadow:
-                    '0px 4px 6px -1px rgba(0, 0, 0, 0.1), 0px 2px 4px -1px rgba(0, 0, 0, 0.06)',
-                },
-              }}
-            />
-          </Stack>
-        );
-      default:
-        break;
-    }
-  };
-
   const nextStep = async () => {
-    if (activeStep !== steps.length - 1) {
-      const result = await trigger(steps[activeStep].fields as []);
-      if (result) setActiveStep(activeStep + 1);
+    const fields = steps[activeStep].fields;
 
-      console.log(getValues());
+    if (activeStep !== steps.length - 1) {
+      if (activeStep === 1 && watchAllFields.campaignListing === 'public') {
+        !fields.includes('campaignDescription')
+          ? fields.push('campaignDescription')
+          : fields.filter((x) => x !== 'campaignDescription');
+      }
+
+      const result = await trigger(fields as []);
+      if (result) setActiveStep(activeStep + 1);
     } else {
       goToCampaign();
     }
@@ -445,9 +471,11 @@ const Launch: NextPage = () => {
   };
 
   useEffect(() => {
-    const subscription = watch((value, { name, type }) =>
-      console.log(value, name, type)
-    );
+    const subscription = watch((value, { name, type }) => {
+      if (name === 'campaignListing' && value.campaignListing === 'private')
+        setValue('campaignDescription', '');
+    });
+
     return () => subscription.unsubscribe();
   }, [watch]);
 
@@ -480,9 +508,9 @@ const Launch: NextPage = () => {
           borderBottomColor='blackAlpha.400'
           zIndex='999'
         >
-          {steps.map(({ content }, idx) => (
+          {steps.map(({ header }, idx) => (
             <Content key={idx} index={idx} activeStep={activeStep}>
-              {content()}
+              {header}
             </Content>
           ))}
         </SimpleGrid>
@@ -490,7 +518,7 @@ const Launch: NextPage = () => {
           <Box display='flex' justifyContent='space-between'>
             <Box w='100%'>
               <form>
-                {renderStep()}
+                {steps[activeStep].content}
                 <Flex as='footer' maxW='sm' flexDir='column' width='100%' p={6}>
                   <Flex width='100%' justify='flex-start'>
                     <Button

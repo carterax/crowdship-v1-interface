@@ -1,0 +1,13 @@
+mutation CreateCampaign(
+  $name: String!
+  $description: String
+  $previewImage: String
+) {
+  createCampaign(
+    name: $name
+    description: $description
+    previewImage: $previewImage
+  ) {
+    id
+  }
+}

@@ -37,3 +37,8 @@ notes.txt
 
 # contract types
 /src/abis/types
+
+# graphql-let
+.cache
+*.graphql.d.ts
+*.graphqls.d.ts

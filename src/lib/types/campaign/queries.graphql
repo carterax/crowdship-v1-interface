@@ -1,0 +1,10 @@
+query Campaigns {
+  campaigns {
+    id
+    name
+    description
+    category
+    slug
+    previewImage
+  }
+}
