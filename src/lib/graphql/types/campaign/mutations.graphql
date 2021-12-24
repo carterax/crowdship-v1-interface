@@ -9,5 +9,10 @@ mutation CreateCampaign(
     previewImage: $previewImage
   ) {
     id
+    name
+    description
+    category
+    slug
+    previewImage
   }
 }

@@ -35,19 +35,17 @@ import {
   NumberDecrementStepper,
 } from '@chakra-ui/react';
 
-import Lottie from 'lottie-react';
-
 import { ChevronRightIcon, AddIcon, InfoOutlineIcon } from '@chakra-ui/icons';
 
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import { ModalDialog } from '@/components/ModalDialog';
-import { onboard, FACTORY } from '@/connectors';
+import { Loading } from '@/components/Loading';
+import { onboard, FACTORY } from '@/connectors/onboard';
 import { walletStore } from '@/stores';
 import { V1_CAMPAIGN_FACTORY_IMPLEMENTATION } from '@/constants/addresses';
-import Loading from '@/components/lottie/loading.json';
+import LoadingAnimation from '@/components/lottie/loading.json';
 
 type formData = {
   governance: string;
@@ -236,32 +234,11 @@ const Home: NextPage = () => {
         />
       </Head>
       <main>
-        <ModalDialog
-          isCentered
-          backgroundColor='transparent'
-          boxShadow='none'
-          closeOnEsc={false}
-          closeOnOverlayClick={false}
-          size='full'
-          onClose={null}
-          overlayBgColor='blackAlpha.800'
-          isOpen={isSubmitting}
-        >
-          <Box
-            minH='90vh'
-            display='flex'
-            alignItems='center'
-            justifyContent='center'
-            flexDirection='column'
-          >
-            <Box w='xs' mb={-5}>
-              <Lottie animationData={Loading} />
-            </Box>
-            <Box>
-              <Heading color='white'>Processing Transaction</Heading>
-            </Box>
-          </Box>
-        </ModalDialog>
+        <Loading
+          loading={isSubmitting}
+          loadingText='Processing Transaction...'
+          loadingAnimation={LoadingAnimation}
+        />
         <Flex color='white' minH={'100vh'}>
           <Box
             w='400px'

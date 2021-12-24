@@ -14,19 +14,30 @@ import {
   Input,
   Textarea,
   FormLabel,
+  Progress,
   FormErrorMessage,
 } from '@chakra-ui/react';
 import Upload from 'rc-upload';
+
 import { ArrowBackIcon } from '@chakra-ui/icons';
-import { CheckCircle, Circle } from 'phosphor-react';
+import { CheckCircle, Circle, CloudArrowUp } from 'phosphor-react';
 
 import { CampaignCard } from '@/components/CampaignCard';
 import { RadioGroup } from '@/components/RadioGroup';
 import { CategoryIcon } from '@/components/CategoryIcon';
+import { Loading } from '@/components/Loading';
+import LoadingAnimation from '@/components/lottie/loading.json';
 
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+
+import { gun } from '@/lib/gun';
+import { useCreateCampaignMutation } from '@/lib/graphql/types/campaign/mutations.graphql';
+import { authenticate } from '@/connectors/authenticate';
+
+import { CAMPAIGN_FACTORY } from '@/connectors/contracts';
+import { nanoid } from 'nanoid';
 
 const Content = ({
   index,
@@ -61,25 +72,25 @@ type formData = {
   campaignDescription: string;
   campaignCategory: string;
   campaignListing: string;
+  campaignPreview: string;
 };
 
 const schema = yup
   .object({
     campaignName: yup.string().trim().required('Required'),
-    campaignDescription: yup
-      .string()
-      .trim()
-      .when('campaignListing', {
-        is: (val: string) => 'public',
-        then: yup.string().required('Required'),
-      }),
+    campaignDescription: yup.string().trim(),
     campaignCategory: yup.string().required('Required'),
     campaignListing: yup.string().required('Required'),
+    campaignPreview: yup.string(),
   })
   .required();
 
 const Launch: NextPage = () => {
   const [activeStep, setActiveStep] = useState(0);
+  const [file, setFile] = useState({ file: {}, preview: '', name: '' });
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [createCampaignMutation, { data, loading, error }] =
+    useCreateCampaignMutation();
 
   const {
     register,
@@ -247,20 +258,246 @@ const Launch: NextPage = () => {
   ];
 
   const uploadProps = {
-    action: (data: any) => {
-      console.log(data);
+    action: () => {
       return '';
     },
     multiple: false,
+    accept: ['image/jpeg', 'image/png', 'image/gif'],
     onStart(file: any) {
-      console.log('onStart', file, file.name);
+      const isLt2M = file.size / 1024 / 1024 < 1;
+
+      if (isLt2M) {
+        setFile({ preview: URL.createObjectURL(file), name: file.name, file });
+        clearErrors('campaignPreview');
+      } else {
+        setError('campaignPreview', {
+          type: 'manual',
+          message: 'exceeded size limit',
+        });
+      }
     },
-    onSuccess(ret: any) {
-      console.log('onSuccess', ret);
+    onProgress({ percent }, file) {
+      setUploadProgress(percent);
     },
     onError(err: any) {
       console.log('onError', err);
     },
+  };
+
+  const stepContents = {
+    campaignCategory: (
+      <Stack spacing={4} w={'full'} maxW={'3xl'} p={6}>
+        <RadioGroup
+          name='campaignCategory'
+          control={control}
+          label={() => (
+            <>
+              How would you categorize <br /> your campaign?
+            </>
+          )}
+          options={categoryOptions}
+          isRequired
+          columns={[2, 3, 4]}
+          spacing={5}
+          style={{
+            borderRadius: 'xl',
+            color: 'blackAlpha.700',
+            width: '150px',
+            height: '150px',
+            bg: 'white',
+            border: 'none',
+            p: 4,
+            mb: 4,
+            boxShadow:
+              '0px 4px 6px -1px rgba(0, 0, 0, 0.1), 0px 2px 4px -1px rgba(0, 0, 0, 0.06)',
+            _hover: {
+              boxShadow:
+                '0px 20px 25px -5px rgba(0, 0, 0, 0.1), 0px 10px 10px -5px rgba(0, 0, 0, 0.04)',
+            },
+            _checked: {
+              bg: 'yellow.100',
+              borderColor: '',
+              border: '1px solid #F6E05E',
+              boxShadow:
+                '0px 4px 6px -1px rgba(0, 0, 0, 0.1), 0px 2px 4px -1px rgba(0, 0, 0, 0.06)',
+            },
+          }}
+        />
+      </Stack>
+    ),
+    campaignName: (
+      <Box>
+        <Stack spacing={4} w={'full'} maxW={'lg'} p={6}>
+          <FormControl
+            pb='51px'
+            isInvalid={!!errors.campaignName?.message?.length}
+            isRequired
+          >
+            <FormLabel
+              htmlFor='campaignName'
+              color='black'
+              fontFamily='DM mono'
+              fontSize='24px'
+              lineHeight='120%'
+            >
+              Name your <br />
+              campaign
+            </FormLabel>
+            <Text color='gray.600' mb={3}>
+              Something memorable
+            </Text>
+            <Input
+              {...register('campaignName', {
+                validate: (value) => {
+                  return !!value.trim();
+                },
+              })}
+              id='campaignName'
+              variant='outline'
+              size='lg'
+              _placeholder={{ color: 'gray.500' }}
+              placeholder='e.g Air Fryer For Campers'
+            />
+            <FormErrorMessage>{errors.campaignName?.message}</FormErrorMessage>
+          </FormControl>
+          <FormControl
+            pb='51px'
+            isInvalid={!!errors.campaignDescription?.message?.length}
+          >
+            <FormLabel
+              htmlFor='campaignDescription'
+              color='black'
+              fontFamily='DM mono'
+              fontSize='24px'
+              lineHeight='120%'
+            >
+              Tell us a <br />
+              little bit more
+            </FormLabel>
+            <Text color='gray.600' mb={3}>
+              In a few words describe your product
+            </Text>
+            <Textarea
+              {...register('campaignDescription')}
+              id='campaignDescription'
+              variant='outline'
+              size='lg'
+              _placeholder={{ color: 'gray.500' }}
+              placeholder='Here is a sample placeholder'
+            />
+            <FormErrorMessage>
+              {errors.campaignDescription?.message}
+            </FormErrorMessage>
+          </FormControl>
+          <FormControl isInvalid={!!errors.campaignPreview?.message?.length}>
+            <FormLabel
+              htmlFor=''
+              color='black'
+              fontFamily='DM mono'
+              fontSize='24px'
+              lineHeight='120%'
+            >
+              An image speaks <br /> louder than words
+            </FormLabel>
+            <Text color='gray.600' mb={3}>
+              Your image should be at least <code>1024 x 576</code> pixels and{' '}
+              <code>1MB</code> size max
+            </Text>
+            <Upload
+              {...uploadProps}
+              style={{
+                border: '2px dashed #E2E8F0',
+                borderRadius: '0.375rem',
+                height: '100px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding: '1rem',
+              }}
+            >
+              {!file.preview.length ? (
+                <Button
+                  background='transparent'
+                  _hover={{
+                    background: 'transparent',
+                  }}
+                  leftIcon={
+                    <CloudArrowUp size={48} weight='duotone' color='#FFD60A' />
+                  }
+                  variant='plain'
+                  size='sm'
+                >
+                  Preview Image
+                </Button>
+              ) : (
+                <Box display='flex' alignItems='center' w='full'>
+                  <Box m={2} display='flex'>
+                    <Image
+                      height='60px'
+                      width='60px'
+                      src={file.preview}
+                      alt='preview'
+                      objectFit='cover'
+                      className='rounded-lg'
+                    />
+                  </Box>
+                  {uploadProgress !== 100 ? (
+                    <Progress
+                      value={uploadProgress}
+                      w='full'
+                      colorScheme='green'
+                      borderRadius='4px'
+                      size='sm'
+                      m={2}
+                    />
+                  ) : (
+                    <Text m={2} noOfLines={1}>
+                      {file.name}
+                    </Text>
+                  )}
+                </Box>
+              )}
+            </Upload>
+            <FormErrorMessage>
+              {errors.campaignPreview?.message}
+            </FormErrorMessage>
+          </FormControl>
+        </Stack>
+      </Box>
+    ),
+    campaignListing: (
+      <Stack spacing={4} w={'full'} maxW={'3xl'} p={6}>
+        <RadioGroup
+          name='campaignListing'
+          control={control}
+          label={() => (
+            <>
+              Big decision, but <br /> you can change <br /> anytime.
+            </>
+          )}
+          options={listingOptions}
+          isRequired
+          columns={1}
+          spacing={5}
+          style={{
+            width: '100%',
+            borderWidth: '1px',
+            borderRadius: 'xl',
+            borderColor: 'blackAlpha.200',
+            color: 'blackAlpha.700',
+            height: '100px',
+            bg: 'white',
+            p: 4,
+            mb: 4,
+            _checked: {
+              bg: 'yellow.100',
+              borderColor: '',
+              border: '1px solid #F6E05E',
+            },
+          }}
+        />
+      </Stack>
+    ),
   };
 
   const steps = [
@@ -268,41 +505,8 @@ const Launch: NextPage = () => {
       header: (
         <Image src='/logo-single.svg' width='73' height='61' alt='Crowdship' />
       ),
-      content: (
-        <Stack spacing={4} w={'full'} maxW={'3xl'} p={6}>
-          <RadioGroup
-            name='campaignListing'
-            control={control}
-            label={() => (
-              <>
-                Big decision, but <br /> you can change <br /> anytime.
-              </>
-            )}
-            options={listingOptions}
-            isRequired
-            columns={1}
-            spacing={5}
-            style={{
-              width: '100%',
-              borderWidth: '1px',
-              borderRadius: 'xl',
-              borderColor: 'blackAlpha.200',
-              color: 'blackAlpha.700',
-              height: '100px',
-              bg: 'white',
-              p: 4,
-              mb: 4,
-              transition: 'all ease-in 100ms',
-              _checked: {
-                bg: 'yellow.100',
-                borderColor: '',
-                border: '1px solid #F6E05E',
-              },
-            }}
-          />
-        </Stack>
-      ),
-      fields: ['campaignListing'],
+      content: stepContents['campaignCategory'],
+      fields: ['campaignCategory'],
     },
     {
       header: (
@@ -310,83 +514,7 @@ const Launch: NextPage = () => {
           Step {activeStep + 1} of 3
         </Text>
       ),
-      content: (
-        <Box>
-          <Stack spacing={4} w={'full'} maxW={'lg'} p={6}>
-            <FormControl
-              pb='51px'
-              isInvalid={!!errors.campaignName?.message?.length}
-              isRequired
-            >
-              <FormLabel
-                htmlFor='campaignName'
-                color='black'
-                fontFamily='DM mono'
-                fontSize='24px'
-                lineHeight='120%'
-              >
-                Name your <br />
-                campaign
-              </FormLabel>
-              <Text color='gray.600' mb={3}>
-                Something memorable
-              </Text>
-              <Input
-                {...register('campaignName', {
-                  validate: (value) => {
-                    return !!value.trim();
-                  },
-                })}
-                id='campaignName'
-                variant='outline'
-                size='lg'
-                _placeholder={{ color: 'gray.500' }}
-                placeholder='e.g Air Fryer For Campers'
-              />
-              <FormErrorMessage>
-                {errors.campaignName?.message}
-              </FormErrorMessage>
-            </FormControl>
-            {watchAllFields.campaignListing === 'public' ? (
-              <FormControl
-                pb='51px'
-                isInvalid={!!errors.campaignDescription?.message?.length}
-                isRequired
-              >
-                <FormLabel
-                  htmlFor='campaignDescription'
-                  color='black'
-                  fontFamily='DM mono'
-                  fontSize='24px'
-                  lineHeight='120%'
-                >
-                  Tell us a <br />
-                  little bit more
-                </FormLabel>
-                <Text color='gray.600' mb={3}>
-                  In a few words describe your product
-                </Text>
-                <Textarea
-                  {...register('campaignDescription')}
-                  id='campaignDescription'
-                  variant='outline'
-                  size='lg'
-                  _placeholder={{ color: 'gray.500' }}
-                  placeholder='Here is a sample placeholder'
-                />
-                <FormErrorMessage>
-                  {errors.campaignDescription?.message}
-                </FormErrorMessage>
-              </FormControl>
-            ) : null}
-            <FormControl>
-              <Upload {...uploadProps}>
-                <Box>Upload</Box>
-              </Upload>
-            </FormControl>
-          </Stack>
-        </Box>
-      ),
+      content: stepContents['campaignName'],
       fields: ['campaignName'],
     },
     {
@@ -400,48 +528,8 @@ const Launch: NextPage = () => {
           Cancel
         </Text>
       ),
-      content: (
-        <Stack spacing={4} w={'full'} maxW={'3xl'} p={6}>
-          <RadioGroup
-            name='campaignCategory'
-            control={control}
-            label={() => (
-              <>
-                How would you categorize <br /> your campaign?
-              </>
-            )}
-            options={categoryOptions}
-            isRequired
-            columns={[2, 3, 4]}
-            spacing={5}
-            style={{
-              borderRadius: 'xl',
-              color: 'blackAlpha.700',
-              width: '150px',
-              height: '150px',
-              bg: 'white',
-              border: 'none',
-              p: 4,
-              mb: 4,
-              transition: 'all ease-in 100ms',
-              boxShadow:
-                '0px 4px 6px -1px rgba(0, 0, 0, 0.1), 0px 2px 4px -1px rgba(0, 0, 0, 0.06)',
-              _hover: {
-                boxShadow:
-                  '0px 20px 25px -5px rgba(0, 0, 0, 0.1), 0px 10px 10px -5px rgba(0, 0, 0, 0.04)',
-              },
-              _checked: {
-                bg: 'yellow.100',
-                borderColor: '',
-                border: '1px solid #F6E05E',
-                boxShadow:
-                  '0px 4px 6px -1px rgba(0, 0, 0, 0.1), 0px 2px 4px -1px rgba(0, 0, 0, 0.06)',
-              },
-            }}
-          />
-        </Stack>
-      ),
-      fields: ['campaignCategory'],
+      content: stepContents['campaignListing'],
+      fields: ['campaignListing'],
     },
   ];
 
@@ -449,7 +537,7 @@ const Launch: NextPage = () => {
     const fields = steps[activeStep].fields;
 
     if (activeStep !== steps.length - 1) {
-      if (activeStep === 1 && watchAllFields.campaignListing === 'public') {
+      if (activeStep === 2 && watchAllFields.campaignListing === 'public') {
         !fields.includes('campaignDescription')
           ? fields.push('campaignDescription')
           : fields.filter((x) => x !== 'campaignDescription');
@@ -458,7 +546,17 @@ const Launch: NextPage = () => {
       const result = await trigger(fields as []);
       if (result) setActiveStep(activeStep + 1);
     } else {
-      goToCampaign();
+      const result = await trigger();
+
+      if (result) {
+        const user = gun.user().recall({ sessionStorage: true }) as any;
+
+        if (user.is) {
+          const campaign = await launchCampaign(user);
+        } else {
+          await authenticate();
+        }
+      }
     }
   };
 
@@ -466,21 +564,46 @@ const Launch: NextPage = () => {
     console.log('Home');
   };
 
-  const goToCampaign = () => {
-    console.log('Campaign');
+  const launchCampaign = async (user: any) => {
+    const {
+      campaignName,
+      campaignDescription,
+      campaignCategory,
+      campaignListing,
+      campaignPreview,
+    } = watchAllFields;
+    const _id = nanoid();
+
+    await user.get('campaign').put({
+      _id,
+      name: campaignName,
+      description: campaignDescription,
+      category: campaignCategory,
+      listing: campaignListing,
+    });
   };
 
   useEffect(() => {
-    const subscription = watch((value, { name, type }) => {
-      if (name === 'campaignListing' && value.campaignListing === 'private')
-        setValue('campaignDescription', '');
-    });
+    const subscription = watch((value, { name, type }) => {});
 
     return () => subscription.unsubscribe();
   }, [watch]);
 
+  useEffect(
+    () => () => {
+      // Make sure to revoke the data uris to avoid memory leaks
+      URL.revokeObjectURL(file.preview);
+    },
+    [file]
+  );
+
   return (
     <>
+      <Loading
+        loading={loading}
+        loadingText='Launching Your Campaign'
+        loadingAnimation={LoadingAnimation}
+      />
       <Box
         _after={{
           content: `""`,
@@ -506,7 +629,6 @@ const Launch: NextPage = () => {
           height='71px'
           borderBottom='1px solid'
           borderBottomColor='blackAlpha.400'
-          zIndex='999'
         >
           {steps.map(({ header }, idx) => (
             <Content key={idx} index={idx} activeStep={activeStep}>
@@ -548,7 +670,7 @@ const Launch: NextPage = () => {
                       onClick={nextStep}
                     >
                       {activeStep === steps.length - 1
-                        ? 'Launch Campaign'
+                        ? 'Launch Campaigns'
                         : 'Next'}
                     </Button>
                   </Flex>
@@ -560,11 +682,11 @@ const Launch: NextPage = () => {
               top='120px'
               right='100px'
               display='flex'
-              zIndex='99'
               justifyContent='flex-end'
               w='50%'
             >
               <CampaignCard
+                image={file.preview}
                 heading={watchAllFields.campaignName}
                 body={watchAllFields.campaignDescription}
                 category={watchAllFields.campaignCategory}

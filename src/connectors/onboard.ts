@@ -38,23 +38,3 @@ export const onboard = Onboard({
     },
   },
 });
-
-export const CAMPAIGN_FACTORY = (address: string) => {
-  return new web3.eth.Contract(CampaignFactory as any, address);
-};
-
-export const CAMPAIGN = (address: string) => {
-  return new web3.eth.Contract(Campaign as any, address);
-};
-
-export const CAMPAIGN_REWARD = (address: string) => {
-  return new web3.eth.Contract(CampaignReward as any, address);
-};
-
-export const CAMPAIGN_REQUEST = (address: string) => {
-  return new web3.eth.Contract(CampaignRequest as any, address);
-};
-
-export const CAMPAIGN_VOTE = (address: string) => {
-  return new web3.eth.Contract(CampaignVote as any, address);
-};

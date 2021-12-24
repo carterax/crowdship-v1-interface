@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { ApolloServer } from 'apollo-server-micro';
 import Cors from 'micro-cors';
-import { schema } from '../../lib/schema';
+import { schema } from '@/lib/graphql/schema';
 
 const apolloServer = new ApolloServer({ schema });
 const cors = Cors();

@@ -8,7 +8,8 @@ import Avatar from 'boring-avatars';
 
 import { SearchModalDialog } from '@/components/SearchModalDialog';
 
-import { onboard } from '@/connectors';
+import { onboard } from '@/connectors/onboard';
+import { authenticate } from '@/connectors/authenticate';
 import { walletStore, globalStore } from '@/stores';
 import { generateSlicedAddress } from '@/utils/address';
 
@@ -52,14 +53,7 @@ export const Header = () => {
     },
   ];
 
-  const connectWallet = async () => {
-    try {
-      await onboard.walletSelect();
-      await onboard.walletCheck();
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const connectWallet = async () => await authenticate();
 
   const disconnectWallet = async () => {
     await onboard.walletReset();
@@ -73,6 +67,7 @@ export const Header = () => {
           <HStack spacing={8} alignItems={'center'}>
             <Box>
               <Image
+                onClick={disconnectWallet}
                 src={'/logo-light.svg'}
                 alt='crowdship logo'
                 width='150'

@@ -4,7 +4,6 @@ type walletStoreType = {
   address: string;
   balance: string;
   walletName: string;
-  provider: any;
 };
 
 type globalStoreType = {
@@ -22,7 +21,6 @@ export const initialState: {
     address: '',
     balance: '',
     walletName: '',
-    provider: {},
   },
 };
 

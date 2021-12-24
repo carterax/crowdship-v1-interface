@@ -15,17 +15,19 @@
     "jsx": "preserve",
     "baseUrl": ".",
     "paths": {
-      "@/abis/*": ["/src/abis/*"],
-      "@/components/*": ["/src/components/*"],
-      "@/connectors": ["/src/connectors/index.ts"],
-      "@/constants/*": ["/src/constants/*"],
-      "@/pages/*": ["/src/pages/*"],
-      "@/stores": ["/src/stores/index.ts"],
-      "@/styles/*": ["/src/styles/*"],
-      "@/utils/*": ["/src/utils/*"],
-      "@/theme/*": ["/src/theme/*"]
+      "@/abis/*": ["src/abis/*"],
+      "@/components/*": ["src/components/*"],
+      "@/connectors/*": ["src/connectors/*"],
+      "@/constants/*": ["src/constants/*"],
+      "@/pages/*": ["src/pages/*"],
+      "@/stores": ["src/stores/index.ts"],
+      "@/styles/*": ["src/styles/*"],
+      "@/utils/*": ["src/utils/*"],
+      "@/theme/*": ["src/theme/*"],
+      "@/lib/*": ["src/lib/*"],
+      "@/graphql-types": ["node_modules/@types/graphql-let/__generated__/__types__"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "graphql.d.ts"],
-  "exclude": ["node_modules", ".cache"],
+  "exclude": ["node_modules", ".cache", "orbitdb"],
 }

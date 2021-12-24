@@ -1,5 +1,0 @@
-# import "./types/user/user.graphqls"
-
-type Test {
-  test: Boolean
-}
