@@ -132,7 +132,14 @@ const AltCampaignCard = ({
         </Box>
         <Spacer />
         {category ? (
-          <Badge w='auto' bg='yellow.500' px={3} py={1} borderRadius='sm'>
+          <Badge
+            w='auto'
+            bg='yellow.500'
+            px={3}
+            py={1}
+            borderRadius='sm'
+            textTransform='uppercase'
+          >
             {category}
           </Badge>
         ) : null}

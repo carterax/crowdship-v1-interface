@@ -22,7 +22,18 @@ const signLogin = async (account: string) => {
 
 export const authenticate = async () => {
   try {
-    await onboard.walletSelect();
+    const previouslySelectedWallet =
+      window.localStorage.getItem('selectedWallet');
+
+    if (
+      previouslySelectedWallet != 'undefined' &&
+      previouslySelectedWallet !== null
+    ) {
+      await onboard.walletSelect(previouslySelectedWallet || '');
+    } else {
+      await onboard.walletSelect();
+    }
+
     await onboard.walletCheck();
 
     const { address } = onboard.getState();

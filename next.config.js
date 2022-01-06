@@ -1,5 +1,12 @@
 /** @type {import('next').NextConfig} */
 module.exports = {
+  env: {
+    campaignFactoryAddress: '',
+  },
+  images: {
+    domains: ['ipfs.io'],
+    formats: ['image/jpeg', 'image/png', 'image/gif'],
+  },
   reactStrictMode: true,
   webpack(config, options) {
     config.module.rules.push({

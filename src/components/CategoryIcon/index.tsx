@@ -6,6 +6,7 @@ import {
   Heartbeat,
   Tree,
   AirplaneTilt,
+  Planet,
 } from 'phosphor-react';
 
 export const CategoryIcon: FC<{
@@ -28,6 +29,7 @@ export const CategoryIcon: FC<{
       case 'travel':
         return <AirplaneTilt weight='duotone' size={size} color={color} />;
       default:
+        return <Planet weight='duotone' size={size} color={color} />;
         break;
     }
   };

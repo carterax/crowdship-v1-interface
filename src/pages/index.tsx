@@ -172,8 +172,15 @@ const Home: NextPage = () => {
       const { address } = onboard.getState();
 
       try {
+        const rules = [];
+        campaignRules.map((rule) => rules.push(rule.value));
+
         const tx = await FACTORY.methods
-          .createCampaignFactory(V1_CAMPAIGN_FACTORY_IMPLEMENTATION, governance)
+          .createCampaignFactory(
+            V1_CAMPAIGN_FACTORY_IMPLEMENTATION,
+            governance,
+            rules
+          )
           .send({ from: address });
 
         await FACTORY.events
@@ -181,7 +188,10 @@ const Home: NextPage = () => {
           .on('data', function (event: any) {
             Router.push(`/my-crowdship/${event.returnValues.campaignFactory}`);
           })
-          .on('error', (err: any) => setTransactionError(err.message));
+          .on('error', (err: any) => {
+            setTransactionError(err.message);
+            setIsSubmitting(false);
+          });
       } catch (error: any) {
         setTransactionError(error.message);
         setIsSubmitting(false);

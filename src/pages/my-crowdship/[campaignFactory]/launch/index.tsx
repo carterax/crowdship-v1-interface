@@ -14,30 +14,36 @@ import {
   Input,
   Textarea,
   FormLabel,
-  Progress,
   FormErrorMessage,
+  Alert,
+  AlertIcon,
+  AlertDescription,
+  CloseButton,
 } from '@chakra-ui/react';
-import Upload from 'rc-upload';
+import { nanoid } from 'nanoid';
+import { useForm } from 'react-hook-form';
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
+import slugify from 'slugify';
+import Router from 'next/router';
 
 import { ArrowBackIcon } from '@chakra-ui/icons';
-import { CheckCircle, Circle, CloudArrowUp } from 'phosphor-react';
+import { CheckCircle, Circle } from 'phosphor-react';
 
+import { FileUpload } from '@/components/FileUpload';
 import { CampaignCard } from '@/components/CampaignCard';
 import { RadioGroup } from '@/components/RadioGroup';
 import { CategoryIcon } from '@/components/CategoryIcon';
 import { Loading } from '@/components/Loading';
 import LoadingAnimation from '@/components/lottie/loading.json';
 
-import { useForm } from 'react-hook-form';
-import * as yup from 'yup';
-import { yupResolver } from '@hookform/resolvers/yup';
-
 import { gun } from '@/lib/gun';
-import { useCreateCampaignMutation } from '@/lib/graphql/types/campaign/mutations.graphql';
+import { uploadFile } from '@/lib/xhr/upload-file';
+import { onboard } from '@/connectors/onboard';
 import { authenticate } from '@/connectors/authenticate';
-
 import { CAMPAIGN_FACTORY } from '@/connectors/contracts';
-import { nanoid } from 'nanoid';
+
+import useCampaignFactoryAddress from '@/hooks/useCampaignFactoryAddress';
 
 const Content = ({
   index,
@@ -72,7 +78,6 @@ type formData = {
   campaignDescription: string;
   campaignCategory: string;
   campaignListing: string;
-  campaignPreview: string;
 };
 
 const schema = yup
@@ -81,16 +86,47 @@ const schema = yup
     campaignDescription: yup.string().trim(),
     campaignCategory: yup.string().required('Required'),
     campaignListing: yup.string().required('Required'),
-    campaignPreview: yup.string(),
   })
   .required();
 
+const categories = [
+  {
+    title: 'tech',
+    id: '1',
+  },
+  {
+    title: 'sports',
+    id: '2',
+  },
+  {
+    title: 'finance',
+    id: '3',
+  },
+  {
+    title: 'health',
+    id: '4',
+  },
+  {
+    title: 'agriculture',
+    id: '5',
+  },
+  {
+    title: 'travel',
+    id: '6',
+  },
+  {
+    title: 'others',
+    id: '0',
+  },
+];
+
 const Launch: NextPage = () => {
   const [activeStep, setActiveStep] = useState(0);
-  const [file, setFile] = useState({ file: {}, preview: '', name: '' });
-  const [uploadProgress, setUploadProgress] = useState(0);
-  const [createCampaignMutation, { data, loading, error }] =
-    useCreateCampaignMutation();
+  const [file, setFile] = useState([]);
+  const [filePreview, setFilePreview] = useState('');
+  const [isLaunchingCampaign, setIsLaunchingCampaign] = useState(false);
+  const [transactionError, setTransactionError] = useState('');
+  const campaignFactoryAddress = useCampaignFactoryAddress();
 
   const {
     register,
@@ -127,94 +163,27 @@ const Launch: NextPage = () => {
         ''
       )}
       <Box>{icon}</Box>
-      <Text fontSize='16px' fontFamily='DM mono'>
+      <Text fontSize='16px' fontFamily='DM mono' textTransform='capitalize'>
         {name}
       </Text>
     </Box>
   );
 
-  const categoryOptions = [
-    {
-      value: 'Tech',
+  const categoryOptions = [];
+
+  categories.map(({ id, title }) =>
+    categoryOptions.push({
+      value: id,
       content: renderCategoryContent(
-        'Tech',
+        title,
         <CategoryIcon
-          name='tech'
+          name={title}
           size={40}
-          color={
-            watchAllFields.campaignCategory == 'Tech' ? '#FFD60A' : undefined
-          }
+          color={watchAllFields.campaignCategory == id ? '#FFD60A' : undefined}
         />
       ),
-    },
-    {
-      value: 'Sports',
-      content: renderCategoryContent(
-        'Sports',
-        <CategoryIcon
-          name='sports'
-          size={40}
-          color={
-            watchAllFields.campaignCategory == 'Sports' ? '#FFD60A' : undefined
-          }
-        />
-      ),
-    },
-    {
-      value: 'Finance',
-      content: renderCategoryContent(
-        'Finance',
-        <CategoryIcon
-          name='finance'
-          size={40}
-          color={
-            watchAllFields.campaignCategory == 'Finance' ? '#FFD60A' : undefined
-          }
-        />
-      ),
-    },
-    {
-      value: 'Health',
-      content: renderCategoryContent(
-        'Health',
-        <CategoryIcon
-          name='health'
-          size={40}
-          color={
-            watchAllFields.campaignCategory == 'Health' ? '#FFD60A' : undefined
-          }
-        />
-      ),
-    },
-    {
-      value: 'Agriculture',
-      content: renderCategoryContent(
-        'Agriculture',
-        <CategoryIcon
-          name='agriculture'
-          size={40}
-          color={
-            watchAllFields.campaignCategory == 'Agriculture'
-              ? '#FFD60A'
-              : undefined
-          }
-        />
-      ),
-    },
-    {
-      value: 'Travel',
-      content: renderCategoryContent(
-        'Travel',
-        <CategoryIcon
-          name='travel'
-          size={40}
-          color={
-            watchAllFields.campaignCategory == 'Travel' ? '#FFD60A' : undefined
-          }
-        />
-      ),
-    },
-  ];
+    })
+  );
 
   const renderListingOptions = (
     name: string,
@@ -256,33 +225,6 @@ const Launch: NextPage = () => {
       ),
     },
   ];
-
-  const uploadProps = {
-    action: () => {
-      return '';
-    },
-    multiple: false,
-    accept: ['image/jpeg', 'image/png', 'image/gif'],
-    onStart(file: any) {
-      const isLt2M = file.size / 1024 / 1024 < 1;
-
-      if (isLt2M) {
-        setFile({ preview: URL.createObjectURL(file), name: file.name, file });
-        clearErrors('campaignPreview');
-      } else {
-        setError('campaignPreview', {
-          type: 'manual',
-          message: 'exceeded size limit',
-        });
-      }
-    },
-    onProgress({ percent }, file) {
-      setUploadProgress(percent);
-    },
-    onError(err: any) {
-      console.log('onError', err);
-    },
-  };
 
   const stepContents = {
     campaignCategory: (
@@ -389,7 +331,7 @@ const Launch: NextPage = () => {
               {errors.campaignDescription?.message}
             </FormErrorMessage>
           </FormControl>
-          <FormControl isInvalid={!!errors.campaignPreview?.message?.length}>
+          <FormControl>
             <FormLabel
               htmlFor=''
               color='black'
@@ -401,66 +343,20 @@ const Launch: NextPage = () => {
             </FormLabel>
             <Text color='gray.600' mb={3}>
               Your image should be at least <code>1024 x 576</code> pixels and{' '}
-              <code>1MB</code> size max
+              <code>2MB</code> size max
             </Text>
-            <Upload
-              {...uploadProps}
-              style={{
-                border: '2px dashed #E2E8F0',
-                borderRadius: '0.375rem',
-                height: '100px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                padding: '1rem',
+            <FileUpload
+              name='campaignPreview'
+              setFile={(files) => {
+                setFile(files);
+                if (files.length) {
+                  setFilePreview(URL.createObjectURL(files[0].file));
+                } else {
+                  setFilePreview('');
+                }
               }}
-            >
-              {!file.preview.length ? (
-                <Button
-                  background='transparent'
-                  _hover={{
-                    background: 'transparent',
-                  }}
-                  leftIcon={
-                    <CloudArrowUp size={48} weight='duotone' color='#FFD60A' />
-                  }
-                  variant='plain'
-                  size='sm'
-                >
-                  Preview Image
-                </Button>
-              ) : (
-                <Box display='flex' alignItems='center' w='full'>
-                  <Box m={2} display='flex'>
-                    <Image
-                      height='60px'
-                      width='60px'
-                      src={file.preview}
-                      alt='preview'
-                      objectFit='cover'
-                      className='rounded-lg'
-                    />
-                  </Box>
-                  {uploadProgress !== 100 ? (
-                    <Progress
-                      value={uploadProgress}
-                      w='full'
-                      colorScheme='green'
-                      borderRadius='4px'
-                      size='sm'
-                      m={2}
-                    />
-                  ) : (
-                    <Text m={2} noOfLines={1}>
-                      {file.name}
-                    </Text>
-                  )}
-                </Box>
-              )}
-            </Upload>
-            <FormErrorMessage>
-              {errors.campaignPreview?.message}
-            </FormErrorMessage>
+              file={file}
+            />
           </FormControl>
         </Stack>
       </Box>
@@ -552,9 +448,10 @@ const Launch: NextPage = () => {
         const user = gun.user().recall({ sessionStorage: true }) as any;
 
         if (user.is) {
-          const campaign = await launchCampaign(user);
+          await launchCampaign(user);
         } else {
           await authenticate();
+          await launchCampaign(user);
         }
       }
     }
@@ -570,17 +467,70 @@ const Launch: NextPage = () => {
       campaignDescription,
       campaignCategory,
       campaignListing,
-      campaignPreview,
     } = watchAllFields;
-    const _id = nanoid();
 
-    await user.get('campaign').put({
-      _id,
+    let cid = null;
+    const { address } = onboard.getState();
+
+    setIsLaunchingCampaign(true);
+
+    if (file.length) {
+      // store image to ipfs
+      const formData = new FormData();
+      formData.append('campaignPreview', file[0].file, file[0].file.name);
+
+      try {
+        cid = await uploadFile(formData, '/api/upload', 'POST');
+      } catch (error) {
+        setTransactionError(error.response);
+        setIsLaunchingCampaign(false);
+        return;
+      }
+    }
+
+    // save to gun db
+    const _id = nanoid();
+    const campaignSlug = slugify(campaignName, {
+      lower: true,
+      strict: true,
+      remove: /[*+~.()'"!:@]/g,
+    });
+
+    const campaign = user.get(_id).put({
       name: campaignName,
+      slug: campaignSlug,
       description: campaignDescription,
+      thumbnail: cid ? cid.response : '',
       category: campaignCategory,
       listing: campaignListing,
     });
+    gun.get('campaigns').set(campaign);
+
+    try {
+      // save to contract
+      const tx = await CAMPAIGN_FACTORY(campaignFactoryAddress as string)
+        .methods.createCampaign(
+          campaignCategory,
+          campaignListing === 'public' ? true : false,
+          _id
+        )
+        .send({ from: address });
+
+      await CAMPAIGN_FACTORY(campaignFactoryAddress as string)
+        .events.CampaignDeployed({}, { fromBlock: tx.blockNumber })
+        .on('data', function (event: any) {
+          Router.push(
+            `/my-crowdship/${campaignFactoryAddress}/campaigns/${event.returnValues.campaign}/${campaignSlug}`
+          );
+        })
+        .on('error', (err: any) => {
+          setTransactionError(err.message);
+          setIsLaunchingCampaign(false);
+        });
+    } catch (error) {
+      setTransactionError(error.message);
+      setIsLaunchingCampaign(false);
+    }
   };
 
   useEffect(() => {
@@ -592,7 +542,7 @@ const Launch: NextPage = () => {
   useEffect(
     () => () => {
       // Make sure to revoke the data uris to avoid memory leaks
-      URL.revokeObjectURL(file.preview);
+      URL.revokeObjectURL(filePreview);
     },
     [file]
   );
@@ -600,7 +550,7 @@ const Launch: NextPage = () => {
   return (
     <>
       <Loading
-        loading={loading}
+        loading={isLaunchingCampaign}
         loadingText='Launching Your Campaign'
         loadingAnimation={LoadingAnimation}
       />
@@ -629,6 +579,7 @@ const Launch: NextPage = () => {
           height='71px'
           borderBottom='1px solid'
           borderBottomColor='blackAlpha.400'
+          zIndex={3}
         >
           {steps.map(({ header }, idx) => (
             <Content key={idx} index={idx} activeStep={activeStep}>
@@ -640,6 +591,21 @@ const Launch: NextPage = () => {
           <Box display='flex' justifyContent='space-between'>
             <Box w='100%'>
               <form>
+                {transactionError && (
+                  <Stack spacing={4} w={'full'} maxW={'3xl'} p={6}>
+                    <Alert status='error' variant='solid' bg='red.500'>
+                      <AlertIcon />
+                      <AlertDescription>{transactionError}</AlertDescription>
+                      <CloseButton
+                        position='absolute'
+                        right='8px'
+                        top='8px'
+                        _focus={{ boxShadow: 'none' }}
+                        onClick={() => setTransactionError('')}
+                      />
+                    </Alert>
+                  </Stack>
+                )}
                 {steps[activeStep].content}
                 <Flex as='footer' maxW='sm' flexDir='column' width='100%' p={6}>
                   <Flex width='100%' justify='flex-start'>
@@ -686,10 +652,15 @@ const Launch: NextPage = () => {
               w='50%'
             >
               <CampaignCard
-                image={file.preview}
+                image={filePreview}
                 heading={watchAllFields.campaignName}
                 body={watchAllFields.campaignDescription}
-                category={watchAllFields.campaignCategory}
+                category={
+                  categories.filter(
+                    (category) =>
+                      category.id === watchAllFields.campaignCategory
+                  )[0]?.title
+                }
                 raised='0'
                 target=''
                 style={{

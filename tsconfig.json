@@ -25,9 +25,10 @@
       "@/utils/*": ["src/utils/*"],
       "@/theme/*": ["src/theme/*"],
       "@/lib/*": ["src/lib/*"],
+      "@/hooks/*": ["src/hooks/*"],
       "@/graphql-types": ["node_modules/@types/graphql-let/__generated__/__types__"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "graphql.d.ts"],
-  "exclude": ["node_modules", ".cache", "orbitdb"],
+  "exclude": ["node_modules", ".cache"],
 }
