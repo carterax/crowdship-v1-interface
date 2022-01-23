@@ -33,9 +33,14 @@ import {
   NumberInputStepper,
   NumberIncrementStepper,
   NumberDecrementStepper,
+  InputGroup,
+  InputRightElement,
+  Circle,
+  Divider,
 } from '@chakra-ui/react';
 
 import { ChevronRightIcon, AddIcon, InfoOutlineIcon } from '@chakra-ui/icons';
+import { ArrowCounterClockwise } from 'phosphor-react';
 
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
@@ -54,13 +59,36 @@ type formData = {
 const schema = yup
   .object({
     governance: yup.string().required('Required'),
+    governance: yup.string().required('Required'),
+    governance: yup.string().required('Required'),
   })
   .required();
+
+const campaignAddresses = [
+  {
+    key: 'rewardContractAddress',
+    title: 'Reward Contract Address',
+    description: 'Lorem Ipsum',
+    value: 'chehc',
+  },
+  {
+    key: 'requestContractAddress',
+    title: 'Request Contract Address',
+    description: 'Lorem Ipsum',
+    value: 'chehc',
+  },
+  {
+    key: 'voteContractAddress',
+    title: 'Vote Contract Address',
+    description: 'Lorem Ipsum',
+    value: 'chehc',
+  },
+];
 
 const campaignRules = [
   {
     key: 'defaultCommission',
-    title: 'Default commission',
+    title: 'Default commission (%)',
     description: 'Lorem Ipsum',
     value: 2,
   },
@@ -327,7 +355,51 @@ const Home: NextPage = () => {
                         <DrawerHeader fontFamily='DM mono'>
                           Advanced Settings
                         </DrawerHeader>
+                        <Divider />
                         <DrawerBody>
+                          {campaignAddresses.map(
+                            ({ key, title, value }, idx) => (
+                              <FormControl key={idx} mb='4' mt='4'>
+                                <FormLabel htmlFor={key} color='black'>
+                                  {title}
+                                </FormLabel>
+                                <InputGroup size='md'>
+                                  <Input
+                                    id={key}
+                                    variant='outlineAlt'
+                                    size='lg'
+                                    pr='3rem'
+                                    defaultValue={value}
+                                    _placeholder={{
+                                      color: 'gray.500',
+                                    }}
+                                    placeholder='0x0000000000000000000000000000000000000000'
+                                  />
+                                  <InputRightElement
+                                    width='3.3rem'
+                                    h='full'
+                                    onClick={() => {}}
+                                  >
+                                    <Circle
+                                      size='25px'
+                                      cursor='pointer'
+                                      bg='green.400'
+                                      color='white'
+                                    >
+                                      <ArrowCounterClockwise
+                                        color='white'
+                                        weight='duotone'
+                                      />
+                                    </Circle>
+                                  </InputRightElement>
+                                </InputGroup>
+
+                                <FormErrorMessage>
+                                  {errors.governance?.message}
+                                </FormErrorMessage>
+                              </FormControl>
+                            )
+                          )}
                           {campaignRules.map(
                             ({ key, title, value, description }) => (
                               <Box
@@ -335,7 +407,7 @@ const Home: NextPage = () => {
                                 display='flex'
                                 alignItems='center'
                                 justifyContent='space-between'
-                                padding={3}
+                                py={3}
                               >
                                 <Box textTransform='capitalize'>{title}</Box>
                                 <Box>

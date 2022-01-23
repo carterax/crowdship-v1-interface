@@ -47,6 +47,7 @@ const overrides = extendTheme({
     },
     green: {
       300: '#68D391',
+      400: '#48BB78',
     },
   },
   components: {

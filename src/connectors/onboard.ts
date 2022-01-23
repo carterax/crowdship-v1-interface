@@ -22,8 +22,7 @@ export let FACTORY: any;
 
 export const onboard = Onboard({
   dappId: DAPP_ID,
-  networkId: SupportedChainId.LOCALHOST,
-  networkName: 'development',
+  networkId: SupportedChainId.RINKEBY,
   subscriptions: {
     wallet: async (wallet: any) => {
       web3 = new Web3(wallet.provider);
