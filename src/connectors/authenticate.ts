@@ -1,4 +1,5 @@
 import { onboard, web3 } from '@/connectors/onboard';
+import { CAMPAIGN_FACTORY } from '@/connectors/contracts';
 import { gun } from '@/lib/gun';
 import { IGunCryptoKeyPair } from 'gun/types/types';
 import 'gun/sea';
@@ -20,7 +21,7 @@ const signLogin = async (account: string) => {
   }
 };
 
-export const authenticate = async () => {
+export const authenticate = async (campaignFactoryAddress = '') => {
   try {
     const previouslySelectedWallet =
       window.localStorage.getItem('selectedWallet');
@@ -37,6 +38,10 @@ export const authenticate = async () => {
     await onboard.walletCheck();
 
     const { address } = onboard.getState();
+
+    const userExists = await CAMPAIGN_FACTORY(campaignFactoryAddress)
+      .methods.userExists(address)
+      .call();
 
     const login = await signLogin(address);
 
@@ -66,7 +71,13 @@ export const authenticate = async () => {
 
     // console.log(login);
     // console.log(ack.sea);
-    // console.log(gun.user().recall({ sessionStorage: true }));
+    const isLoggedIn = gun.user().recall({ sessionStorage: true });
+
+    if (!userExists && isLoggedIn.is && campaignFactoryAddress.length) {
+      await CAMPAIGN_FACTORY(campaignFactoryAddress)
+        .methods.signUp(isLoggedIn.is.alias)
+        .send({ from: address });
+    }
   } catch (error) {
     console.log(error);
   }

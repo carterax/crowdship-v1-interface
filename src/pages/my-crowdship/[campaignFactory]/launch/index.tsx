@@ -450,7 +450,7 @@ const Launch: NextPage = () => {
         if (user.is) {
           await launchCampaign(user);
         } else {
-          await authenticate();
+          await authenticate(campaignFactoryAddress as string);
           await launchCampaign(user);
         }
       }

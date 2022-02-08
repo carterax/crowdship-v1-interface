@@ -1,9 +1,10 @@
 import type { NextPage } from 'next';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useReactiveVar } from '@apollo/client';
 import Router from 'next/router';
 import Head from 'next/head';
 import Web3 from 'web3';
+import { formatMoney } from 'accounting';
 import {
   Box,
   Flex,
@@ -15,6 +16,8 @@ import {
   FormLabel,
   Heading,
   Input,
+  NumberInput,
+  NumberInputField,
   Stack,
   FormErrorMessage,
   Alert,
@@ -24,28 +27,33 @@ import {
   useDisclosure,
   Drawer,
   DrawerBody,
+  DrawerFooter,
   DrawerHeader,
   DrawerOverlay,
   DrawerContent,
   DrawerCloseButton,
-  NumberInput,
-  NumberInputField,
-  NumberInputStepper,
-  NumberIncrementStepper,
-  NumberDecrementStepper,
+  Slider,
+  SliderTrack,
+  SliderFilledTrack,
+  SliderThumb,
   InputGroup,
   InputRightElement,
-  Circle,
+  InputLeftElement,
   Divider,
+  RangeSlider,
+  RangeSliderTrack,
+  RangeSliderFilledTrack,
+  RangeSliderThumb,
 } from '@chakra-ui/react';
 
 import { ChevronRightIcon, AddIcon, InfoOutlineIcon } from '@chakra-ui/icons';
-import { ArrowCounterClockwise } from 'phosphor-react';
+import { Lightning, ArrowCounterClockwise } from 'phosphor-react';
 
-import { useForm } from 'react-hook-form';
+import { useForm, useFieldArray } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
+import { authenticate } from '@/connectors/authenticate';
 import { Loading } from '@/components/Loading';
 import { onboard, FACTORY } from '@/connectors/onboard';
 import { walletStore } from '@/stores';
@@ -54,145 +62,190 @@ import LoadingAnimation from '@/components/lottie/loading.json';
 
 type formData = {
   governance: string;
+  campaignConfig: Array<{
+    key: string;
+    value: string | number | Array<number>;
+  }>;
 };
 
 const schema = yup
   .object({
     governance: yup.string().required('Required'),
-    governance: yup.string().required('Required'),
-    governance: yup.string().required('Required'),
+    campaignConfig: yup.array().of(
+      yup.object().shape({
+        value: yup.lazy((val) =>
+          Array.isArray(val) ? yup.array().of(yup.string()) : yup.string()
+        ),
+        key: yup.string(),
+      })
+    ),
   })
   .required();
 
-const campaignAddresses = [
-  {
-    key: 'rewardContractAddress',
-    title: 'Reward Contract Address',
-    description: 'Lorem Ipsum',
-    value: 'chehc',
-  },
-  {
-    key: 'requestContractAddress',
-    title: 'Request Contract Address',
-    description: 'Lorem Ipsum',
-    value: 'chehc',
-  },
-  {
-    key: 'voteContractAddress',
-    title: 'Vote Contract Address',
-    description: 'Lorem Ipsum',
-    value: 'chehc',
-  },
-];
-
-const campaignRules = [
-  {
-    key: 'defaultCommission',
-    title: 'Default commission (%)',
-    description: 'Lorem Ipsum',
-    value: 2,
-  },
-  {
-    key: 'deadlineStrikesAllowed',
-    title: 'Deadline extension threshold',
-    description: 'Lorem Ipsum',
-    value: 3,
-  },
-  {
-    key: 'minimumContributionAllowed',
-    title: 'Minimum contribution',
-    description: 'Lorem Ipsum',
-    value: 1,
-  },
-  {
-    key: 'maximumContributionAllowed',
-    title: 'Maximum contribution',
-    description: 'Lorem Ipsum',
-    value: 10000,
-  },
-  {
-    key: 'minimumRequestAmountAllowed',
-    title: 'Minimum request amount',
-    description: 'Lorem Ipsum',
-    value: 1000,
-  },
-  {
-    key: 'maximumRequestAmountAllowed',
-    title: 'Maximum request amount',
-    description: 'Lorem Ipsum',
-    value: 5000,
-  },
-  {
-    key: 'minimumCampaignTarget',
-    title: 'Minimum campaign target',
-    description: 'Lorem Ipsum',
-    value: 5000,
-  },
-  {
-    key: 'maximumCampaignTarget',
-    title: 'Maximum campaign target',
-    description: 'Lorem Ipsum',
-    value: 1000000,
-  },
-  {
-    key: 'maxDeadlineExtension',
-    title: 'Maximum deadline extension',
-    description: 'Lorem Ipsum',
-    value: 604800,
-  },
-  {
-    key: 'minDeadlineExtension',
-    title: 'Minimum deadline extension',
-    description: 'Lorem Ipsum',
-    value: 86400,
-  },
-  {
-    key: 'minRequestDuration',
-    title: 'Minimum request duration',
-    description: 'Lorem Ipsum',
-    value: 86400,
-  },
-  {
-    key: 'maxRequestDuration',
-    title: 'Maximum request duration',
-    description: 'Lorem Ipsum',
-    value: 604800,
-  },
-  {
-    key: 'reviewThresholdMark',
-    title: 'Review threshold',
-    description: 'Lorem Ipsum',
-    value: 80,
-  },
-  {
-    key: 'requestFinalizationThreshold',
-    title: 'Request finalization threshold',
-    description: 'Lorem Ipsum',
-    value: 51,
-  },
-  {
-    key: 'reportThresholdMark',
-    title: 'Report threshold',
-    description: 'Lorem Ipsum',
-    value: 51,
-  },
-];
-
 const Home: NextPage = () => {
+  const campaignConfigValues = [
+    {
+      key: 'campaignContractAddress',
+      value: process.env.campaignImplementationAddress,
+    },
+    {
+      key: 'requestContractAddress',
+      value: process.env.campaignRequestImplementationAddress,
+    },
+    {
+      key: 'voteContractAddress',
+      value: process.env.campaignVoteImplementationAddress,
+    },
+    {
+      key: 'rewardContractAddress',
+      value: process.env.campaignRewardImplementationAddress,
+    },
+    {
+      key: 'defaultCommission',
+      value: 2,
+    },
+    {
+      key: 'deadlineStrikesAllowed',
+      value: 3,
+    },
+    {
+      key: 'contributionAllowed',
+      value: [1, 100000],
+    },
+    {
+      key: 'requestAmountAllowed',
+      value: [1000, 50000],
+    },
+    {
+      key: 'campaignTarget',
+      value: [5000, 1000000],
+    },
+    {
+      key: 'deadlineExtension',
+      value: [1, 14],
+    },
+    {
+      key: 'requestDuration',
+      value: [1, 14],
+    },
+    {
+      key: 'reviewThresholdMark',
+      value: 80,
+    },
+    {
+      key: 'requestFinalizationThreshold',
+      value: 51,
+    },
+    {
+      key: 'reportThresholdMark',
+      value: 51,
+    },
+  ];
+
+  const campaignConfig = [
+    {
+      title: 'Campaign Contract Address',
+      description: 'Lorem Ipsum',
+      suffix: null,
+    },
+    {
+      title: 'Request Contract Address',
+      description: 'Lorem Ipsum',
+      suffix: null,
+    },
+    {
+      title: 'Vote Contract Address',
+      description: 'Lorem Ipsum',
+      suffix: null,
+    },
+    {
+      title: 'Reward Contract Address',
+      description: 'Lorem Ipsum',
+      suffix: null,
+    },
+    {
+      title: 'Default commission',
+      description: 'Lorem Ipsum',
+      suffix: '%',
+    },
+    {
+      title: 'Deadline extension threshold',
+      description: 'Lorem Ipsum',
+      suffix: null,
+    },
+    {
+      title: 'Contribution range',
+      description: 'Lorem Ipsum',
+      suffix: '$',
+    },
+    {
+      title: 'Request amount range',
+      description: 'Lorem Ipsum',
+      suffix: '$',
+    },
+    {
+      title: 'Campaign target range',
+      description: 'Lorem Ipsum',
+      suffix: '$',
+    },
+    {
+      title: 'Deadline extension range',
+      description: 'Lorem Ipsum',
+      suffix: 'secs',
+    },
+    {
+      title: 'Request duration range',
+      description: 'Lorem Ipsum',
+      suffix: 'secs',
+    },
+    {
+      title: 'Review threshold',
+      description: 'Lorem Ipsum',
+      suffix: '%',
+    },
+    {
+      title: 'Request finalization threshold',
+      description: 'Lorem Ipsum',
+      suffix: '%',
+    },
+    {
+      title: 'Report threshold',
+      description: 'Lorem Ipsum',
+      suffix: '%',
+    },
+  ];
+
+  const timeFields = ['deadlineExtension', 'requestDuration'];
+
   const { address } = useReactiveVar(walletStore);
   const [transactionError, setTransactionError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
+    watch,
+    control,
     register,
+    reset,
+    setValue,
     handleSubmit,
     setError,
     formState: { errors, isValid },
   } = useForm<formData>({
     resolver: yupResolver(schema),
+    defaultValues: {
+      campaignConfig: campaignConfigValues,
+    },
   });
 
-  const createDemo = async ({ governance }: formData) => {
+  const { fields } = useFieldArray({
+    control,
+    name: 'campaignConfig',
+    keyName: 'key',
+  });
+
+  const watchAllFields = watch();
+
+  const createDemo = async ({ governance, campaignConfig }: formData) => {
     const { isValid, message } = isValidAddress(governance);
 
     if (isValid) {
@@ -200,20 +253,39 @@ const Home: NextPage = () => {
       const { address } = onboard.getState();
 
       try {
-        const rules = [];
-        campaignRules.map((rule) => rules.push(rule.value));
+        const config = [];
+
+        campaignConfig.map(({ key, value }, idx) => {
+          if (idx > 3) {
+            if (timeFields.includes(key)) {
+              value[0] = value[0] * 86400;
+              value[1] = value[1] * 86400;
+            }
+
+            if (Array.isArray(value)) {
+              value.map((v) => config.push(Number(v)));
+            } else {
+              config.push(Number(value));
+            }
+          }
+        });
 
         const tx = await FACTORY.methods
           .createCampaignFactory(
             V1_CAMPAIGN_FACTORY_IMPLEMENTATION,
+            campaignConfig[0].value,
+            campaignConfig[1].value,
+            campaignConfig[2].value,
+            campaignConfig[3].value,
             governance,
-            rules
+            config
           )
           .send({ from: address });
 
         await FACTORY.events
           .CampaignFactoryDeployed({}, { fromBlock: tx.blockNumber })
-          .on('data', function (event: any) {
+          .on('data', async function (event: any) {
+            await authenticate(event.returnValues.campaignFactory);
             Router.push(`/my-crowdship/${event.returnValues.campaignFactory}`);
           })
           .on('error', (err: any) => {
@@ -261,6 +333,12 @@ const Home: NextPage = () => {
   const disconnectWallet = () => {
     onboard.walletReset();
   };
+
+  useEffect(() => {
+    const subscription = watch((value, { name, type }) => {});
+
+    return () => subscription.unsubscribe();
+  }, [watch]);
 
   return (
     <>
@@ -347,86 +425,229 @@ const Home: NextPage = () => {
                       isOpen={isOpen}
                       onClose={onClose}
                       placement='left'
-                      size='sm'
+                      size='lg'
                     >
                       <DrawerOverlay />
                       <DrawerContent>
-                        <DrawerCloseButton />
+                        <DrawerCloseButton top='16px' />
                         <DrawerHeader fontFamily='DM mono'>
                           Advanced Settings
                         </DrawerHeader>
                         <Divider />
                         <DrawerBody>
-                          {campaignAddresses.map(
-                            ({ key, title, value }, idx) => (
-                              <FormControl key={idx} mb='4' mt='4'>
-                                <FormLabel htmlFor={key} color='black'>
-                                  {title}
-                                </FormLabel>
-                                <InputGroup size='md'>
-                                  <Input
-                                    id={key}
-                                    variant='outlineAlt'
-                                    size='lg'
-                                    pr='3rem'
-                                    defaultValue={value}
-                                    _placeholder={{
-                                      color: 'gray.500',
-                                    }}
-                                    placeholder='0x0000000000000000000000000000000000000000'
-                                  />
-                                  <InputRightElement
-                                    width='3.3rem'
-                                    h='full'
-                                    onClick={() => {}}
-                                  >
-                                    <Circle
-                                      size='25px'
-                                      cursor='pointer'
-                                      bg='green.400'
-                                      color='white'
-                                    >
-                                      <ArrowCounterClockwise
-                                        color='white'
-                                        weight='duotone'
-                                      />
-                                    </Circle>
-                                  </InputRightElement>
-                                </InputGroup>
+                          {fields.map((field, idx) => {
+                            const renderConfigField = (index) => (
+                              <InputGroup size='md'>
+                                <NumberInput
+                                  value={
+                                    !timeFields.includes(field.key)
+                                      ? formatMoney(
+                                          watchAllFields.campaignConfig[idx]
+                                            .value[index],
+                                          {
+                                            symbol: '',
+                                            precision: 0,
+                                          }
+                                        )
+                                      : watchAllFields.campaignConfig[idx]
+                                          .value[index]
+                                  }
+                                  onChange={(value) => {
+                                    let currentValues =
+                                      watchAllFields.campaignConfig[idx].value;
 
-                                <FormErrorMessage>
-                                  {errors.governance?.message}
-                                </FormErrorMessage>
-                              </FormControl>
-                            )
-                          )}
-                          {campaignRules.map(
-                            ({ key, title, value, description }) => (
-                              <Box
-                                key={key}
-                                display='flex'
-                                alignItems='center'
-                                justifyContent='space-between'
-                                py={3}
-                              >
-                                <Box textTransform='capitalize'>{title}</Box>
-                                <Box>
-                                  <NumberInput
-                                    size='sm'
-                                    w='120px'
-                                    defaultValue={value}
-                                  >
-                                    <NumberInputField />
-                                    <NumberInputStepper>
-                                      <NumberIncrementStepper />
-                                      <NumberDecrementStepper />
-                                    </NumberInputStepper>
-                                  </NumberInput>
-                                </Box>
-                              </Box>
-                            )
-                          )}
+                                    currentValues[index] = value;
+
+                                    setValue(
+                                      `campaignConfig.${idx}.value`,
+                                      currentValues
+                                    );
+                                  }}
+                                  variant='outlineAlt'
+                                  size='lg'
+                                >
+                                  <NumberInputField textAlign='center' />
+                                </NumberInput>
+                                {timeFields.includes(field.key) ? (
+                                  <InputRightElement h='full'>
+                                    <Text mr='6'>days</Text>
+                                  </InputRightElement>
+                                ) : (
+                                  <InputLeftElement h='full'>
+                                    <Text>$</Text>
+                                  </InputLeftElement>
+                                )}
+                              </InputGroup>
+                            );
+
+                            switch (typeof field.value) {
+                              case 'string':
+                                return (
+                                  <FormControl key={idx} py={2} mb={2}>
+                                    <FormLabel
+                                      htmlFor={`campaignConfig.${idx}`}
+                                      color='black'
+                                    >
+                                      {campaignConfig[idx].title}
+                                    </FormLabel>
+                                    <Input
+                                      key={field.key}
+                                      id={`campaignConfig.${idx}`}
+                                      {...register(
+                                        `campaignConfig.${idx}.value`
+                                      )}
+                                      variant='outlineAlt'
+                                      size='lg'
+                                      _placeholder={{
+                                        color: 'gray.500',
+                                      }}
+                                      placeholder='0x0000000000000000000000000000000000000000'
+                                    />
+                                  </FormControl>
+                                );
+                                break;
+
+                              case 'number':
+                                return (
+                                  <Box key={idx} py={2} mb={2}>
+                                    <Text
+                                      textTransform='capitalize'
+                                      fontWeight='500'
+                                      fontSize='1rem'
+                                      pb='1'
+                                    >
+                                      {campaignConfig[idx].title}
+                                    </Text>
+                                    <Box
+                                      display='flex'
+                                      justifyContent='space-between'
+                                    >
+                                      <Slider
+                                        flex='1'
+                                        focusThumbOnChange={false}
+                                        min={1}
+                                        max={100}
+                                        value={
+                                          watchAllFields.campaignConfig[idx]
+                                            .value as number
+                                        }
+                                        onChange={(e) => {
+                                          setValue(
+                                            `campaignConfig.${idx}.value`,
+                                            e
+                                          );
+                                        }}
+                                      >
+                                        <SliderTrack bg='green.100'>
+                                          <SliderFilledTrack bg='green.400' />
+                                        </SliderTrack>
+                                        <SliderThumb boxSize={7}>
+                                          <Lightning
+                                            size={16}
+                                            weight='duotone'
+                                            color='#48BB78'
+                                          />
+                                        </SliderThumb>
+                                      </Slider>
+                                      <InputGroup size='md' w='150px' ml='6'>
+                                        <NumberInput
+                                          value={`${watchAllFields.campaignConfig[idx].value}`}
+                                          variant='outlineAlt'
+                                          size='lg'
+                                          onChange={(val) => {
+                                            setValue(
+                                              `campaignConfig.${idx}.value`,
+                                              val
+                                            );
+                                          }}
+                                        >
+                                          <NumberInputField textAlign='center' />
+                                        </NumberInput>
+                                        {field.key !==
+                                        'deadlineStrikesAllowed' ? (
+                                          <InputRightElement h='full'>
+                                            <Text fontWeight='500'>%</Text>
+                                          </InputRightElement>
+                                        ) : null}
+                                      </InputGroup>
+                                    </Box>
+                                  </Box>
+                                );
+                                break;
+
+                              case 'object':
+                                return (
+                                  <Box key={idx} py={2} mb={2}>
+                                    <Text
+                                      textTransform='capitalize'
+                                      fontWeight='500'
+                                      fontSize='1rem'
+                                      pb='2'
+                                    >
+                                      {campaignConfig[idx].title}
+                                    </Text>
+                                    <Box display='flex'>
+                                      {renderConfigField(0)}
+                                      <RangeSlider
+                                        aria-label={['min', 'max']}
+                                        value={
+                                          watchAllFields.campaignConfig[idx]
+                                            .value as number[]
+                                        }
+                                        max={
+                                          timeFields.includes(field.key)
+                                            ? 31
+                                            : 3000000
+                                        }
+                                        min={1}
+                                        mx={6}
+                                        onChange={(e) => {
+                                          setValue(
+                                            `campaignConfig.${idx}.value`,
+                                            e
+                                          );
+                                        }}
+                                      >
+                                        <RangeSliderTrack bg='green.100'>
+                                          <RangeSliderFilledTrack bg='green.400' />
+                                        </RangeSliderTrack>
+                                        <RangeSliderThumb boxSize={7} index={0}>
+                                          <Lightning
+                                            size={16}
+                                            weight='duotone'
+                                            color='#48BB78'
+                                          />
+                                        </RangeSliderThumb>
+                                        <RangeSliderThumb boxSize={7} index={1}>
+                                          <Lightning
+                                            size={16}
+                                            weight='duotone'
+                                            color='#48BB78'
+                                          />
+                                        </RangeSliderThumb>
+                                      </RangeSlider>
+                                      {renderConfigField(1)}
+                                    </Box>
+                                  </Box>
+                                );
+                                break;
+
+                              default:
+                                break;
+                            }
+                          })}
                         </DrawerBody>
+                        <DrawerFooter>
+                          <Button
+                            onClick={() => reset()}
+                            variant='primary'
+                            isFullWidth
+                            size='lg'
+                            leftIcon={<ArrowCounterClockwise />}
+                          >
+                            Reset Values
+                          </Button>
+                        </DrawerFooter>
                       </DrawerContent>
                     </Drawer>
                     <Box display='flex' justifyContent='flex-end' mt={1}>
