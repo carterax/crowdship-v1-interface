@@ -12,7 +12,6 @@ module.exports = {
   },
   images: {
     domains: ['ipfs.io'],
-    formats: ['image/jpeg', 'image/png', 'image/gif'],
   },
   reactStrictMode: true,
   webpack(config, options) {
