@@ -71,7 +71,7 @@ export const authenticate = async (campaignFactoryAddress = '') => {
 
     // console.log(login);
     // console.log(ack.sea);
-    const isLoggedIn = gun.user().recall({ sessionStorage: true });
+    const isLoggedIn: any = gun.user().recall({ sessionStorage: true });
 
     if (!userExists && isLoggedIn.is && campaignFactoryAddress.length) {
       await CAMPAIGN_FACTORY(campaignFactoryAddress)
