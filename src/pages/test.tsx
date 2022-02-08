@@ -5,9 +5,9 @@ import {
   ViewerQuery,
   useViewerQuery,
   ViewerDocument,
-} from '@/lib/types/user/queries.graphql';
-import { useUpdateNameMutation } from '@/lib/types/user/mutations.graphql';
-import { initializeApollo } from '@/lib/apollo';
+} from '@/lib/graphql/types/user/queries.graphql';
+import { useUpdateNameMutation } from '@/lib/graphql/types/user/mutations.graphql';
+import { initializeApollo } from '@/lib/graphql/apollo';
 
 const Test = () => {
   const { viewer } = useViewerQuery().data!;
