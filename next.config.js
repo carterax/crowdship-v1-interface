@@ -1,14 +1,47 @@
 /** @type {import('next').NextConfig} */
 module.exports = {
   env: {
-    campaignFactoryAddress: '',
-    campaignImplementationAddress: '0x1D6e7a4d9faf971A3A47Dc74cdcC1C0C769700dE',
-    campaignRequestImplementationAddress:
-      '0xfFe06357756e156474378D3F2f32c72a7065CD1f',
-    campaignRewardImplementationAddress:
-      '0xD5A893dE91856DE51bF68A6104AaFa80f4E8C75e',
-    campaignVoteImplementationAddress:
-      '0x10c7897De25f2a2bEdc6590F6d5788B536c805F6',
+    ethereum: {
+      rpcurl: 'https://mainnet.infura.io/v3/acf6da770e604c3192b10bfdc30b296a',
+      factoryAddress: '',
+      campaignFactoryAddress: '',
+      campaignImplementationAddress: '',
+      campaignRequestImplementationAddress: '',
+      campaignRewardImplementationAddress: '',
+      campaignVoteImplementationAddress: '',
+    },
+    polygon: {
+      rpcurl:
+        'https://polygon-mainnet.infura.io/v3/acf6da770e604c3192b10bfdc30b296a',
+      factoryAddress: '',
+      campaignFactoryAddress: '',
+      campaignImplementationAddress: '',
+      campaignRequestImplementationAddress: '',
+      campaignRewardImplementationAddress: '',
+      campaignVoteImplementationAddress: '',
+    },
+    bsc: {
+      rpcUrl: 'https://bsc-dataseed1.ninicoin.io',
+      factoryAddress: '',
+      campaignFactoryAddress: '',
+      campaignImplementationAddress: '',
+      campaignRequestImplementationAddress: '',
+      campaignRewardImplementationAddress: '',
+      campaignVoteImplementationAddress: '',
+    },
+    rinkeby: {
+      rpcurl: 'https://rinkeby.infura.io/v3/acf6da770e604c3192b10bfdc30b296a',
+      factoryAddress: '',
+      campaignFactoryAddress: '',
+      campaignImplementationAddress:
+        '0x1D6e7a4d9faf971A3A47Dc74cdcC1C0C769700dE',
+      campaignRequestImplementationAddress:
+        '0xfFe06357756e156474378D3F2f32c72a7065CD1f',
+      campaignRewardImplementationAddress:
+        '0xD5A893dE91856DE51bF68A6104AaFa80f4E8C75e',
+      campaignVoteImplementationAddress:
+        '0x10c7897De25f2a2bEdc6590F6d5788B536c805F6',
+    },
   },
   images: {
     domains: ['ipfs.io'],

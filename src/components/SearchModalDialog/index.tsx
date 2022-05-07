@@ -1,6 +1,12 @@
 import Image from 'next/image';
-import { useReactiveVar } from '@apollo/client';
-import { useState, useRef, useCallback, KeyboardEvent, useMemo } from 'react';
+import {
+  useState,
+  useRef,
+  useCallback,
+  KeyboardEvent,
+  useMemo,
+  FC,
+} from 'react';
 import {
   Box,
   HStack,
@@ -18,12 +24,30 @@ import MultiRef from 'react-multi-ref';
 
 import { ModalDialog } from '@/components/ModalDialog';
 
-import { globalStore } from '@/stores';
+import { IModalDialog } from '@/types/common/modal-dialog';
 
-export const SearchModalDialog = () => {
+export interface ISearchModalDialog extends IModalDialog {
+  isOpen?: boolean;
+  placeholder?: string;
+  onOpen?: () => void;
+  onClose?: () => void;
+}
+
+export const initialProps: ISearchModalDialog = {
+  isOpen: false,
+  placeholder: 'Search Campaigns',
+  onOpen: () => {},
+  onClose: () => {},
+};
+
+export const SearchModalDialog: FC<ISearchModalDialog> = ({
+  isOpen,
+  placeholder,
+  onClose,
+  onOpen,
+}) => {
   const [query, setQuery] = useState('');
   const [openSearchTray, setOpenSearchTray] = useState(false);
-  const { openSearchDialog } = useReactiveVar(globalStore);
   const eventRef = useRef<'mouse' | 'keyboard' | null>(null);
   const [active, setActive] = useState(0);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -109,9 +133,6 @@ export const SearchModalDialog = () => {
     ];
   }, []);
 
-  const closeModal = () =>
-    globalStore({ ...globalStore(), openSearchDialog: false });
-
   useUpdateEffect(() => {
     setActive(0);
   }, [query]);
@@ -135,10 +156,10 @@ export const SearchModalDialog = () => {
     const hotkey = isMac ? 'metaKey' : 'ctrlKey';
     if (event?.key?.toLowerCase() === 'k' && event[hotkey]) {
       event.preventDefault();
-      if (openSearchDialog) {
-        globalStore({ ...globalStore(), openSearchDialog: false });
+      if (isOpen) {
+        onClose();
       } else {
-        globalStore({ ...globalStore(), openSearchDialog: true });
+        onOpen();
       }
     }
   });
@@ -162,7 +183,7 @@ export const SearchModalDialog = () => {
           break;
         }
         case 'Enter': {
-          closeModal();
+          onClose();
           break;
         }
         default:
@@ -182,9 +203,9 @@ export const SearchModalDialog = () => {
         closeOnOverlayClick
         blockScrollOnMount={true}
         size='2xl'
-        onClose={() => closeModal()}
+        onClose={onClose}
         overlayBgColor='blackAlpha.6s00'
-        isOpen={openSearchDialog}
+        isOpen={isOpen}
       >
         <Center>
           <Box
@@ -219,7 +240,7 @@ export const SearchModalDialog = () => {
                 <Input
                   id='search'
                   _placeholder={{ color: 'blackAlpha.900' }}
-                  placeholder='Search Campaigns'
+                  placeholder={placeholder}
                   fontSize='24px'
                   border='none'
                   _focus={{
@@ -261,7 +282,7 @@ export const SearchModalDialog = () => {
                           eventRef.current = 'mouse';
                         }}
                         ref={menuNodes.ref(idx)}
-                        onClick={() => closeModal()}
+                        onClick={onClose}
                         className='campaign-search-card'
                         borderRadius='lg'
                         cursor='pointer'

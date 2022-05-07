@@ -1,7 +1,7 @@
 export const uploadFile = (
-  data,
-  url,
-  method
+  data: any,
+  url: string,
+  method: string
 ): Promise<{ status: number; response: string }> => {
   const xhr = new XMLHttpRequest();
 

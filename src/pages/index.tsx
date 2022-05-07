@@ -1,9 +1,7 @@
 import type { NextPage } from 'next';
 import { useEffect, useState } from 'react';
-import { useReactiveVar } from '@apollo/client';
 import Router from 'next/router';
 import Head from 'next/head';
-import Web3 from 'web3';
 import { formatMoney } from 'accounting';
 import {
   Box,
@@ -45,6 +43,7 @@ import {
   RangeSliderFilledTrack,
   RangeSliderThumb,
 } from '@chakra-ui/react';
+import { isAddress } from '@ethersproject/address';
 
 import { ChevronRightIcon, AddIcon, InfoOutlineIcon } from '@chakra-ui/icons';
 import { Lightning, ArrowCounterClockwise } from 'phosphor-react';
@@ -53,12 +52,20 @@ import { useForm, useFieldArray } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import { authenticate } from '@/connectors/authenticate';
-import { Loading } from '@/components/Loading';
-import { onboard, FACTORY } from '@/connectors/onboard';
-import { walletStore } from '@/stores';
-import { V1_CAMPAIGN_FACTORY_IMPLEMENTATION } from '@/constants/addresses';
-import LoadingAnimation from '@/components/lottie/loading.json';
+import useGlobalState from '@/hooks/globalState';
+import {
+  useAuthenticate,
+  useAuthenticated,
+  useLogout,
+} from '@/hooks/web3Onboard';
+import { useFactory } from '@/hooks/contract';
+import { gun } from '@/lib/gun';
+
+import {
+  V1_FACTORY_ADDRESS,
+  V1_CAMPAIGN_FACTORY_IMPLEMENTATION,
+} from '@/constants/addresses';
+import { ReducerTypes } from '@/reducer';
 
 type formData = {
   governance: string;
@@ -217,9 +224,8 @@ const Home: NextPage = () => {
 
   const timeFields = ['deadlineExtension', 'requestDuration'];
 
-  const { address } = useReactiveVar(walletStore);
-  const [transactionError, setTransactionError] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [transactionError, setTransactionError] = useState<string>('');
+  const { state, dispatch } = useGlobalState();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
     watch,
@@ -237,6 +243,11 @@ const Home: NextPage = () => {
     },
   });
 
+  const [authenticate, authenticating] = useAuthenticate();
+  const logout = useLogout();
+  const isLoggedIn = useAuthenticated();
+  const factory = useFactory(V1_FACTORY_ADDRESS);
+
   const { fields } = useFieldArray({
     control,
     name: 'campaignConfig',
@@ -245,14 +256,25 @@ const Home: NextPage = () => {
 
   const watchAllFields = watch();
 
+  const isSubmitting = (isLoading: boolean) => {
+    dispatch({
+      type: ReducerTypes.SET_LOADING,
+      payload: {
+        loading: {
+          isLoading,
+          loadingText: 'Processing...',
+        },
+      },
+    });
+  };
+
   const createDemo = async ({ governance, campaignConfig }: formData) => {
     const { isValid, message } = isValidAddress(governance);
 
     if (isValid) {
-      setIsSubmitting(true);
-      const { address } = onboard.getState();
+      isSubmitting(true);
 
-      try {
+      if (isLoggedIn) {
         const config = [];
 
         campaignConfig.map(({ key, value }, idx) => {
@@ -270,35 +292,30 @@ const Home: NextPage = () => {
           }
         });
 
-        const tx = await FACTORY.methods
+        (await factory)
           .createCampaignFactory(
             V1_CAMPAIGN_FACTORY_IMPLEMENTATION,
-            campaignConfig[0].value,
-            campaignConfig[1].value,
-            campaignConfig[2].value,
-            campaignConfig[3].value,
+            campaignConfig[0].value as string,
+            campaignConfig[1].value as string,
+            campaignConfig[2].value as string,
+            campaignConfig[3].value as string,
             governance,
             config
           )
-          .send({ from: address });
-
-        await FACTORY.events
-          .CampaignFactoryDeployed({}, { fromBlock: tx.blockNumber })
-          .on('data', async function (event: any) {
-            await authenticate(event.returnValues.campaignFactory);
-            Router.push(`/my-crowdship/${event.returnValues.campaignFactory}`);
+          .then(async () => {
+            isSubmitting(false);
+            (await factory).on('CampaignFactoryDeployed', (campaignFactory) => {
+              Router.push(`/my-crowdship/${campaignFactory}`);
+            });
           })
-          .on('error', (err: any) => {
+          .catch((err) => {
             setTransactionError(err.message);
-            setIsSubmitting(false);
+            isSubmitting(false);
           });
-      } catch (error: any) {
-        setTransactionError(error.message);
-        setIsSubmitting(false);
       }
     } else {
       setError('governance', { type: 'manual', message });
-      setIsSubmitting(false);
+      isSubmitting(false);
     }
   };
 
@@ -307,31 +324,9 @@ const Home: NextPage = () => {
   ): { isValid: boolean; message: string } => {
     let res = { isValid: false, message: '' };
 
-    try {
-      Web3.utils.toChecksumAddress(address);
-      res.isValid = true;
-    } catch (error) {
-      res.isValid = false;
-      res.message = 'invalid ethereum address';
-    }
-    return res;
-  };
-
-  const connectWallet = async (e: any) => {
-    if (!address) {
-      e.preventDefault();
-      let error: any;
-      try {
-        await onboard.walletSelect();
-        await onboard.walletCheck();
-      } catch (error) {
-        error = error;
-      }
-    }
-  };
-
-  const disconnectWallet = () => {
-    onboard.walletReset();
+    return !isAddress(address)
+      ? { ...res, message: 'Invalid address' }
+      : { ...res, isValid: true };
   };
 
   useEffect(() => {
@@ -350,11 +345,6 @@ const Home: NextPage = () => {
         />
       </Head>
       <main>
-        <Loading
-          loading={isSubmitting}
-          loadingText='Processing Transaction...'
-          loadingAnimation={LoadingAnimation}
-        />
         <Flex color='white' minH={'100vh'}>
           <Box
             w='400px'
@@ -674,29 +664,31 @@ const Home: NextPage = () => {
                   </FormControl>
                   <Stack mt={4}>
                     <Button
-                      onClick={connectWallet}
-                      disabled={isSubmitting}
-                      type='submit'
-                      variant={address ? 'primary' : 'primaryAlt'}
+                      onClick={!isLoggedIn ? authenticate : undefined}
+                      disabled={state.loading.isLoading}
+                      type={isLoggedIn ? 'submit' : null}
+                      variant={isLoggedIn ? 'primary' : 'primaryAlt'}
+                      isLoading={authenticating}
+                      loadingText='Connecting...'
                       size='lg'
                       leftIcon={
-                        address ? (
+                        isLoggedIn ? (
                           <ChevronRightIcon />
                         ) : (
                           <AddIcon w={3.5} h={3.5} />
                         )
                       }
                     >
-                      {address ? 'Proceed' : 'Connect Wallet'}
+                      {isLoggedIn ? 'Proceed' : 'Connect Wallet'}
                     </Button>
                     <Center>
-                      {address ? (
+                      {isLoggedIn ? (
                         <Text
                           fontSize='sm'
                           color='blue.500'
                           textDecoration='underline'
                           cursor='pointer'
-                          onClick={disconnectWallet}
+                          onClick={logout}
                         >
                           Disconnect Wallet
                         </Text>

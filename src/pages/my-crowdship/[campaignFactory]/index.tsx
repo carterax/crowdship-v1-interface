@@ -29,8 +29,6 @@ import styled from 'styled-components';
 import { Hero } from '@/components/Hero';
 import { CampaignCard } from '@/components/CampaignCard';
 
-import { CAMPAIGN_FACTORY } from '@/connectors/contracts';
-
 const StyledMyCrowdship = styled.div``;
 
 type FeatureCardProps = {

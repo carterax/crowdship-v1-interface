@@ -28,22 +28,26 @@ import slugify from 'slugify';
 import Router from 'next/router';
 
 import { ArrowBackIcon } from '@chakra-ui/icons';
-import { CheckCircle, Circle } from 'phosphor-react';
+import { CheckCircle, Circle, XCircle } from 'phosphor-react';
 
 import { FileUpload } from '@/components/FileUpload';
 import { CampaignCard } from '@/components/CampaignCard';
 import { RadioGroup } from '@/components/RadioGroup';
 import { CategoryIcon } from '@/components/CategoryIcon';
-import { Loading } from '@/components/Loading';
-import LoadingAnimation from '@/components/lottie/loading.json';
+
+import useGlobalState from '@/hooks/globalState';
+import { ReducerTypes } from '@/reducer';
 
 import { gun } from '@/lib/gun';
 import { uploadFile } from '@/lib/xhr/upload-file';
-import { onboard } from '@/connectors/onboard';
-import { authenticate } from '@/connectors/authenticate';
-import { CAMPAIGN_FACTORY } from '@/connectors/contracts';
 
-import useCampaignFactoryAddress from '@/hooks/useCampaignFactoryAddress';
+import {
+  useAuthenticate,
+  useAuthenticated,
+  useAddress,
+} from '@/hooks/web3Onboard';
+import { useCampaignFactory } from '@/hooks/contract';
+import useCampaignFactoryAddress from '@/hooks/campaignFactoryAddress';
 
 const Content = ({
   index,
@@ -124,9 +128,20 @@ const Launch: NextPage = () => {
   const [activeStep, setActiveStep] = useState(0);
   const [file, setFile] = useState([]);
   const [filePreview, setFilePreview] = useState('');
-  const [isLaunchingCampaign, setIsLaunchingCampaign] = useState(false);
+  const [campaignForm, setCampaignForm] = useState({
+    isLoading: false,
+    launchButtonText: 'Launch',
+    loadingText: null,
+  });
   const [transactionError, setTransactionError] = useState('');
+
+  const { dispatch } = useGlobalState();
+
   const campaignFactoryAddress = useCampaignFactoryAddress();
+  const [authenticate, authenticating] = useAuthenticate();
+  const isLoggedIn = useAuthenticated();
+  const campaignFactory = useCampaignFactory(campaignFactoryAddress);
+  const address = useAddress();
 
   const {
     register,
@@ -429,6 +444,67 @@ const Launch: NextPage = () => {
     },
   ];
 
+  const toggleCreateProfileDrawer = (isOpen: boolean) => {
+    dispatch({
+      type: ReducerTypes.TOGGLE_CREATE_PROFILE_DRAWER,
+      payload: {
+        createProfileDrawer: {
+          isOpen,
+        },
+      },
+    });
+  };
+
+  const setProfileDrawerLoading = (loading: boolean) => {
+    dispatch({
+      type: ReducerTypes.PROFILE_DRAWER_LOADING,
+      payload: {
+        createProfileDrawer: {
+          loading,
+        },
+      },
+    });
+  };
+
+  const createProfile = async (user: any) => {
+    setProfileDrawerLoading(true);
+
+    (await campaignFactory)
+      .signUp(user.is.alias)
+      .then(() => {
+        dispatch({
+          type: ReducerTypes.TOGGLE_CREATE_PROFILE_DRAWER,
+          payload: {
+            createProfileDrawer: {
+              type: 'success',
+              isOpen: true,
+              title: 'Huzzah! Your profile was huge success.',
+              icon: <CheckCircle size={25} color='#FFFFFF' />,
+              showButton: false,
+            },
+          },
+        });
+      })
+      .catch((err: Error) => {
+        dispatch({
+          type: ReducerTypes.TOGGLE_CREATE_PROFILE_DRAWER,
+          payload: {
+            createProfileDrawer: {
+              type: 'error',
+              isOpen: true,
+              title: err.message,
+              icon: <XCircle color='#FFFFFF' size={25} />,
+              buttonText: 'Try again',
+              buttonAction: async () => createProfile(user),
+            },
+          },
+        });
+      })
+      .finally(() => {
+        setProfileDrawerLoading(false);
+      });
+  };
+
   const nextStep = async () => {
     const fields = steps[activeStep].fields;
 
@@ -444,15 +520,50 @@ const Launch: NextPage = () => {
     } else {
       const result = await trigger();
 
-      if (result) {
-        const user = gun.user().recall({ sessionStorage: true }) as any;
+      if (!result) return;
 
-        if (user.is) {
-          await launchCampaign(user);
+      try {
+        if (!isLoggedIn) await authenticate();
+
+        setCampaignForm({
+          ...campaignForm,
+          isLoading: true,
+          loadingText: 'Launching...',
+        });
+
+        if (!campaignFactory) throw new Error('Campaign factory not found');
+
+        const userExists: boolean = await (
+          await campaignFactory
+        ).userExists(address);
+
+        const user = gun.user().recall({ sessionStorage: true });
+
+        if (userExists) {
+          launchCampaign(user);
         } else {
-          await authenticate(campaignFactoryAddress as string);
-          await launchCampaign(user);
+          setCampaignForm({
+            ...campaignForm,
+            isLoading: false,
+          });
+
+          // ask user to create a profile
+          dispatch({
+            type: ReducerTypes.TOGGLE_CREATE_PROFILE_DRAWER,
+            payload: {
+              createProfileDrawer: {
+                isOpen: true,
+                buttonAction: async () => createProfile(user),
+              },
+            },
+          });
         }
+      } catch (error) {
+        console.log(error);
+        setCampaignForm({
+          ...campaignForm,
+          isLoading: false,
+        });
       }
     }
   };
@@ -470,9 +581,6 @@ const Launch: NextPage = () => {
     } = watchAllFields;
 
     let cid = null;
-    const { address } = onboard.getState();
-
-    setIsLaunchingCampaign(true);
 
     if (file.length) {
       // store image to ipfs
@@ -483,7 +591,10 @@ const Launch: NextPage = () => {
         cid = await uploadFile(formData, '/api/upload', 'POST');
       } catch (error) {
         setTransactionError(error.response);
-        setIsLaunchingCampaign(false);
+        setCampaignForm({
+          ...campaignForm,
+          isLoading: false,
+        });
         return;
       }
     }
@@ -497,6 +608,7 @@ const Launch: NextPage = () => {
     });
 
     const campaign = user.get(_id).put({
+      uuid: _id,
       name: campaignName,
       slug: campaignSlug,
       description: campaignDescription,
@@ -508,28 +620,23 @@ const Launch: NextPage = () => {
 
     try {
       // save to contract
-      const tx = await CAMPAIGN_FACTORY(campaignFactoryAddress as string)
-        .methods.createCampaign(
-          campaignCategory,
-          campaignListing === 'public' ? true : false,
-          _id
-        )
-        .send({ from: address });
+      (await campaignFactory).createCampaign(
+        campaignCategory,
+        campaignListing === 'public' ? true : false,
+        _id
+      );
 
-      await CAMPAIGN_FACTORY(campaignFactoryAddress as string)
-        .events.CampaignDeployed({}, { fromBlock: tx.blockNumber })
-        .on('data', function (event: any) {
-          Router.push(
-            `/my-crowdship/${campaignFactoryAddress}/campaigns/${event.returnValues.campaign}/${campaignSlug}`
-          );
-        })
-        .on('error', (err: any) => {
-          setTransactionError(err.message);
-          setIsLaunchingCampaign(false);
-        });
+      (await campaignFactory).on('CampaignDeployed', (campaign) => {
+        Router.push(
+          `/my-crowdship/${campaignFactoryAddress}/campaign/${campaign}/${campaignSlug}`
+        );
+      });
     } catch (error) {
-      setTransactionError(error.message);
-      setIsLaunchingCampaign(false);
+      setTransactionError(error);
+      setCampaignForm({
+        ...campaignForm,
+        isLoading: false,
+      });
     }
   };
 
@@ -547,13 +654,16 @@ const Launch: NextPage = () => {
     [file]
   );
 
+  useEffect(() => {
+    setCampaignForm({
+      ...campaignForm,
+      isLoading: authenticating,
+      loadingText: 'Connecting...',
+    });
+  }, [authenticating]);
+
   return (
     <>
-      <Loading
-        loading={isLaunchingCampaign}
-        loadingText='Launching Your Campaign'
-        loadingAnimation={LoadingAnimation}
-      />
       <Box
         _after={{
           content: `""`,
@@ -633,10 +743,12 @@ const Launch: NextPage = () => {
                       variant='secondary'
                       fontWeight='500'
                       width='100%'
+                      isLoading={campaignForm.isLoading}
+                      loadingText={campaignForm.loadingText}
                       onClick={nextStep}
                     >
                       {activeStep === steps.length - 1
-                        ? 'Launch Campaigns'
+                        ? campaignForm.launchButtonText
                         : 'Next'}
                     </Button>
                   </Flex>

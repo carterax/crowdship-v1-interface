@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { FC } from 'react';
 import {
   Modal,
   ModalOverlay,
@@ -7,13 +7,9 @@ import {
   ModalCloseButton,
 } from '@chakra-ui/react';
 
-// export const closeModal = () =>
-//   globalStore({ ...globalStore(), openModal: false });
+import { IModalDialog } from '@/types/common/modal-dialog';
 
-// export const openModal = () =>
-//   globalStore({ ...globalStore(), openModal: true });
-
-export const ModalDialog = ({
+export const ModalDialog: FC<IModalDialog> = ({
   children,
   size,
   showCloseButton,
@@ -25,7 +21,7 @@ export const ModalDialog = ({
   overlayBgColor,
   blockScrollOnMount,
   ...rest
-}: any) => {
+}) => {
   return (
     <>
       <Modal

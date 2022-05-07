@@ -1,8 +1,0 @@
-# import Partial from './partial.graphql'
-
-query Viewer {
-  viewer {
-    ...Partial
-    status
-  }
-}

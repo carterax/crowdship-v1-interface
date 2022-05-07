@@ -1,17 +1,19 @@
 import { ReactNode } from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
-import { useReactiveVar } from '@apollo/client';
 import { Box, Flex, HStack, Link, Button, Text, Kbd } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
 import Avatar from 'boring-avatars';
 
-import { SearchModalDialog } from '@/components/SearchModalDialog';
-
-import { onboard } from '@/connectors/onboard';
-import { authenticate } from '@/connectors/authenticate';
-import { walletStore, globalStore } from '@/stores';
+import {
+  useLogout,
+  useAuthenticate,
+  useAuthenticated,
+  useAddress,
+} from '@/hooks/web3Onboard';
 import { generateSlicedAddress } from '@/utils/address';
+import useGlobalState from '@/hooks/globalState';
+import { ReducerTypes } from '@/reducer';
 
 const NavLink = ({
   children,
@@ -38,7 +40,11 @@ const NavLink = ({
 );
 
 export const Header = () => {
-  const { address } = useReactiveVar(walletStore);
+  const address = useAddress();
+  const [authenticate, authenticating] = useAuthenticate();
+  const isLoggedIn = useAuthenticated();
+  const logout = useLogout();
+  const { dispatch } = useGlobalState();
 
   const { query } = useRouter();
 
@@ -53,21 +59,14 @@ export const Header = () => {
     },
   ];
 
-  const connectWallet = async () => await authenticate();
-
-  const disconnectWallet = async () => {
-    await onboard.walletReset();
-  };
-
   return (
     <>
-      <SearchModalDialog />
       <Box bg='transparent' px={6} py={4} position='absolute' w='full'>
         <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
           <HStack spacing={8} alignItems={'center'}>
             <Box>
               <Image
-                onClick={disconnectWallet}
+                onClick={logout}
                 src={'/logo-light.svg'}
                 alt='crowdship logo'
                 width='150'
@@ -98,7 +97,10 @@ export const Header = () => {
               size='lg'
               fontSize='md'
               onClick={() =>
-                globalStore({ ...globalStore(), openSearchDialog: true })
+                dispatch({
+                  type: ReducerTypes.TOGGLE_SEARCH_MODAL,
+                  payload: { searchModalDialog: { isOpen: true } },
+                })
               }
             >
               <Box
@@ -125,14 +127,14 @@ export const Header = () => {
               </Box>
             </Button>
             <Button
-              variant={address ? 'primary' : 'primaryAlt'}
+              variant={isLoggedIn ? 'primary' : 'primaryAlt'}
               ml={5}
               mr={4}
               size='lg'
               fontSize='md'
               borderRadius='3xl'
               leftIcon={
-                address ? (
+                isLoggedIn ? (
                   <Avatar
                     size={30}
                     name={address}
@@ -149,10 +151,14 @@ export const Header = () => {
                   <AddIcon w={3.5} h={3.5} />
                 )
               }
-              onClick={connectWallet}
+              loadingText='Connecting...'
+              isLoading={authenticating}
+              onClick={authenticate}
             >
               <Text as='span'>
-                {!address ? 'Connect Wallet' : generateSlicedAddress(address)}
+                {!isLoggedIn
+                  ? 'Connect Wallet'
+                  : generateSlicedAddress(address)}
               </Text>
             </Button>
           </Flex>

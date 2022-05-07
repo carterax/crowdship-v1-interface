@@ -1,39 +1,88 @@
-import Onboard from 'bnc-onboard';
-import Web3 from 'web3';
+import { init } from '@web3-onboard/react';
 
-import Factory from '@/abis/Factory.json';
-import CampaignFactory from '@/abis/CampaignFactory.json';
-import Campaign from '@/abis/Campaign.json';
-import CampaignReward from '@/abis/CampaignReward.json';
-import CampaignRequest from '@/abis/CampaignRequest.json';
-import CampaignVote from '@/abis/CampaignVote.json';
+import injectedModule from '@web3-onboard/injected-wallets';
+import coinbaseWalletModule from '@web3-onboard/coinbase';
+import walletConnectModule from '@web3-onboard/walletconnect';
+import fortmaticModule from '@web3-onboard/fortmatic';
+import portisModule from '@web3-onboard/portis';
+import gnosisModule from '@web3-onboard/gnosis';
 
-import { V1_FACTORY_ADDRESS } from '@/constants/addresses';
 import { SupportedChainId } from '@/constants/chains';
-import { walletStore } from '@/stores';
 
-const DAPP_ID = 'f103de9f-3220-41f0-97c1-9ed286b86fc2';
 const PORTIS_ID = 'b0c1514e-eb13-4102-be08-85b6f02a5f34';
 const FORTMATIC_KEY = 'pk_test_D1E1D4C8EC7B99EB';
 
-export let web3: any;
+const RINKEBY_RPC_URL = process.env.rinkeby.rpcUrl;
+const ETH_RPC_URL = process.env.ethereum.rpcUrl;
+const POLYGON_RPC_URL = process.env.polygon.rpcUrl;
+const BSC_RPC_URL = process.env.bsc.rpcUrl;
 
-export let FACTORY: any;
+const coinbaseWalletSdk = coinbaseWalletModule();
+const walletConnect = walletConnectModule();
+const fortmaticSdk = fortmaticModule({
+  apiKey: FORTMATIC_KEY,
+});
+const portisSdk = portisModule({
+  apiKey: PORTIS_ID,
+});
+const gnosis = gnosisModule();
+const injected = injectedModule();
 
-export const onboard = Onboard({
-  dappId: DAPP_ID,
-  networkId: SupportedChainId.RINKEBY,
-  subscriptions: {
-    wallet: async (wallet: any) => {
-      web3 = new Web3(wallet.provider);
-      FACTORY = new web3.eth.Contract(Factory as any, V1_FACTORY_ADDRESS);
-      window.localStorage.setItem('selectedWallet', wallet.name);
+const modules = [
+  injected,
+  coinbaseWalletSdk,
+  walletConnect,
+  fortmaticSdk,
+  portisSdk,
+  gnosis,
+];
+
+init({
+  wallets: modules,
+  accountCenter: {
+    desktop: {
+      enabled: false,
     },
-    address: async (address: string) => {
-      walletStore({ ...walletStore(), address });
+  },
+  chains: [
+    {
+      id: SupportedChainId.ETHEREUM as string,
+      token: 'ETH',
+      label: 'Ethereum',
+      rpcUrl: ETH_RPC_URL,
+      icon: '',
     },
-    balance: async (balance: string) => {
-      walletStore({ ...walletStore(), balance });
+    {
+      id: SupportedChainId.POLYGON as string,
+      token: 'MATIC',
+      label: 'Polygon',
+      rpcUrl: POLYGON_RPC_URL,
+      icon: '',
     },
+    {
+      id: SupportedChainId.BSC as string,
+      token: 'bnb',
+      label: 'Binance',
+      rpcUrl: BSC_RPC_URL,
+      icon: '',
+    },
+    {
+      id: SupportedChainId.RINKEBY as string,
+      token: 'rETH',
+      namespace: 'evm',
+      label: 'Rinkeby',
+      rpcUrl: RINKEBY_RPC_URL,
+      icon: '',
+    },
+  ],
+  appMetadata: {
+    name: 'Crowdship',
+    icon: 'https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg',
+    logo: 'https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg',
+    description: 'My app using Onboard',
+    recommendedInjectedWallets: [
+      { name: 'MetaMask', url: 'https://metamask.io' },
+      { name: 'Coinbase', url: 'https://wallet.coinbase.com/' },
+    ],
   },
 });

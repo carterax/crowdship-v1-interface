@@ -20,13 +20,14 @@
       "@/connectors/*": ["src/connectors/*"],
       "@/constants/*": ["src/constants/*"],
       "@/pages/*": ["src/pages/*"],
-      "@/stores": ["src/stores/index.ts"],
       "@/styles/*": ["src/styles/*"],
       "@/utils/*": ["src/utils/*"],
       "@/theme/*": ["src/theme/*"],
       "@/lib/*": ["src/lib/*"],
       "@/hooks/*": ["src/hooks/*"],
-      "@/graphql-types": ["node_modules/@types/graphql-let/__generated__/__types__"]
+      "@/context/*": ["src/context/*"],
+      "@/reducer": ["src/reducer/index.ts"],
+      "@/types/*": ["src/types/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "graphql.d.ts"],

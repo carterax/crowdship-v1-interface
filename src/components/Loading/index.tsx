@@ -1,14 +1,29 @@
-import { FC } from 'react';
+import { FC, useMemo } from 'react';
 import { Heading, Box } from '@chakra-ui/react';
 import Lottie from 'lottie-react';
 
 import { ModalDialog } from '@/components/ModalDialog';
+import LoadingAnimation from '@/components/lottie/loading.json';
 
-export const Loading: FC<{
-  loading: boolean;
-  loadingText: string;
-  loadingAnimation: object;
-}> = ({ loading, loadingText, loadingAnimation }) => {
+export interface ILoading {
+  isLoading?: boolean;
+  loadingText?: string;
+  loadingAnimation?: any;
+}
+
+export const initialProps: ILoading = {
+  isLoading: false,
+  loadingText: 'Loading...',
+  loadingAnimation: LoadingAnimation,
+};
+
+export const Loading: FC<ILoading> = ({
+  isLoading,
+  loadingText,
+  loadingAnimation,
+}) => {
+  const animation = useMemo(() => LoadingAnimation, []);
+
   return (
     <ModalDialog
       isCentered
@@ -19,7 +34,7 @@ export const Loading: FC<{
       size='full'
       onClose={null}
       overlayBgColor='blackAlpha.800'
-      isOpen={loading}
+      isOpen={isLoading}
     >
       <Box
         minH='90vh'
@@ -29,7 +44,9 @@ export const Loading: FC<{
         flexDirection='column'
       >
         <Box w='xs' mb={-5}>
-          <Lottie animationData={loadingAnimation} />
+          {/* {loadingAnimation && (
+            <Lottie animationData={animation} loop={true} autoPlay={true} />
+          )} */}
         </Box>
         <Box>
           <Heading color='white'>{loadingText}</Heading>
@@ -38,3 +55,5 @@ export const Loading: FC<{
     </ModalDialog>
   );
 };
+
+Loading.defaultProps = initialProps;
