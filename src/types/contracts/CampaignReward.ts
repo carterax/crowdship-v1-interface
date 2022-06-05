@@ -418,7 +418,7 @@ export interface CampaignReward extends BaseContract {
         value: BigNumber;
         deliveryDate: BigNumber;
         stock: BigNumber;
-        hashed: string;
+        hashedReward: string;
         exists: boolean;
         active: boolean;
       }
@@ -530,7 +530,7 @@ export interface CampaignReward extends BaseContract {
       value: BigNumber;
       deliveryDate: BigNumber;
       stock: BigNumber;
-      hashed: string;
+      hashedReward: string;
       exists: boolean;
       active: boolean;
     }
@@ -639,7 +639,7 @@ export interface CampaignReward extends BaseContract {
         value: BigNumber;
         deliveryDate: BigNumber;
         stock: BigNumber;
-        hashed: string;
+        hashedReward: string;
         exists: boolean;
         active: boolean;
       }

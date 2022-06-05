@@ -80,17 +80,17 @@ const socialLinks = [
   {
     name: 'Discord',
     link: '#',
-    iconPath: '/discord-icon.svg',
+    iconPath: '/images/discord-icon.svg',
   },
   {
     name: 'Github',
     link: '#',
-    iconPath: '/github-icon.svg',
+    iconPath: '/images/github-icon.svg',
   },
   {
     name: 'Reddit',
     link: '#',
-    iconPath: '/reddit-icon.svg',
+    iconPath: '/images/reddit-icon.svg',
   },
 ];
 
@@ -114,13 +114,13 @@ export const Footer = () => {
       <Box mt={40}>
         <Box display='flex' alignItems='center'>
           <Image
-            src='/logo-light.svg'
+            src='/images/logo-light.svg'
             width='181'
             height='48'
             alt='Crowdship Logo'
           />
           <Spacer />
-          <Box
+          {/* <Box
             display='flex'
             flexDirection='row'
             alignItems='center'
@@ -133,7 +133,7 @@ export const Footer = () => {
                 </Link>
               </Text>
             ))}
-          </Box>
+          </Box> */}
         </Box>
         <Box display='flex' alignItems='center' mt={5}>
           <Text color='gray.500'>

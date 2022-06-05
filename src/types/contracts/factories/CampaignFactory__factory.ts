@@ -19,21 +19,14 @@ const _abi = [
         name: "campaign",
         type: "address",
       },
-    ],
-    name: "CampaignActivation",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
       {
-        indexed: true,
-        internalType: "contract Campaign",
-        name: "campaign",
-        type: "address",
+        indexed: false,
+        internalType: "bool",
+        name: "active",
+        type: "bool",
       },
     ],
-    name: "CampaignApproval",
+    name: "CampaignActivation",
     type: "event",
   },
   {
@@ -110,8 +103,14 @@ const _abi = [
       {
         indexed: false,
         internalType: "bool",
-        name: "approved",
+        name: "privateCampaign",
         type: "bool",
+      },
+      {
+        indexed: false,
+        internalType: "string",
+        name: "hashedCampaignInfo",
+        type: "string",
       },
     ],
     name: "CampaignDeployed",
@@ -128,6 +127,25 @@ const _abi = [
       },
     ],
     name: "CampaignImplementationUpdated",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "contract Campaign",
+        name: "campaign",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "bool",
+        name: "privateCampaign",
+        type: "bool",
+      },
+    ],
+    name: "CampaignPrivacyChange",
     type: "event",
   },
   {
@@ -209,6 +227,12 @@ const _abi = [
         name: "title",
         type: "string",
       },
+      {
+        indexed: false,
+        internalType: "string",
+        name: "hashedCategory",
+        type: "string",
+      },
     ],
     name: "CategoryAdded",
     type: "event",
@@ -284,6 +308,12 @@ const _abi = [
         internalType: "bool",
         name: "approval",
         type: "bool",
+      },
+      {
+        indexed: false,
+        internalType: "string",
+        name: "hashedToken",
+        type: "string",
       },
     ],
     name: "TokenAdded",
@@ -367,6 +397,12 @@ const _abi = [
         internalType: "address",
         name: "userId",
         type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "string",
+        name: "hashedUser",
+        type: "string",
       },
     ],
     name: "UserAdded",
@@ -476,6 +512,11 @@ const _abi = [
       {
         internalType: "string",
         name: "title",
+        type: "string",
+      },
+      {
+        internalType: "string",
+        name: "hashedCategory",
         type: "string",
       },
       {
@@ -669,7 +710,7 @@ const _abi = [
       },
       {
         internalType: "bool",
-        name: "approved",
+        name: "privateCampaign",
         type: "bool",
       },
     ],
@@ -1288,7 +1329,7 @@ const _abi = [
       },
       {
         internalType: "bool",
-        name: "_approved",
+        name: "_privateCampaign",
         type: "bool",
       },
       {
@@ -1310,7 +1351,7 @@ const _abi = [
         type: "address",
       },
     ],
-    name: "activateCampaign",
+    name: "toggleCampaignActivation",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -1323,7 +1364,7 @@ const _abi = [
         type: "address",
       },
     ],
-    name: "approveCampaign",
+    name: "toggleCampaignPrivacy",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -1356,6 +1397,11 @@ const _abi = [
       {
         internalType: "string",
         name: "_title",
+        type: "string",
+      },
+      {
+        internalType: "string",
+        name: "_hashedCategory",
         type: "string",
       },
     ],

@@ -1,710 +1,316 @@
 import type { NextPage } from 'next';
-import { useEffect, useState } from 'react';
-import Router from 'next/router';
+import { ReactNode } from 'react';
+import Image from 'next/image';
 import Head from 'next/head';
-import { formatMoney } from 'accounting';
 import {
+  Input,
+  InputGroup,
+  InputLeftElement,
+  Container,
+  SimpleGrid,
   Box,
   Flex,
-  Center,
   Text,
-  Spacer,
-  Button,
-  FormControl,
-  FormLabel,
   Heading,
-  Input,
-  NumberInput,
-  NumberInputField,
-  Stack,
-  FormErrorMessage,
-  Alert,
-  AlertIcon,
-  AlertDescription,
-  CloseButton,
-  useDisclosure,
-  Drawer,
-  DrawerBody,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerOverlay,
-  DrawerContent,
-  DrawerCloseButton,
-  Slider,
-  SliderTrack,
-  SliderFilledTrack,
-  SliderThumb,
-  InputGroup,
-  InputRightElement,
-  InputLeftElement,
-  Divider,
-  RangeSlider,
-  RangeSliderTrack,
-  RangeSliderFilledTrack,
-  RangeSliderThumb,
+  Spacer,
+  Center,
 } from '@chakra-ui/react';
-import { isAddress } from '@ethersproject/address';
-
-import { ChevronRightIcon, AddIcon, InfoOutlineIcon } from '@chakra-ui/icons';
-import { Lightning, ArrowCounterClockwise } from 'phosphor-react';
-
-import { useForm, useFieldArray } from 'react-hook-form';
-import * as yup from 'yup';
-import { yupResolver } from '@hookform/resolvers/yup';
-
-import useGlobalState from '@/hooks/globalState';
 import {
-  useAuthenticate,
-  useAuthenticated,
-  useLogout,
-} from '@/hooks/web3Onboard';
-import { useFactory } from '@/hooks/contract';
-import { gun } from '@/lib/gun';
+  DribbbleLogo,
+  Cpu,
+  Bank,
+  Heartbeat,
+  Tree,
+  AirplaneTilt,
+} from 'phosphor-react';
+import { SearchIcon, ChevronRightIcon } from '@chakra-ui/icons';
+import styled from 'styled-components';
 
-import {
-  V1_FACTORY_ADDRESS,
-  V1_CAMPAIGN_FACTORY_IMPLEMENTATION,
-} from '@/constants/addresses';
-import { ReducerTypes } from '@/reducer';
+import { Hero } from '@/components/Hero';
+import { CampaignCard } from '@/components/CampaignCard';
 
-type formData = {
-  governance: string;
-  campaignConfig: Array<{
-    key: string;
-    value: string | number | Array<number>;
-  }>;
+const StyledMyCrowdship = styled.div``;
+
+type FeatureCardProps = {
+  heading?: ReactNode;
+  body?: ReactNode;
+  image?: ReactNode;
+  overflow?: string;
 };
 
-const schema = yup
-  .object({
-    governance: yup.string().required('Required'),
-    campaignConfig: yup.array().of(
-      yup.object().shape({
-        value: yup.lazy((val) =>
-          Array.isArray(val) ? yup.array().of(yup.string()) : yup.string()
-        ),
-        key: yup.string(),
-      })
+const FeatureCard = ({
+  heading,
+  body,
+  image,
+  overflow,
+  ...rest
+}: FeatureCardProps) => (
+  <Box
+    {...rest}
+    display='flex'
+    alignItems='center'
+    bg='purple.100'
+    height='119px'
+    borderRadius='2xl'
+    overflow={overflow}
+  >
+    {image}
+    <Box w='xs' ml={3}>
+      {heading}
+      {body}
+    </Box>
+  </Box>
+);
+
+const CtaContent = [
+  {
+    heading: () => (
+      <Heading fontSize='lg' lineHeight={1.4}>
+        No bullsh*t support for your favorite projects
+      </Heading>
     ),
-  })
-  .required();
-
-const Home: NextPage = () => {
-  const campaignConfigValues = [
-    {
-      key: 'campaignContractAddress',
-      value: process.env.campaignImplementationAddress,
-    },
-    {
-      key: 'requestContractAddress',
-      value: process.env.campaignRequestImplementationAddress,
-    },
-    {
-      key: 'voteContractAddress',
-      value: process.env.campaignVoteImplementationAddress,
-    },
-    {
-      key: 'rewardContractAddress',
-      value: process.env.campaignRewardImplementationAddress,
-    },
-    {
-      key: 'defaultCommission',
-      value: 2,
-    },
-    {
-      key: 'deadlineStrikesAllowed',
-      value: 3,
-    },
-    {
-      key: 'contributionAllowed',
-      value: [1, 100000],
-    },
-    {
-      key: 'requestAmountAllowed',
-      value: [1000, 50000],
-    },
-    {
-      key: 'campaignTarget',
-      value: [5000, 1000000],
-    },
-    {
-      key: 'deadlineExtension',
-      value: [1, 14],
-    },
-    {
-      key: 'requestDuration',
-      value: [1, 14],
-    },
-    {
-      key: 'reviewThresholdMark',
-      value: 80,
-    },
-    {
-      key: 'requestFinalizationThreshold',
-      value: 51,
-    },
-    {
-      key: 'reportThresholdMark',
-      value: 51,
-    },
-  ];
-
-  const campaignConfig = [
-    {
-      title: 'Campaign Contract Address',
-      description: 'Lorem Ipsum',
-      suffix: null,
-    },
-    {
-      title: 'Request Contract Address',
-      description: 'Lorem Ipsum',
-      suffix: null,
-    },
-    {
-      title: 'Vote Contract Address',
-      description: 'Lorem Ipsum',
-      suffix: null,
-    },
-    {
-      title: 'Reward Contract Address',
-      description: 'Lorem Ipsum',
-      suffix: null,
-    },
-    {
-      title: 'Default commission',
-      description: 'Lorem Ipsum',
-      suffix: '%',
-    },
-    {
-      title: 'Deadline extension threshold',
-      description: 'Lorem Ipsum',
-      suffix: null,
-    },
-    {
-      title: 'Contribution range',
-      description: 'Lorem Ipsum',
-      suffix: '$',
-    },
-    {
-      title: 'Request amount range',
-      description: 'Lorem Ipsum',
-      suffix: '$',
-    },
-    {
-      title: 'Campaign target range',
-      description: 'Lorem Ipsum',
-      suffix: '$',
-    },
-    {
-      title: 'Deadline extension range',
-      description: 'Lorem Ipsum',
-      suffix: 'secs',
-    },
-    {
-      title: 'Request duration range',
-      description: 'Lorem Ipsum',
-      suffix: 'secs',
-    },
-    {
-      title: 'Review threshold',
-      description: 'Lorem Ipsum',
-      suffix: '%',
-    },
-    {
-      title: 'Request finalization threshold',
-      description: 'Lorem Ipsum',
-      suffix: '%',
-    },
-    {
-      title: 'Report threshold',
-      description: 'Lorem Ipsum',
-      suffix: '%',
-    },
-  ];
-
-  const timeFields = ['deadlineExtension', 'requestDuration'];
-
-  const [transactionError, setTransactionError] = useState<string>('');
-  const { state, dispatch } = useGlobalState();
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const {
-    watch,
-    control,
-    register,
-    reset,
-    setValue,
-    handleSubmit,
-    setError,
-    formState: { errors, isValid },
-  } = useForm<formData>({
-    resolver: yupResolver(schema),
-    defaultValues: {
-      campaignConfig: campaignConfigValues,
-    },
-  });
-
-  const [authenticate, authenticating] = useAuthenticate();
-  const logout = useLogout();
-  const isLoggedIn = useAuthenticated();
-  const factory = useFactory(V1_FACTORY_ADDRESS);
-
-  const { fields } = useFieldArray({
-    control,
-    name: 'campaignConfig',
-    keyName: 'key',
-  });
-
-  const watchAllFields = watch();
-
-  const isSubmitting = (isLoading: boolean) => {
-    dispatch({
-      type: ReducerTypes.SET_LOADING,
-      payload: {
-        loading: {
-          isLoading,
-          loadingText: 'Processing...',
-        },
-      },
-    });
-  };
-
-  const createDemo = async ({ governance, campaignConfig }: formData) => {
-    const { isValid, message } = isValidAddress(governance);
-
-    if (isValid) {
-      isSubmitting(true);
-
-      if (isLoggedIn) {
-        const config = [];
-
-        campaignConfig.map(({ key, value }, idx) => {
-          if (idx > 3) {
-            if (timeFields.includes(key)) {
-              value[0] = value[0] * 86400;
-              value[1] = value[1] * 86400;
-            }
-
-            if (Array.isArray(value)) {
-              value.map((v) => config.push(Number(v)));
-            } else {
-              config.push(Number(value));
-            }
-          }
-        });
-
-        (await factory)
-          .createCampaignFactory(
-            V1_CAMPAIGN_FACTORY_IMPLEMENTATION,
-            campaignConfig[0].value as string,
-            campaignConfig[1].value as string,
-            campaignConfig[2].value as string,
-            campaignConfig[3].value as string,
-            governance,
-            config
-          )
-          .then(async () => {
-            isSubmitting(false);
-            (await factory).on('CampaignFactoryDeployed', (campaignFactory) => {
-              Router.push(`/my-crowdship/${campaignFactory}`);
-            });
-          })
-          .catch((err) => {
-            setTransactionError(err.message);
-            isSubmitting(false);
-          });
-      }
-    } else {
-      setError('governance', { type: 'manual', message });
-      isSubmitting(false);
-    }
-  };
-
-  const isValidAddress = (
-    address: string
-  ): { isValid: boolean; message: string } => {
-    let res = { isValid: false, message: '' };
-
-    return !isAddress(address)
-      ? { ...res, message: 'Invalid address' }
-      : { ...res, isValid: true };
-  };
-
-  useEffect(() => {
-    const subscription = watch((value, { name, type }) => {});
-
-    return () => subscription.unsubscribe();
-  }, [watch]);
-
-  return (
-    <>
-      <Head>
-        <title>Crowdship - Create Demo</title>
-        <meta
-          name='description'
-          content='Create and test your crowdship demo'
+    body: () => (
+      <Text color='gray.500' fontSize='16px' mt='1.5'>
+        Find out how
+      </Text>
+    ),
+    image: () => (
+      <Box mt='55'>
+        <Image
+          src='/images/flag.svg'
+          alt='ownership illustration'
+          width='101'
+          height='76'
         />
+      </Box>
+    ),
+    overflow: 'hidden',
+  },
+  {
+    heading: () => (
+      <Heading fontSize='lg' lineHeight={1.4}>
+        Get your projects funded the crypto way. No BS
+      </Heading>
+    ),
+    body: () => (
+      <Text color='gray.500' mt='1.5'>
+        Find out how
+      </Text>
+    ),
+    image: () => (
+      <Box mt='-50'>
+        <Image
+          src='/images/torch.svg'
+          alt='ownership illustration'
+          width='71'
+          height='156'
+        />
+      </Box>
+    ),
+    overflow: 'visible',
+  },
+];
+
+const SectionHeader = ({
+  heading,
+  subheading,
+  action,
+}: {
+  heading: string;
+  subheading?: string;
+  action?: ReactNode;
+}) => (
+  <Flex mt={51} alignItems='center'>
+    <Box>
+      <Heading fontSize='3xl'>{heading}</Heading>
+      <Text color='gray.500' mt={1.5}>
+        {subheading}
+      </Text>
+    </Box>
+    <Spacer />
+    {action}
+  </Flex>
+);
+
+const categoriesData = [
+  {
+    categoryTitle: 'Tech',
+    categoryPath: '#',
+    icon: <Cpu weight='duotone' size={40} />,
+  },
+  {
+    categoryTitle: 'Sports',
+    categoryPath: '#',
+    icon: <DribbbleLogo weight='duotone' size={40} />,
+  },
+  {
+    categoryTitle: 'Finance',
+    categoryPath: '#',
+    icon: <Bank weight='duotone' size={40} />,
+  },
+  {
+    categoryTitle: 'Health',
+    categoryPath: '#',
+    icon: <Heartbeat weight='duotone' size={40} />,
+  },
+  {
+    categoryTitle: 'Agriculture',
+    categoryPath: '#',
+    icon: <Tree weight='duotone' size={40} />,
+  },
+  {
+    categoryTitle: 'Travel',
+    categoryPath: '#',
+    icon: <AirplaneTilt weight='duotone' size={40} />,
+  },
+];
+
+const MyCrowdship: NextPage = () => {
+  return (
+    <StyledMyCrowdship>
+      <Head>
+        <title>Crowdship</title>
+        <meta name='description' content='' />
       </Head>
-      <main>
-        <Flex color='white' minH={'100vh'}>
-          <Box
-            w='400px'
-            display={{ base: 'none', md: 'none', lg: 'block' }}
-            bg='yellow.500'
-            position='relative'
-            overflow='hidden'
-            backgroundImage='url(./map-light.svg)'
-            backgroundRepeat='no-repeat'
-            backgroundSize='1000px'
-            backgroundPosition='-290px 80px'
-          ></Box>
-          <Box
-            flex='1'
-            bg='yellow.100'
-            borderRightWidth='10px'
-            borderRightColor='yellow.500'
+      <Hero
+        header={
+          <Heading
+            lineHeight={1.3}
+            w='xl'
+            fontWeight={500}
+            mb='2'
+            fontSize={{ base: '2xl', md: '36px' }}
           >
-            <Center>
-              <Stack spacing={4} w={'full'} maxW={'xl'} p={6} my={52}>
-                <Heading
-                  lineHeight={1.1}
-                  fontSize={{ base: '2xl', md: '3xl' }}
-                  color='black.500'
-                >
-                  Crowdship
-                </Heading>
-                <Text color='gray.500'>
-                  Generate your crowdship experience invite friends to
-                  participate, this demo runs on rinkeby.
-                </Text>
-                <Spacer />
-                <form onSubmit={handleSubmit(createDemo)}>
-                  {transactionError && (
-                    <Alert status='error' variant='solid' bg='red.500' mb={3}>
-                      <AlertIcon />
-                      <AlertDescription>{transactionError}</AlertDescription>
-                      <CloseButton
-                        position='absolute'
-                        right='8px'
-                        top='8px'
-                        _focus={{ boxShadow: 'none' }}
-                        onClick={() => setTransactionError('')}
-                      />
-                    </Alert>
-                  )}
-                  <FormControl
-                    isInvalid={!!errors.governance?.message?.length}
-                    isRequired
-                  >
-                    <FormLabel htmlFor='governance' color='black'>
-                      Governance Address
-                    </FormLabel>
-                    <Input
-                      {...register('governance')}
-                      id='governance'
-                      variant='outlineAlt'
-                      size='lg'
-                      _placeholder={{ color: 'gray.500' }}
-                      placeholder='0x0000000000000000000000000000000000000000'
-                    />
-                    <FormErrorMessage>
-                      {errors.governance?.message}
-                    </FormErrorMessage>
-                  </FormControl>
-                  <FormControl>
-                    <Drawer
-                      isOpen={isOpen}
-                      onClose={onClose}
-                      placement='left'
-                      size='lg'
-                    >
-                      <DrawerOverlay />
-                      <DrawerContent>
-                        <DrawerCloseButton top='16px' />
-                        <DrawerHeader fontFamily='DM mono'>
-                          Advanced Settings
-                        </DrawerHeader>
-                        <Divider />
-                        <DrawerBody>
-                          {fields.map((field, idx) => {
-                            const renderConfigField = (index) => (
-                              <InputGroup size='md'>
-                                <NumberInput
-                                  value={
-                                    !timeFields.includes(field.key)
-                                      ? formatMoney(
-                                          watchAllFields.campaignConfig[idx]
-                                            .value[index],
-                                          {
-                                            symbol: '',
-                                            precision: 0,
-                                          }
-                                        )
-                                      : watchAllFields.campaignConfig[idx]
-                                          .value[index]
-                                  }
-                                  onChange={(value) => {
-                                    let currentValues =
-                                      watchAllFields.campaignConfig[idx].value;
-
-                                    currentValues[index] = value;
-
-                                    setValue(
-                                      `campaignConfig.${idx}.value`,
-                                      currentValues
-                                    );
-                                  }}
-                                  variant='outlineAlt'
-                                  size='lg'
-                                >
-                                  <NumberInputField textAlign='center' />
-                                </NumberInput>
-                                {timeFields.includes(field.key) ? (
-                                  <InputRightElement h='full'>
-                                    <Text mr='6'>days</Text>
-                                  </InputRightElement>
-                                ) : (
-                                  <InputLeftElement h='full'>
-                                    <Text>$</Text>
-                                  </InputLeftElement>
-                                )}
-                              </InputGroup>
-                            );
-
-                            switch (typeof field.value) {
-                              case 'string':
-                                return (
-                                  <FormControl key={idx} py={2} mb={2}>
-                                    <FormLabel
-                                      htmlFor={`campaignConfig.${idx}`}
-                                      color='black'
-                                    >
-                                      {campaignConfig[idx].title}
-                                    </FormLabel>
-                                    <Input
-                                      key={field.key}
-                                      id={`campaignConfig.${idx}`}
-                                      {...register(
-                                        `campaignConfig.${idx}.value`
-                                      )}
-                                      variant='outlineAlt'
-                                      size='lg'
-                                      _placeholder={{
-                                        color: 'gray.500',
-                                      }}
-                                      placeholder='0x0000000000000000000000000000000000000000'
-                                    />
-                                  </FormControl>
-                                );
-                                break;
-
-                              case 'number':
-                                return (
-                                  <Box key={idx} py={2} mb={2}>
-                                    <Text
-                                      textTransform='capitalize'
-                                      fontWeight='500'
-                                      fontSize='1rem'
-                                      pb='1'
-                                    >
-                                      {campaignConfig[idx].title}
-                                    </Text>
-                                    <Box
-                                      display='flex'
-                                      justifyContent='space-between'
-                                    >
-                                      <Slider
-                                        flex='1'
-                                        focusThumbOnChange={false}
-                                        min={1}
-                                        max={100}
-                                        value={
-                                          watchAllFields.campaignConfig[idx]
-                                            .value as number
-                                        }
-                                        onChange={(e) => {
-                                          setValue(
-                                            `campaignConfig.${idx}.value`,
-                                            e
-                                          );
-                                        }}
-                                      >
-                                        <SliderTrack bg='green.100'>
-                                          <SliderFilledTrack bg='green.400' />
-                                        </SliderTrack>
-                                        <SliderThumb boxSize={7}>
-                                          <Lightning
-                                            size={16}
-                                            weight='duotone'
-                                            color='#48BB78'
-                                          />
-                                        </SliderThumb>
-                                      </Slider>
-                                      <InputGroup size='md' w='150px' ml='6'>
-                                        <NumberInput
-                                          value={`${watchAllFields.campaignConfig[idx].value}`}
-                                          variant='outlineAlt'
-                                          size='lg'
-                                          onChange={(val) => {
-                                            setValue(
-                                              `campaignConfig.${idx}.value`,
-                                              val
-                                            );
-                                          }}
-                                        >
-                                          <NumberInputField textAlign='center' />
-                                        </NumberInput>
-                                        {field.key !==
-                                        'deadlineStrikesAllowed' ? (
-                                          <InputRightElement h='full'>
-                                            <Text fontWeight='500'>%</Text>
-                                          </InputRightElement>
-                                        ) : null}
-                                      </InputGroup>
-                                    </Box>
-                                  </Box>
-                                );
-                                break;
-
-                              case 'object':
-                                return (
-                                  <Box key={idx} py={2} mb={2}>
-                                    <Text
-                                      textTransform='capitalize'
-                                      fontWeight='500'
-                                      fontSize='1rem'
-                                      pb='2'
-                                    >
-                                      {campaignConfig[idx].title}
-                                    </Text>
-                                    <Box display='flex'>
-                                      {renderConfigField(0)}
-                                      <RangeSlider
-                                        aria-label={['min', 'max']}
-                                        value={
-                                          watchAllFields.campaignConfig[idx]
-                                            .value as number[]
-                                        }
-                                        max={
-                                          timeFields.includes(field.key)
-                                            ? 31
-                                            : 3000000
-                                        }
-                                        min={1}
-                                        mx={6}
-                                        onChange={(e) => {
-                                          setValue(
-                                            `campaignConfig.${idx}.value`,
-                                            e
-                                          );
-                                        }}
-                                      >
-                                        <RangeSliderTrack bg='green.100'>
-                                          <RangeSliderFilledTrack bg='green.400' />
-                                        </RangeSliderTrack>
-                                        <RangeSliderThumb boxSize={7} index={0}>
-                                          <Lightning
-                                            size={16}
-                                            weight='duotone'
-                                            color='#48BB78'
-                                          />
-                                        </RangeSliderThumb>
-                                        <RangeSliderThumb boxSize={7} index={1}>
-                                          <Lightning
-                                            size={16}
-                                            weight='duotone'
-                                            color='#48BB78'
-                                          />
-                                        </RangeSliderThumb>
-                                      </RangeSlider>
-                                      {renderConfigField(1)}
-                                    </Box>
-                                  </Box>
-                                );
-                                break;
-
-                              default:
-                                break;
-                            }
-                          })}
-                        </DrawerBody>
-                        <DrawerFooter>
-                          <Button
-                            onClick={() => reset()}
-                            variant='primary'
-                            isFullWidth
-                            size='lg'
-                            leftIcon={<ArrowCounterClockwise />}
-                          >
-                            Reset Values
-                          </Button>
-                        </DrawerFooter>
-                      </DrawerContent>
-                    </Drawer>
-                    <Box display='flex' justifyContent='flex-end' mt={1}>
-                      <Box
-                        display='flex'
-                        alignItems='center'
-                        cursor='pointer'
-                        padding='0 10px'
-                        _active={{
-                          background: 'rgba(0, 0, 0, 0.06)',
-                          borderRadius: 'sm',
-                        }}
-                        _hover={{
-                          background: 'rgba(0, 0, 0, 0.06)',
-                          borderRadius: 'sm',
-                        }}
-                      >
-                        <InfoOutlineIcon color='black' w={3} h={3} mr={1} />
-                        <Text fontSize='sm' color='black' onClick={onOpen}>
-                          Advanced
-                        </Text>
-                      </Box>
-                    </Box>
-                  </FormControl>
-                  <Stack mt={4}>
-                    <Button
-                      onClick={!isLoggedIn ? authenticate : undefined}
-                      disabled={state.loading.isLoading}
-                      type={isLoggedIn ? 'submit' : null}
-                      variant={isLoggedIn ? 'primary' : 'primaryAlt'}
-                      isLoading={authenticating}
-                      loadingText='Connecting...'
-                      size='lg'
-                      leftIcon={
-                        isLoggedIn ? (
-                          <ChevronRightIcon />
-                        ) : (
-                          <AddIcon w={3.5} h={3.5} />
-                        )
-                      }
-                    >
-                      {isLoggedIn ? 'Proceed' : 'Connect Wallet'}
-                    </Button>
-                    <Center>
-                      {isLoggedIn ? (
-                        <Text
-                          fontSize='sm'
-                          color='blue.500'
-                          textDecoration='underline'
-                          cursor='pointer'
-                          onClick={logout}
-                        >
-                          Disconnect Wallet
-                        </Text>
-                      ) : (
-                        ''
-                      )}
-                    </Center>
-                  </Stack>
-                </form>
-              </Stack>
-            </Center>
+            Your favourite projects, backed by crypto!
+          </Heading>
+        }
+        body={<Text>Over 300 crew members joined today</Text>}
+        height='400px'
+        bgImage='/images/map-light.svg'
+        bgColor='yellow.200'
+        bgRepeat='no-repeat'
+        bgPosition='530px 88px'
+        bgSize='940px'
+        actions={
+          <>
+            <InputGroup>
+              <InputLeftElement pointerEvents='none'>
+                <SearchIcon color='gray.600' />
+              </InputLeftElement>
+              <Input
+                id='search'
+                variant='outlineAlt'
+                size='md'
+                cursor='pointer'
+                disabled
+                _placeholder={{ color: 'gray.500' }}
+                placeholder='Find campaigns'
+              />
+            </InputGroup>
+          </>
+        }
+      />
+      <Container maxW='1240px' mt={10}>
+        <Box as='section'>
+          <SimpleGrid columns={[null, 1, 2]} spacing={10}>
+            {CtaContent.map(({ heading, body, image, overflow }, idx) => {
+              return (
+                <FeatureCard
+                  key={idx}
+                  heading={heading()}
+                  body={body()}
+                  image={image()}
+                  overflow={overflow}
+                />
+              );
+            })}
+          </SimpleGrid>
+        </Box>
+        <Box as='section'>
+          <SectionHeader
+            heading='High velocity campaigns'
+            subheading='Up to 20% per hour'
+            action={
+              <Text display='flex' alignItems='center' as='a' href='#'>
+                <span>See all</span>
+                <ChevronRightIcon h={4} w={4} />
+              </Text>
+            }
+          />
+          <Box mt={37}>
+            <CampaignCard
+              special
+              heading='Silly folks'
+              body='These fools are trying to raise funds to build their own water craft, you can support their foolishness'
+              image='/images/demo.jpg'
+              category='sports'
+              raised='10'
+              target='15'
+              badge='highest velocity'
+            />
           </Box>
-        </Flex>
-      </main>
-    </>
+        </Box>
+        <Box as='section' mt={55}>
+          <SectionHeader
+            heading='Outliers'
+            subheading='Folks doing crazy things'
+            action={
+              <Text display='flex' alignItems='center' as='a' href='#'>
+                <span>See all</span>
+                <ChevronRightIcon h={4} w={4} />
+              </Text>
+            }
+          />
+          <Box mt={37}>
+            <CampaignCard
+              heading='Kayaking team'
+              body='These fools are trying to raise funds to build their own water craft, you can support their foolishness'
+              image='/images/demo.jpg'
+              category='sports'
+              raised='10'
+              target='15'
+              badge='highest velocity'
+            />
+          </Box>
+        </Box>
+        <Box as='section' mt={70}>
+          <Center>
+            <SectionHeader heading='Categories' />
+          </Center>
+          <SimpleGrid
+            columns={[2, 3, categoriesData.length]}
+            spacing='50px'
+            mt={10}
+          >
+            {categoriesData.map(
+              ({ categoryTitle, categoryPath, icon }, idx) => (
+                <Box
+                  key={idx}
+                  as='a'
+                  href={categoryPath}
+                  display='flex'
+                  alignItems='center'
+                  flexDirection='column'
+                >
+                  <Center
+                    bg='yellow.400'
+                    height='70px'
+                    width='70px'
+                    borderRadius='2xl'
+                  >
+                    {icon}
+                  </Center>
+                  <Text mt={3} fontFamily='DM mono' fontWeight='500'>
+                    {categoryTitle}
+                  </Text>
+                </Box>
+              )
+            )}
+          </SimpleGrid>
+        </Box>
+      </Container>
+    </StyledMyCrowdship>
   );
 };
 
-export default Home;
+export default MyCrowdship;

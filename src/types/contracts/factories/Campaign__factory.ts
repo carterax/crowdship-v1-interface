@@ -226,6 +226,25 @@ const _abi = [
     inputs: [
       {
         indexed: false,
+        internalType: "address",
+        name: "contributor",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "bool",
+        name: "isApproved",
+        type: "bool",
+      },
+    ],
+    name: "ContributorApprovalToggled",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
         internalType: "uint8",
         name: "count",
         type: "uint8",
@@ -421,6 +440,25 @@ const _abi = [
   {
     inputs: [],
     name: "allowContributionAfterTargetIsMet",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    name: "allowedToContribute",
     outputs: [
       {
         internalType: "bool",
@@ -776,6 +814,25 @@ const _abi = [
         type: "address",
       },
     ],
+    name: "reportHash",
+    outputs: [
+      {
+        internalType: "string",
+        name: "",
+        type: "string",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
     name: "reported",
     outputs: [
       {
@@ -795,6 +852,25 @@ const _abi = [
         internalType: "uint256",
         name: "",
         type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    name: "reviewHash",
+    outputs: [
+      {
+        internalType: "string",
+        name: "",
+        type: "string",
       },
     ],
     stateMutability: "view",
@@ -999,6 +1075,25 @@ const _abi = [
     type: "function",
   },
   {
+    inputs: [
+      {
+        internalType: "address",
+        name: "_user",
+        type: "address",
+      },
+    ],
+    name: "isCampaignManager",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
     inputs: [],
     name: "getCampaignGoalType",
     outputs: [
@@ -1134,6 +1229,19 @@ const _abi = [
     inputs: [
       {
         internalType: "address",
+        name: "_contributor",
+        type: "address",
+      },
+    ],
+    name: "toggleContributorApproval",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
         name: "_token",
         type: "address",
       },
@@ -1161,7 +1269,7 @@ const _abi = [
         type: "address",
       },
     ],
-    name: "withdrawOwnContribution",
+    name: "withdrawContribution",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",

@@ -1,3 +1,9 @@
-import Gun from 'gun';
+let gun;
+let user;
 
-export const gun = Gun(['https://gun-manhattan.herokuapp.com/gun']);
+if (typeof window !== 'undefined' && typeof window.Gun !== 'undefined') {
+  gun = window.Gun();
+  user = gun.user().recall({ sessionStorage: true });
+}
+
+export { gun, user };

@@ -76,10 +76,10 @@ export interface CampaignFactoryInterface extends utils.Interface {
     "removeTrustee(uint256)": FunctionFragment;
     "toggleUserApproval(address,bool)": FunctionFragment;
     "createCampaign(uint256,bool,string)": FunctionFragment;
-    "activateCampaign(address)": FunctionFragment;
-    "approveCampaign(address)": FunctionFragment;
+    "toggleCampaignActivation(address)": FunctionFragment;
+    "toggleCampaignPrivacy(address)": FunctionFragment;
     "modifyCampaignCategory(address,uint256)": FunctionFragment;
-    "createCategory(bool,string)": FunctionFragment;
+    "createCategory(bool,string,string)": FunctionFragment;
     "modifyCategory(uint256,bool,string)": FunctionFragment;
     "unpauseCampaign()": FunctionFragment;
     "pauseCampaign()": FunctionFragment;
@@ -135,8 +135,8 @@ export interface CampaignFactoryInterface extends utils.Interface {
       | "removeTrustee"
       | "toggleUserApproval"
       | "createCampaign"
-      | "activateCampaign"
-      | "approveCampaign"
+      | "toggleCampaignActivation"
+      | "toggleCampaignPrivacy"
       | "modifyCampaignCategory"
       | "createCategory"
       | "modifyCategory"
@@ -313,11 +313,11 @@ export interface CampaignFactoryInterface extends utils.Interface {
     values: [BigNumberish, boolean, string]
   ): string;
   encodeFunctionData(
-    functionFragment: "activateCampaign",
+    functionFragment: "toggleCampaignActivation",
     values: [string]
   ): string;
   encodeFunctionData(
-    functionFragment: "approveCampaign",
+    functionFragment: "toggleCampaignPrivacy",
     values: [string]
   ): string;
   encodeFunctionData(
@@ -326,7 +326,7 @@ export interface CampaignFactoryInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "createCategory",
-    values: [boolean, string]
+    values: [boolean, string, string]
   ): string;
   encodeFunctionData(
     functionFragment: "modifyCategory",
@@ -501,11 +501,11 @@ export interface CampaignFactoryInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "activateCampaign",
+    functionFragment: "toggleCampaignActivation",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "approveCampaign",
+    functionFragment: "toggleCampaignPrivacy",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -530,31 +530,30 @@ export interface CampaignFactoryInterface extends utils.Interface {
   ): Result;
 
   events: {
-    "CampaignActivation(address)": EventFragment;
-    "CampaignApproval(address)": EventFragment;
+    "CampaignActivation(address,bool)": EventFragment;
     "CampaignCategoryChange(address,uint256)": EventFragment;
     "CampaignDefaultCommissionUpdated(uint256)": EventFragment;
-    "CampaignDeployed(address,address,address,address,address,uint256,bool)": EventFragment;
+    "CampaignDeployed(address,address,address,address,address,uint256,bool,string)": EventFragment;
     "CampaignImplementationUpdated(address)": EventFragment;
+    "CampaignPrivacyChange(address,bool)": EventFragment;
     "CampaignRequestImplementationUpdated(address)": EventFragment;
     "CampaignRewardImplementationUpdated(address)": EventFragment;
     "CampaignTransactionConfigUpdated(string,uint256)": EventFragment;
     "CampaignVoteImplementationUpdated(address)": EventFragment;
-    "CategoryAdded(uint256,bool,string)": EventFragment;
+    "CategoryAdded(uint256,bool,string,string)": EventFragment;
     "CategoryCommissionUpdated(uint256,uint256)": EventFragment;
     "CategoryModified(uint256,bool,string)": EventFragment;
     "Paused(address)": EventFragment;
-    "TokenAdded(address,bool)": EventFragment;
+    "TokenAdded(address,bool,string)": EventFragment;
     "TokenApproval(address,bool)": EventFragment;
     "TrusteeAdded(uint256,address)": EventFragment;
     "TrusteeRemoved(uint256,address)": EventFragment;
     "Unpaused(address)": EventFragment;
-    "UserAdded(address)": EventFragment;
+    "UserAdded(address,string)": EventFragment;
     "UserApproval(address,bool)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "CampaignActivation"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "CampaignApproval"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "CampaignCategoryChange"): EventFragment;
   getEvent(
     nameOrSignatureOrTopic: "CampaignDefaultCommissionUpdated"
@@ -563,6 +562,7 @@ export interface CampaignFactoryInterface extends utils.Interface {
   getEvent(
     nameOrSignatureOrTopic: "CampaignImplementationUpdated"
   ): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "CampaignPrivacyChange"): EventFragment;
   getEvent(
     nameOrSignatureOrTopic: "CampaignRequestImplementationUpdated"
   ): EventFragment;
@@ -590,25 +590,15 @@ export interface CampaignFactoryInterface extends utils.Interface {
 
 export interface CampaignActivationEventObject {
   campaign: string;
+  active: boolean;
 }
 export type CampaignActivationEvent = TypedEvent<
-  [string],
+  [string, boolean],
   CampaignActivationEventObject
 >;
 
 export type CampaignActivationEventFilter =
   TypedEventFilter<CampaignActivationEvent>;
-
-export interface CampaignApprovalEventObject {
-  campaign: string;
-}
-export type CampaignApprovalEvent = TypedEvent<
-  [string],
-  CampaignApprovalEventObject
->;
-
-export type CampaignApprovalEventFilter =
-  TypedEventFilter<CampaignApprovalEvent>;
 
 export interface CampaignCategoryChangeEventObject {
   campaign: string;
@@ -640,10 +630,11 @@ export interface CampaignDeployedEventObject {
   campaignRequests: string;
   campaignVotes: string;
   category: BigNumber;
-  approved: boolean;
+  privateCampaign: boolean;
+  hashedCampaignInfo: string;
 }
 export type CampaignDeployedEvent = TypedEvent<
-  [string, string, string, string, string, BigNumber, boolean],
+  [string, string, string, string, string, BigNumber, boolean, string],
   CampaignDeployedEventObject
 >;
 
@@ -660,6 +651,18 @@ export type CampaignImplementationUpdatedEvent = TypedEvent<
 
 export type CampaignImplementationUpdatedEventFilter =
   TypedEventFilter<CampaignImplementationUpdatedEvent>;
+
+export interface CampaignPrivacyChangeEventObject {
+  campaign: string;
+  privateCampaign: boolean;
+}
+export type CampaignPrivacyChangeEvent = TypedEvent<
+  [string, boolean],
+  CampaignPrivacyChangeEventObject
+>;
+
+export type CampaignPrivacyChangeEventFilter =
+  TypedEventFilter<CampaignPrivacyChangeEvent>;
 
 export interface CampaignRequestImplementationUpdatedEventObject {
   campaignRequestImplementation: string;
@@ -710,9 +713,10 @@ export interface CategoryAddedEventObject {
   categoryId: BigNumber;
   active: boolean;
   title: string;
+  hashedCategory: string;
 }
 export type CategoryAddedEvent = TypedEvent<
-  [BigNumber, boolean, string],
+  [BigNumber, boolean, string, string],
   CategoryAddedEventObject
 >;
 
@@ -753,9 +757,10 @@ export type PausedEventFilter = TypedEventFilter<PausedEvent>;
 export interface TokenAddedEventObject {
   token: string;
   approval: boolean;
+  hashedToken: string;
 }
 export type TokenAddedEvent = TypedEvent<
-  [string, boolean],
+  [string, boolean, string],
   TokenAddedEventObject
 >;
 
@@ -803,8 +808,9 @@ export type UnpausedEventFilter = TypedEventFilter<UnpausedEvent>;
 
 export interface UserAddedEventObject {
   userId: string;
+  hashedUser: string;
 }
-export type UserAddedEvent = TypedEvent<[string], UserAddedEventObject>;
+export type UserAddedEvent = TypedEvent<[string, string], UserAddedEventObject>;
 
 export type UserAddedEventFilter = TypedEventFilter<UserAddedEvent>;
 
@@ -865,11 +871,12 @@ export interface CampaignFactory extends BaseContract {
       arg0: BigNumberish,
       overrides?: CallOverrides
     ): Promise<
-      [BigNumber, BigNumber, BigNumber, string, boolean, boolean] & {
+      [BigNumber, BigNumber, BigNumber, string, string, boolean, boolean] & {
         campaignCount: BigNumber;
         createdAt: BigNumber;
         updatedAt: BigNumber;
         title: string;
+        hashedCategory: string;
         active: boolean;
         exists: boolean;
       }
@@ -915,7 +922,7 @@ export interface CampaignFactory extends BaseContract {
         category: BigNumber;
         hashedCampaignInfo: string;
         active: boolean;
-        approved: boolean;
+        privateCampaign: boolean;
       }
     >;
 
@@ -1103,17 +1110,17 @@ export interface CampaignFactory extends BaseContract {
 
     createCampaign(
       _categoryId: BigNumberish,
-      _approved: boolean,
+      _privateCampaign: boolean,
       _hashedCampaignInfo: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    activateCampaign(
+    toggleCampaignActivation(
       _campaign: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    approveCampaign(
+    toggleCampaignPrivacy(
       _campaign: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
@@ -1127,6 +1134,7 @@ export interface CampaignFactory extends BaseContract {
     createCategory(
       _active: boolean,
       _title: string,
+      _hashedCategory: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -1162,11 +1170,12 @@ export interface CampaignFactory extends BaseContract {
     arg0: BigNumberish,
     overrides?: CallOverrides
   ): Promise<
-    [BigNumber, BigNumber, BigNumber, string, boolean, boolean] & {
+    [BigNumber, BigNumber, BigNumber, string, string, boolean, boolean] & {
       campaignCount: BigNumber;
       createdAt: BigNumber;
       updatedAt: BigNumber;
       title: string;
+      hashedCategory: string;
       active: boolean;
       exists: boolean;
     }
@@ -1210,7 +1219,7 @@ export interface CampaignFactory extends BaseContract {
       category: BigNumber;
       hashedCampaignInfo: string;
       active: boolean;
-      approved: boolean;
+      privateCampaign: boolean;
     }
   >;
 
@@ -1392,17 +1401,17 @@ export interface CampaignFactory extends BaseContract {
 
   createCampaign(
     _categoryId: BigNumberish,
-    _approved: boolean,
+    _privateCampaign: boolean,
     _hashedCampaignInfo: string,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  activateCampaign(
+  toggleCampaignActivation(
     _campaign: string,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  approveCampaign(
+  toggleCampaignPrivacy(
     _campaign: string,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
@@ -1416,6 +1425,7 @@ export interface CampaignFactory extends BaseContract {
   createCategory(
     _active: boolean,
     _title: string,
+    _hashedCategory: string,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -1451,11 +1461,12 @@ export interface CampaignFactory extends BaseContract {
       arg0: BigNumberish,
       overrides?: CallOverrides
     ): Promise<
-      [BigNumber, BigNumber, BigNumber, string, boolean, boolean] & {
+      [BigNumber, BigNumber, BigNumber, string, string, boolean, boolean] & {
         campaignCount: BigNumber;
         createdAt: BigNumber;
         updatedAt: BigNumber;
         title: string;
+        hashedCategory: string;
         active: boolean;
         exists: boolean;
       }
@@ -1499,7 +1510,7 @@ export interface CampaignFactory extends BaseContract {
         category: BigNumber;
         hashedCampaignInfo: string;
         active: boolean;
-        approved: boolean;
+        privateCampaign: boolean;
       }
     >;
 
@@ -1676,17 +1687,17 @@ export interface CampaignFactory extends BaseContract {
 
     createCampaign(
       _categoryId: BigNumberish,
-      _approved: boolean,
+      _privateCampaign: boolean,
       _hashedCampaignInfo: string,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    activateCampaign(
+    toggleCampaignActivation(
       _campaign: string,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    approveCampaign(
+    toggleCampaignPrivacy(
       _campaign: string,
       overrides?: CallOverrides
     ): Promise<void>;
@@ -1700,6 +1711,7 @@ export interface CampaignFactory extends BaseContract {
     createCategory(
       _active: boolean,
       _title: string,
+      _hashedCategory: string,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -1716,15 +1728,14 @@ export interface CampaignFactory extends BaseContract {
   };
 
   filters: {
-    "CampaignActivation(address)"(
-      campaign?: string | null
+    "CampaignActivation(address,bool)"(
+      campaign?: string | null,
+      active?: null
     ): CampaignActivationEventFilter;
-    CampaignActivation(campaign?: string | null): CampaignActivationEventFilter;
-
-    "CampaignApproval(address)"(
-      campaign?: string | null
-    ): CampaignApprovalEventFilter;
-    CampaignApproval(campaign?: string | null): CampaignApprovalEventFilter;
+    CampaignActivation(
+      campaign?: string | null,
+      active?: null
+    ): CampaignActivationEventFilter;
 
     "CampaignCategoryChange(address,uint256)"(
       campaign?: string | null,
@@ -1742,14 +1753,15 @@ export interface CampaignFactory extends BaseContract {
       commission?: null
     ): CampaignDefaultCommissionUpdatedEventFilter;
 
-    "CampaignDeployed(address,address,address,address,address,uint256,bool)"(
+    "CampaignDeployed(address,address,address,address,address,uint256,bool,string)"(
       factory?: null,
       campaign?: null,
       campaignRewards?: null,
       campaignRequests?: null,
       campaignVotes?: null,
       category?: null,
-      approved?: null
+      privateCampaign?: null,
+      hashedCampaignInfo?: null
     ): CampaignDeployedEventFilter;
     CampaignDeployed(
       factory?: null,
@@ -1758,7 +1770,8 @@ export interface CampaignFactory extends BaseContract {
       campaignRequests?: null,
       campaignVotes?: null,
       category?: null,
-      approved?: null
+      privateCampaign?: null,
+      hashedCampaignInfo?: null
     ): CampaignDeployedEventFilter;
 
     "CampaignImplementationUpdated(address)"(
@@ -1767,6 +1780,15 @@ export interface CampaignFactory extends BaseContract {
     CampaignImplementationUpdated(
       campaignImplementation?: string | null
     ): CampaignImplementationUpdatedEventFilter;
+
+    "CampaignPrivacyChange(address,bool)"(
+      campaign?: string | null,
+      privateCampaign?: null
+    ): CampaignPrivacyChangeEventFilter;
+    CampaignPrivacyChange(
+      campaign?: string | null,
+      privateCampaign?: null
+    ): CampaignPrivacyChangeEventFilter;
 
     "CampaignRequestImplementationUpdated(address)"(
       campaignRequestImplementation?: string | null
@@ -1798,15 +1820,17 @@ export interface CampaignFactory extends BaseContract {
       campaignVoteImplementation?: string | null
     ): CampaignVoteImplementationUpdatedEventFilter;
 
-    "CategoryAdded(uint256,bool,string)"(
+    "CategoryAdded(uint256,bool,string,string)"(
       categoryId?: BigNumberish | null,
       active?: null,
-      title?: null
+      title?: null,
+      hashedCategory?: null
     ): CategoryAddedEventFilter;
     CategoryAdded(
       categoryId?: BigNumberish | null,
       active?: null,
-      title?: null
+      title?: null,
+      hashedCategory?: null
     ): CategoryAddedEventFilter;
 
     "CategoryCommissionUpdated(uint256,uint256)"(
@@ -1832,11 +1856,16 @@ export interface CampaignFactory extends BaseContract {
     "Paused(address)"(account?: null): PausedEventFilter;
     Paused(account?: null): PausedEventFilter;
 
-    "TokenAdded(address,bool)"(
+    "TokenAdded(address,bool,string)"(
       token?: string | null,
-      approval?: null
+      approval?: null,
+      hashedToken?: null
     ): TokenAddedEventFilter;
-    TokenAdded(token?: string | null, approval?: null): TokenAddedEventFilter;
+    TokenAdded(
+      token?: string | null,
+      approval?: null,
+      hashedToken?: null
+    ): TokenAddedEventFilter;
 
     "TokenApproval(address,bool)"(
       token?: string | null,
@@ -1868,8 +1897,11 @@ export interface CampaignFactory extends BaseContract {
     "Unpaused(address)"(account?: null): UnpausedEventFilter;
     Unpaused(account?: null): UnpausedEventFilter;
 
-    "UserAdded(address)"(userId?: string | null): UserAddedEventFilter;
-    UserAdded(userId?: string | null): UserAddedEventFilter;
+    "UserAdded(address,string)"(
+      userId?: string | null,
+      hashedUser?: null
+    ): UserAddedEventFilter;
+    UserAdded(userId?: string | null, hashedUser?: null): UserAddedEventFilter;
 
     "UserApproval(address,bool)"(
       user?: string | null,
@@ -2090,17 +2122,17 @@ export interface CampaignFactory extends BaseContract {
 
     createCampaign(
       _categoryId: BigNumberish,
-      _approved: boolean,
+      _privateCampaign: boolean,
       _hashedCampaignInfo: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    activateCampaign(
+    toggleCampaignActivation(
       _campaign: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    approveCampaign(
+    toggleCampaignPrivacy(
       _campaign: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
@@ -2114,6 +2146,7 @@ export interface CampaignFactory extends BaseContract {
     createCategory(
       _active: boolean,
       _title: string,
+      _hashedCategory: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -2363,17 +2396,17 @@ export interface CampaignFactory extends BaseContract {
 
     createCampaign(
       _categoryId: BigNumberish,
-      _approved: boolean,
+      _privateCampaign: boolean,
       _hashedCampaignInfo: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
-    activateCampaign(
+    toggleCampaignActivation(
       _campaign: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
-    approveCampaign(
+    toggleCampaignPrivacy(
       _campaign: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
@@ -2387,6 +2420,7 @@ export interface CampaignFactory extends BaseContract {
     createCategory(
       _active: boolean,
       _title: string,
+      _hashedCategory: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 

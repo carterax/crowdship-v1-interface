@@ -34,6 +34,7 @@ export interface CampaignInterface extends utils.Interface {
     "acceptedToken()": FunctionFragment;
     "addRole(address,bytes32)": FunctionFragment;
     "allowContributionAfterTargetIsMet()": FunctionFragment;
+    "allowedToContribute(address)": FunctionFragment;
     "approvers(address)": FunctionFragment;
     "approversCount()": FunctionFragment;
     "campaignBalance()": FunctionFragment;
@@ -57,8 +58,10 @@ export interface CampaignInterface extends utils.Interface {
     "renounceAdmin()": FunctionFragment;
     "renounceRole(bytes32,address)": FunctionFragment;
     "reportCount()": FunctionFragment;
+    "reportHash(address)": FunctionFragment;
     "reported(address)": FunctionFragment;
     "reviewCount()": FunctionFragment;
+    "reviewHash(address)": FunctionFragment;
     "reviewed(address)": FunctionFragment;
     "revokeRole(bytes32,address)": FunctionFragment;
     "root()": FunctionFragment;
@@ -70,6 +73,7 @@ export interface CampaignInterface extends utils.Interface {
     "withdrawalsPaused()": FunctionFragment;
     "__Campaign_init(address,address,address,address,address)": FunctionFragment;
     "isCampaignAdmin(address)": FunctionFragment;
+    "isCampaignManager(address)": FunctionFragment;
     "getCampaignGoalType()": FunctionFragment;
     "getCampaignState(uint256)": FunctionFragment;
     "transferCampaignOwnership(address,address)": FunctionFragment;
@@ -77,8 +81,9 @@ export interface CampaignInterface extends utils.Interface {
     "setCampaignSettings(uint256,uint256,uint256,uint256,address,bool)": FunctionFragment;
     "extendDeadline(uint256)": FunctionFragment;
     "setDeadlineSetTimes(uint8)": FunctionFragment;
+    "toggleContributorApproval(address)": FunctionFragment;
     "contribute(address,uint256,bool)": FunctionFragment;
-    "withdrawOwnContribution(address)": FunctionFragment;
+    "withdrawContribution(address)": FunctionFragment;
     "userContributionLoss(address)": FunctionFragment;
     "finalizeRequest(uint256)": FunctionFragment;
     "reviewMode()": FunctionFragment;
@@ -98,6 +103,7 @@ export interface CampaignInterface extends utils.Interface {
       | "acceptedToken"
       | "addRole"
       | "allowContributionAfterTargetIsMet"
+      | "allowedToContribute"
       | "approvers"
       | "approversCount"
       | "campaignBalance"
@@ -121,8 +127,10 @@ export interface CampaignInterface extends utils.Interface {
       | "renounceAdmin"
       | "renounceRole"
       | "reportCount"
+      | "reportHash"
       | "reported"
       | "reviewCount"
+      | "reviewHash"
       | "reviewed"
       | "revokeRole"
       | "root"
@@ -134,6 +142,7 @@ export interface CampaignInterface extends utils.Interface {
       | "withdrawalsPaused"
       | "__Campaign_init"
       | "isCampaignAdmin"
+      | "isCampaignManager"
       | "getCampaignGoalType"
       | "getCampaignState"
       | "transferCampaignOwnership"
@@ -141,8 +150,9 @@ export interface CampaignInterface extends utils.Interface {
       | "setCampaignSettings"
       | "extendDeadline"
       | "setDeadlineSetTimes"
+      | "toggleContributorApproval"
       | "contribute"
-      | "withdrawOwnContribution"
+      | "withdrawContribution"
       | "userContributionLoss"
       | "finalizeRequest"
       | "reviewMode"
@@ -171,6 +181,10 @@ export interface CampaignInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "allowContributionAfterTargetIsMet",
     values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "allowedToContribute",
+    values: [string]
   ): string;
   encodeFunctionData(functionFragment: "approvers", values: [string]): string;
   encodeFunctionData(
@@ -249,11 +263,13 @@ export interface CampaignInterface extends utils.Interface {
     functionFragment: "reportCount",
     values?: undefined
   ): string;
+  encodeFunctionData(functionFragment: "reportHash", values: [string]): string;
   encodeFunctionData(functionFragment: "reported", values: [string]): string;
   encodeFunctionData(
     functionFragment: "reviewCount",
     values?: undefined
   ): string;
+  encodeFunctionData(functionFragment: "reviewHash", values: [string]): string;
   encodeFunctionData(functionFragment: "reviewed", values: [string]): string;
   encodeFunctionData(
     functionFragment: "revokeRole",
@@ -287,6 +303,10 @@ export interface CampaignInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "isCampaignAdmin",
+    values: [string]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "isCampaignManager",
     values: [string]
   ): string;
   encodeFunctionData(
@@ -325,11 +345,15 @@ export interface CampaignInterface extends utils.Interface {
     values: [BigNumberish]
   ): string;
   encodeFunctionData(
+    functionFragment: "toggleContributorApproval",
+    values: [string]
+  ): string;
+  encodeFunctionData(
     functionFragment: "contribute",
     values: [string, BigNumberish, boolean]
   ): string;
   encodeFunctionData(
-    functionFragment: "withdrawOwnContribution",
+    functionFragment: "withdrawContribution",
     values: [string]
   ): string;
   encodeFunctionData(
@@ -385,6 +409,10 @@ export interface CampaignInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "addRole", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "allowContributionAfterTargetIsMet",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "allowedToContribute",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "approvers", data: BytesLike): Result;
@@ -455,11 +483,13 @@ export interface CampaignInterface extends utils.Interface {
     functionFragment: "reportCount",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "reportHash", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "reported", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "reviewCount",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "reviewHash", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "reviewed", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "revokeRole", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "root", data: BytesLike): Result;
@@ -493,6 +523,10 @@ export interface CampaignInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "isCampaignManager",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "getCampaignGoalType",
     data: BytesLike
   ): Result;
@@ -520,9 +554,13 @@ export interface CampaignInterface extends utils.Interface {
     functionFragment: "setDeadlineSetTimes",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "toggleContributorApproval",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "contribute", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "withdrawOwnContribution",
+    functionFragment: "withdrawContribution",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -574,6 +612,7 @@ export interface CampaignInterface extends utils.Interface {
     "CampaignUserDataTransferred(address,address)": EventFragment;
     "ContributionMade(uint256,uint256,uint256,uint256,bool)": EventFragment;
     "ContributionWithdrawn(uint256,uint256,address)": EventFragment;
+    "ContributorApprovalToggled(address,bool)": EventFragment;
     "DeadlineThresholdExtended(uint8)": EventFragment;
     "Paused(address)": EventFragment;
     "RequestComplete(uint256)": EventFragment;
@@ -598,6 +637,7 @@ export interface CampaignInterface extends utils.Interface {
   ): EventFragment;
   getEvent(nameOrSignatureOrTopic: "ContributionMade"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "ContributionWithdrawn"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "ContributorApprovalToggled"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "DeadlineThresholdExtended"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Paused"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "RequestComplete"): EventFragment;
@@ -732,6 +772,18 @@ export type ContributionWithdrawnEvent = TypedEvent<
 export type ContributionWithdrawnEventFilter =
   TypedEventFilter<ContributionWithdrawnEvent>;
 
+export interface ContributorApprovalToggledEventObject {
+  contributor: string;
+  isApproved: boolean;
+}
+export type ContributorApprovalToggledEvent = TypedEvent<
+  [string, boolean],
+  ContributorApprovalToggledEventObject
+>;
+
+export type ContributorApprovalToggledEventFilter =
+  TypedEventFilter<ContributorApprovalToggledEvent>;
+
 export interface DeadlineThresholdExtendedEventObject {
   count: number;
 }
@@ -858,6 +910,11 @@ export interface Campaign extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[boolean]>;
 
+    allowedToContribute(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
     approvers(arg0: string, overrides?: CallOverrides): Promise<[boolean]>;
 
     approversCount(overrides?: CallOverrides): Promise<[BigNumber]>;
@@ -925,9 +982,13 @@ export interface Campaign extends BaseContract {
 
     reportCount(overrides?: CallOverrides): Promise<[BigNumber]>;
 
+    reportHash(arg0: string, overrides?: CallOverrides): Promise<[string]>;
+
     reported(arg0: string, overrides?: CallOverrides): Promise<[boolean]>;
 
     reviewCount(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    reviewHash(arg0: string, overrides?: CallOverrides): Promise<[string]>;
 
     reviewed(arg0: string, overrides?: CallOverrides): Promise<[boolean]>;
 
@@ -974,6 +1035,11 @@ export interface Campaign extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[boolean]>;
 
+    isCampaignManager(
+      _user: string,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
     getCampaignGoalType(overrides?: CallOverrides): Promise<[number]>;
 
     getCampaignState(
@@ -1013,6 +1079,11 @@ export interface Campaign extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
+    toggleContributorApproval(
+      _contributor: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
     contribute(
       _token: string,
       _rewardId: BigNumberish,
@@ -1020,7 +1091,7 @@ export interface Campaign extends BaseContract {
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    withdrawOwnContribution(
+    withdrawContribution(
       _wallet: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
@@ -1088,6 +1159,11 @@ export interface Campaign extends BaseContract {
     overrides?: CallOverrides
   ): Promise<boolean>;
 
+  allowedToContribute(
+    arg0: string,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
   approvers(arg0: string, overrides?: CallOverrides): Promise<boolean>;
 
   approversCount(overrides?: CallOverrides): Promise<BigNumber>;
@@ -1152,9 +1228,13 @@ export interface Campaign extends BaseContract {
 
   reportCount(overrides?: CallOverrides): Promise<BigNumber>;
 
+  reportHash(arg0: string, overrides?: CallOverrides): Promise<string>;
+
   reported(arg0: string, overrides?: CallOverrides): Promise<boolean>;
 
   reviewCount(overrides?: CallOverrides): Promise<BigNumber>;
+
+  reviewHash(arg0: string, overrides?: CallOverrides): Promise<string>;
 
   reviewed(arg0: string, overrides?: CallOverrides): Promise<boolean>;
 
@@ -1198,6 +1278,8 @@ export interface Campaign extends BaseContract {
 
   isCampaignAdmin(_user: string, overrides?: CallOverrides): Promise<boolean>;
 
+  isCampaignManager(_user: string, overrides?: CallOverrides): Promise<boolean>;
+
   getCampaignGoalType(overrides?: CallOverrides): Promise<number>;
 
   getCampaignState(
@@ -1237,6 +1319,11 @@ export interface Campaign extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
+  toggleContributorApproval(
+    _contributor: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
   contribute(
     _token: string,
     _rewardId: BigNumberish,
@@ -1244,7 +1331,7 @@ export interface Campaign extends BaseContract {
     overrides?: PayableOverrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  withdrawOwnContribution(
+  withdrawContribution(
     _wallet: string,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
@@ -1312,6 +1399,11 @@ export interface Campaign extends BaseContract {
       overrides?: CallOverrides
     ): Promise<boolean>;
 
+    allowedToContribute(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
     approvers(arg0: string, overrides?: CallOverrides): Promise<boolean>;
 
     approversCount(overrides?: CallOverrides): Promise<BigNumber>;
@@ -1374,9 +1466,13 @@ export interface Campaign extends BaseContract {
 
     reportCount(overrides?: CallOverrides): Promise<BigNumber>;
 
+    reportHash(arg0: string, overrides?: CallOverrides): Promise<string>;
+
     reported(arg0: string, overrides?: CallOverrides): Promise<boolean>;
 
     reviewCount(overrides?: CallOverrides): Promise<BigNumber>;
+
+    reviewHash(arg0: string, overrides?: CallOverrides): Promise<string>;
 
     reviewed(arg0: string, overrides?: CallOverrides): Promise<boolean>;
 
@@ -1420,6 +1516,11 @@ export interface Campaign extends BaseContract {
 
     isCampaignAdmin(_user: string, overrides?: CallOverrides): Promise<boolean>;
 
+    isCampaignManager(
+      _user: string,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
     getCampaignGoalType(overrides?: CallOverrides): Promise<number>;
 
     getCampaignState(
@@ -1459,6 +1560,11 @@ export interface Campaign extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
+    toggleContributorApproval(
+      _contributor: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     contribute(
       _token: string,
       _rewardId: BigNumberish,
@@ -1466,7 +1572,7 @@ export interface Campaign extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    withdrawOwnContribution(
+    withdrawContribution(
       _wallet: string,
       overrides?: CallOverrides
     ): Promise<void>;
@@ -1599,6 +1705,15 @@ export interface Campaign extends BaseContract {
       user?: null
     ): ContributionWithdrawnEventFilter;
 
+    "ContributorApprovalToggled(address,bool)"(
+      contributor?: null,
+      isApproved?: null
+    ): ContributorApprovalToggledEventFilter;
+    ContributorApprovalToggled(
+      contributor?: null,
+      isApproved?: null
+    ): ContributorApprovalToggledEventFilter;
+
     "DeadlineThresholdExtended(uint8)"(
       count?: null
     ): DeadlineThresholdExtendedEventFilter;
@@ -1677,6 +1792,11 @@ export interface Campaign extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    allowedToContribute(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     approvers(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
 
     approversCount(overrides?: CallOverrides): Promise<BigNumber>;
@@ -1744,9 +1864,13 @@ export interface Campaign extends BaseContract {
 
     reportCount(overrides?: CallOverrides): Promise<BigNumber>;
 
+    reportHash(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
+
     reported(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
 
     reviewCount(overrides?: CallOverrides): Promise<BigNumber>;
+
+    reviewHash(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
 
     reviewed(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -1793,6 +1917,11 @@ export interface Campaign extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    isCampaignManager(
+      _user: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     getCampaignGoalType(overrides?: CallOverrides): Promise<BigNumber>;
 
     getCampaignState(
@@ -1832,6 +1961,11 @@ export interface Campaign extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
+    toggleContributorApproval(
+      _contributor: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
     contribute(
       _token: string,
       _rewardId: BigNumberish,
@@ -1839,7 +1973,7 @@ export interface Campaign extends BaseContract {
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    withdrawOwnContribution(
+    withdrawContribution(
       _wallet: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
@@ -1907,6 +2041,11 @@ export interface Campaign extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     allowContributionAfterTargetIsMet(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    allowedToContribute(
+      arg0: string,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
@@ -1993,12 +2132,22 @@ export interface Campaign extends BaseContract {
 
     reportCount(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
+    reportHash(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     reported(
       arg0: string,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     reviewCount(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    reviewHash(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
     reviewed(
       arg0: string,
@@ -2050,6 +2199,11 @@ export interface Campaign extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
+    isCampaignManager(
+      _user: string,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     getCampaignGoalType(
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
@@ -2091,6 +2245,11 @@ export interface Campaign extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
+    toggleContributorApproval(
+      _contributor: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
     contribute(
       _token: string,
       _rewardId: BigNumberish,
@@ -2098,7 +2257,7 @@ export interface Campaign extends BaseContract {
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
-    withdrawOwnContribution(
+    withdrawContribution(
       _wallet: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;

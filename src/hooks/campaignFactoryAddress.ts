@@ -1,13 +1,15 @@
 import { useRouter } from 'next/router';
+import { useContractAddress } from '@/hooks/contracts';
 
 const useCampaignFactoryAddress = (): string => {
   const { query } = useRouter();
 
-  const envCampaignFactoryAddress = process.env.campaignFactoryAddress;
+  const contractAddress = useContractAddress();
+  const campaignFactoryAddress = contractAddress('myCrowdship');
 
-  return envCampaignFactoryAddress.length
-    ? envCampaignFactoryAddress
-    : (query.campaignFactory as string) || '';
+  if (query.myCrowdship) return query.myCrowdship as string;
+
+  return campaignFactoryAddress;
 };
 
 export default useCampaignFactoryAddress;

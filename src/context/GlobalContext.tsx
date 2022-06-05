@@ -10,10 +10,10 @@ import {
 } from '@/components/SearchModalDialog';
 
 import {
-  CreateProfileDrawer,
-  ICreateProfileDrawer,
-  initialProps as createProfileDrawerProps,
-} from '@/components/CreateProfileDrawer';
+  NotificationBar,
+  INotificationBar,
+  initialProps as notificationBarProps,
+} from '@/components/NotificationBar';
 
 import {
   Loading,
@@ -23,7 +23,7 @@ import {
 
 export interface ContextReader {
   searchModalDialog?: ISearchModalDialog;
-  createProfileDrawer?: ICreateProfileDrawer;
+  notification?: INotificationBar;
   loading?: ILoading;
 }
 
@@ -40,7 +40,7 @@ export interface IGlobalContext {
 const initialCtxProps: IGlobalContext = {
   state: {
     searchModalDialog: searchModalDialogProps,
-    createProfileDrawer: createProfileDrawerProps,
+    notification: notificationBarProps,
     loading: loadingProps,
   },
   dispatch: () => {},
@@ -72,13 +72,13 @@ const GlobalProvider = ({ children }) => {
   return (
     <GlobalContext.Provider value={{ state, dispatch }}>
       <Loading {...state.loading} />
-      <CreateProfileDrawer
-        {...state.createProfileDrawer}
+      <NotificationBar
+        {...state.notification}
         onClose={() =>
           dispatch({
-            type: ReducerTypes.TOGGLE_CREATE_PROFILE_DRAWER,
+            type: ReducerTypes.TOGGLE_NOTIFICATION,
             payload: {
-              createProfileDrawer: {
+              notification: {
                 isOpen: false,
               },
             },

@@ -9,15 +9,17 @@ export const Layout = ({ children }: { children: ReactNode }) => {
 
   const showComponent = (paths: string[]) => !paths.includes(pathname);
 
+  const pathsWithoutHeaderAndFooter = [
+    '/create-demo',
+    '/launch-campaign',
+    '/_error',
+  ];
+
   return (
     <main>
-      {showComponent(['/', '/my-crowdship/[campaignFactory]/launch']) && (
-        <Header />
-      )}
+      {showComponent(pathsWithoutHeaderAndFooter) && <Header />}
       {children}
-      {showComponent(['/', '/my-crowdship/[campaignFactory]/launch']) && (
-        <Footer />
-      )}
+      {showComponent(pathsWithoutHeaderAndFooter) && <Footer />}
     </main>
   );
 };

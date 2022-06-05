@@ -1,3 +1,11 @@
+html {
+  overflow-x: hidden;
+}
+
+body {
+  width: 100vw;
+}
+
 .bn-onboard-modal {
   font-family: 'DM Mono' !important;
 }
@@ -12,4 +20,31 @@
 
 .campaign-search-card:hover .go-to-shortcut {
   display: block;
+}
+
+#splide02-track {
+  width: 90%;
+  margin: 0 auto;
+}
+
+#splide02-track .splide__slide {
+  opacity: 0.6;
+}
+
+#splide02-track .splide__slide.is-active {
+  opacity: 1;
+}
+
+#splide02 .splide__arrow--prev {
+  left: 0 !important;
+  background: transparent !important;
+}
+
+#splide02 .splide__arrow--next {
+  right: 0 !important;
+  background: transparent !important;
+}
+
+.splide__track--nav > .splide__list > .splide__slide.is-active {
+  border: 3px solid #ffc300 !important;
 }

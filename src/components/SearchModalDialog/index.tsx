@@ -56,77 +56,77 @@ export const SearchModalDialog: FC<ISearchModalDialog> = ({
   const results = useMemo(() => {
     return [
       {
-        image: '/demo.jpg',
+        image: '/images/demo.jpg',
         header: 'Mountain Climbers',
         subheader: '25% complete',
       },
       {
-        image: '/demo.jpg',
+        image: '/images/demo.jpg',
         header: 'Mountain Climbers',
         subheader: '25% complete',
       },
       {
-        image: '/demo.jpg',
+        image: '/images/demo.jpg',
         header: 'Mountain Climbers',
         subheader: '25% complete',
       },
       {
-        image: '/demo.jpg',
+        image: '/images/demo.jpg',
         header: 'Mountain Climbers',
         subheader: '25% complete',
       },
       {
-        image: '/demo.jpg',
+        image: '/images/demo.jpg',
         header: 'Mountain Climbers',
         subheader: '25% complete',
       },
       {
-        image: '/demo.jpg',
+        image: '/images/demo.jpg',
         header: 'Mountain Climbers',
         subheader: '25% complete',
       },
       {
-        image: '/demo.jpg',
+        image: '/images/demo.jpg',
         header: 'Mountain Climbers',
         subheader: '25% complete',
       },
       {
-        image: '/demo.jpg',
+        image: '/images/demo.jpg',
         header: 'Mountain Climbers',
         subheader: '25% complete',
       },
       {
-        image: '/demo.jpg',
+        image: '/images/demo.jpg',
         header: 'Mountain Climbers',
         subheader: '25% complete',
       },
       {
-        image: '/demo.jpg',
+        image: '/images/demo.jpg',
         header: 'Mountain Climbers',
         subheader: '25% complete',
       },
       {
-        image: '/demo.jpg',
+        image: '/images/demo.jpg',
         header: 'Mountain Climbers',
         subheader: '25% complete',
       },
       {
-        image: '/demo.jpg',
+        image: '/images/demo.jpg',
         header: 'Mountain Climbers',
         subheader: '25% complete',
       },
       {
-        image: '/demo.jpg',
+        image: '/images/demo.jpg',
         header: 'Mountain Climbers',
         subheader: '25% complete',
       },
       {
-        image: '/demo.jpg',
+        image: '/images/demo.jpg',
         header: 'Mountain Climbers',
         subheader: '25% complete',
       },
       {
-        image: '/demo.jpg',
+        image: '/images/demo.jpg',
         header: 'Mountain Climbers',
         subheader: '25% complete',
       },
@@ -231,7 +231,7 @@ export const SearchModalDialog: FC<ISearchModalDialog> = ({
               >
                 <InputLeftElement mt='2' ml='2'>
                   <Image
-                    src='/modal-search.svg'
+                    src='/images/modal-search.svg'
                     height='23'
                     width='23'
                     alt='search icon'

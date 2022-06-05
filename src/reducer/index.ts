@@ -1,11 +1,11 @@
 import { ContextReader, ContextWriter } from '@/context/GlobalContext';
 
-import { createProfileDrawer } from './createProfileDrawer';
+import { toggleNotification } from './toggleNotification';
 
 export enum ReducerTypes {
   TOGGLE_SEARCH_MODAL = 'TOGGLE_SEARCH_MODAL',
-  TOGGLE_CREATE_PROFILE_DRAWER = 'OPEN_CREATE_PROFILE_DRAWER',
-  PROFILE_DRAWER_LOADING = 'PROFILE_DRAWER_LOADING',
+  TOGGLE_NOTIFICATION = 'TOGGLE_NOTIFICATION',
+  TOGGLE_NOTIFICATION_LOADING = 'TOGGLE_NOTIFICATION_LOADING',
   SET_LOADING = 'SET_LOADING',
 }
 
@@ -14,12 +14,11 @@ const reducer = (draft: ContextReader, action: ContextWriter): void => {
     case ReducerTypes.TOGGLE_SEARCH_MODAL:
       draft.searchModalDialog.isOpen = action.payload.searchModalDialog.isOpen;
       break;
-    case ReducerTypes.TOGGLE_CREATE_PROFILE_DRAWER:
-      createProfileDrawer(draft, action);
+    case ReducerTypes.TOGGLE_NOTIFICATION:
+      toggleNotification(draft, action);
       break;
-    case ReducerTypes.PROFILE_DRAWER_LOADING:
-      draft.createProfileDrawer.loading =
-        action.payload.createProfileDrawer.loading;
+    case ReducerTypes.TOGGLE_NOTIFICATION_LOADING:
+      draft.notification.loading = action.payload.notification.loading;
       break;
     case ReducerTypes.SET_LOADING:
       draft.loading.isLoading = action.payload.loading.isLoading;

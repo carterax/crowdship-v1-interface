@@ -9,13 +9,30 @@ import gnosisModule from '@web3-onboard/gnosis';
 
 import { SupportedChainId } from '@/constants/chains';
 
-const PORTIS_ID = 'b0c1514e-eb13-4102-be08-85b6f02a5f34';
-const FORTMATIC_KEY = 'pk_test_D1E1D4C8EC7B99EB';
+declare let process: {
+  env: {
+    ethereum: {
+      rpcUrl: string;
+    };
+    polygon: {
+      rpcUrl: string;
+    };
+    bsc: {
+      rpcUrl: string;
+    };
+    rinkeby: {
+      rpcUrl: string;
+    };
+  };
+};
 
-const RINKEBY_RPC_URL = process.env.rinkeby.rpcUrl;
 const ETH_RPC_URL = process.env.ethereum.rpcUrl;
 const POLYGON_RPC_URL = process.env.polygon.rpcUrl;
 const BSC_RPC_URL = process.env.bsc.rpcUrl;
+const RINKEBY_RPC_URL = process.env.rinkeby.rpcUrl;
+
+const PORTIS_ID = 'b0c1514e-eb13-4102-be08-85b6f02a5f34';
+const FORTMATIC_KEY = 'pk_test_D1E1D4C8EC7B99EB';
 
 const coinbaseWalletSdk = coinbaseWalletModule();
 const walletConnect = walletConnectModule();
@@ -50,21 +67,18 @@ init({
       token: 'ETH',
       label: 'Ethereum',
       rpcUrl: ETH_RPC_URL,
-      icon: '',
     },
     {
       id: SupportedChainId.POLYGON as string,
       token: 'MATIC',
       label: 'Polygon',
       rpcUrl: POLYGON_RPC_URL,
-      icon: '',
     },
     {
       id: SupportedChainId.BSC as string,
       token: 'bnb',
       label: 'Binance',
       rpcUrl: BSC_RPC_URL,
-      icon: '',
     },
     {
       id: SupportedChainId.RINKEBY as string,
@@ -72,7 +86,6 @@ init({
       namespace: 'evm',
       label: 'Rinkeby',
       rpcUrl: RINKEBY_RPC_URL,
-      icon: '',
     },
   ],
   appMetadata: {

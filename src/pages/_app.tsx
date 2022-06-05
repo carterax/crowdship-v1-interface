@@ -1,9 +1,14 @@
-import type { AppProps } from 'next/app';
+import App from 'next/app';
 import { ChakraProvider } from '@chakra-ui/react';
-import { Layout } from '@/components/Layout';
+import Script from 'next/script';
 
 import { OnboardProvider } from '@/context/OnboardContext';
+import GlobalProvider from '@/context/GlobalContext';
+
+import { Layout } from '@/components/Layout';
 import theme from '@/theme/theme';
+
+import { nextRedirect } from '@/utils/next-redirect';
 
 import '@/styles/global.css';
 import '@fontsource/dm-sans/400.css';
@@ -12,20 +17,58 @@ import '@fontsource/dm-sans/700.css';
 import '@fontsource/dm-mono/500.css';
 
 import '@/connectors/onboard';
-import GlobalProvider from '@/context/GlobalContext';
 
-const App = ({ Component, pageProps }: AppProps) => {
+const MyApp = ({ Component, pageProps }): JSX.Element => {
+  const { ...props } = pageProps;
+
   return (
-    <ChakraProvider theme={theme}>
-      <OnboardProvider>
+    <>
+      <Script
+        strategy='beforeInteractive'
+        src='/scripts/gun/gun.min.js'
+      ></Script>
+      <Script
+        strategy='beforeInteractive'
+        src='/scripts/gun/axe.min.js'
+      ></Script>
+      <Script
+        strategy='beforeInteractive'
+        src='/scripts/gun/sea.min.js'
+      ></Script>
+      <ChakraProvider theme={theme}>
         <GlobalProvider>
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
+          <OnboardProvider>
+            <Layout>
+              <Component {...props} />
+            </Layout>
+          </OnboardProvider>
         </GlobalProvider>
-      </OnboardProvider>
-    </ChakraProvider>
+      </ChakraProvider>
+    </>
   );
 };
 
-export default App;
+MyApp.getInitialProps = async (appContext) => {
+  const env = process.env.NODE_ENV;
+  const pageProps = await App.getInitialProps(appContext);
+
+  if (appContext.ctx && env === 'development') {
+    const { query, req } = appContext.ctx;
+
+    if (req && query) {
+      if (
+        !query.myCrowdship &&
+        !req.url.includes('404') &&
+        !req.url.includes('create-demo')
+      ) {
+        return nextRedirect({ ctx: appContext.ctx, to: '/404' });
+      }
+    }
+  }
+
+  return {
+    ...pageProps,
+  };
+};
+
+export default MyApp;

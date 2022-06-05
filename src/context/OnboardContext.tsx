@@ -1,19 +1,30 @@
-import React, { useEffect, useState, createContext, useContext } from 'react';
+import React, {
+  useEffect,
+  useState,
+  createContext,
+  useContext,
+  useCallback,
+} from 'react';
 
-import { useConnectWallet } from '@web3-onboard/react';
+import { useConnectWallet, useSetChain } from '@web3-onboard/react';
 import { WalletState } from '@web3-onboard/core';
 
 import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers';
+import { getAddress } from '@ethersproject/address';
 
-import { gun } from '@/lib/gun';
-import { ISEAPair } from 'gun/types/sea/ISEAPair';
+import { useGlobalState } from '@/hooks/globalState';
 
-import 'gun/sea';
+import { ReducerTypes } from '@/reducer';
+
+import { user } from '@/lib/gun';
+import { SupportedChainId } from '@/constants/chains';
 
 export interface IOnboardContext {
   wallet: WalletState;
   authenticate: () => Promise<void>;
   authenticating: boolean;
+  authenticated: boolean;
+  connectedChainError: Error | null;
   logout: () => void;
 }
 
@@ -21,6 +32,8 @@ const initialCtxProps = {
   wallet: {} as WalletState,
   authenticate: () => Promise.resolve(),
   authenticating: false,
+  authenticated: false,
+  connectedChainError: null,
   logout: () => {},
 };
 
@@ -31,12 +44,38 @@ export function useOnboardContext() {
 }
 
 export const OnboardProvider = ({ children }) => {
-  const [state, setState] = useState<{ authenticating: boolean }>({
+  const [state, setState] = useState<{
+    authenticating: boolean;
+    authenticated: boolean;
+    connectedChainError: Error | null;
+  }>({
     authenticating: false,
+    authenticated: false,
+    connectedChainError: null,
   });
   const [{ wallet }, connect, disconnect] = useConnectWallet();
+  const [{ connectedChain }] = useSetChain();
+  const { dispatch } = useGlobalState();
 
-  const _signLogin = async (signer: JsonRpcSigner): Promise<string> => {
+  const authenticate = async (): Promise<void> => {
+    if (state.connectedChainError) {
+      // open wrong network modal
+      dispatch({
+        type: ReducerTypes.TOGGLE_NOTIFICATION,
+        payload: {
+          notification: {
+            isOpen: true,
+            type: 'error',
+            title: state.connectedChainError.message,
+          },
+        },
+      });
+    } else {
+      await connect({});
+    }
+  };
+
+  const _signGunLogin = async (signer: JsonRpcSigner): Promise<string> => {
     const cached = localStorage.getItem('signin');
 
     if (cached === null) {
@@ -53,8 +92,6 @@ export const OnboardProvider = ({ children }) => {
     }
   };
 
-  const authenticate = async (): Promise<void> => await connect({});
-
   const _authenticateWithGun = async (wallet: WalletState) => {
     setState({
       ...state,
@@ -62,10 +99,9 @@ export const OnboardProvider = ({ children }) => {
     });
 
     try {
-      const address = wallet.accounts[0].address;
+      const address = getAddress(wallet.accounts[0].address);
       const provider = new Web3Provider(wallet.provider);
-      const login = await _signLogin(provider.getSigner());
-      const user = gun.user();
+      const signature = await _signGunLogin(provider.getSigner());
 
       const ack = await new Promise<{
         ack: 2;
@@ -77,23 +113,21 @@ export const OnboardProvider = ({ children }) => {
           epub: string;
           pub: string;
         };
-        sea: ISEAPair;
+        sea: unknown;
         soul: string;
       }>((resolve) => {
-        user.create(address, login, () => {
-          user.auth(address, login, (ack) => resolve(ack as any));
+        user.create(address, signature, () => {
+          user.auth(address, signature, (ack) => resolve(ack as any));
         });
       });
 
-      const error = ack as unknown as { error?: string };
-      console.log(error);
-      if (error.error) throw new Error(error.error);
+      const error = ack as unknown as { err?: string };
+
+      if (error.err) throw new Error(error.err);
 
       // console.log(login);
       // console.log(ack.sea);
-      const isLoggedIn: any = gun.user().recall({ sessionStorage: true });
-
-      if (isLoggedIn && isLoggedIn.is) {
+      if (user && user.is) {
         window.localStorage.setItem(
           'connectedWallets',
           JSON.stringify([wallet.label])
@@ -101,28 +135,40 @@ export const OnboardProvider = ({ children }) => {
         setState({
           ...state,
           authenticating: false,
+          authenticated: true,
         });
       }
     } catch (error) {
+      _disconnectWallet();
+      dispatch({
+        type: ReducerTypes.TOGGLE_NOTIFICATION,
+        payload: {
+          notification: {
+            isOpen: true,
+            title: error.message,
+            type: 'error',
+          },
+        },
+      });
       setState({
         ...state,
         authenticating: false,
       });
-      console.log(error);
     }
   };
 
-  const disconnectWallet = async (): Promise<void> =>
+  const _disconnectWallet = async (): Promise<void> =>
     wallet && disconnect(wallet);
 
-  const destroy = (): void => {
-    const user = gun.user().recall({ sessionStorage: true });
-    user.leave();
-  };
+  const _destroyGunSession = (): void => user.leave();
 
   const logout = async (): Promise<void> => {
-    await disconnectWallet();
-    destroy();
+    setState({
+      ...state,
+      authenticated: false,
+    });
+    await _disconnectWallet();
+    _destroyGunSession();
   };
 
   useEffect(() => {
@@ -145,6 +191,21 @@ export const OnboardProvider = ({ children }) => {
 
     if (!wallet) window.localStorage.removeItem('connectedWallets');
   }, [wallet]);
+
+  useEffect(() => {
+    if (
+      connectedChain &&
+      connectedChain.id &&
+      !Object.values(SupportedChainId).includes(
+        connectedChain.id as SupportedChainId
+      )
+    ) {
+      setState({
+        ...state,
+        connectedChainError: new Error('Wrong Network'),
+      });
+    }
+  }, [connectedChain]);
 
   return (
     <OnboardContext.Provider

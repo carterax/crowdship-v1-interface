@@ -10,6 +10,8 @@ export const ButtonStyles = {
     primary: (props: any) => ({
       bg: 'black.500',
       color: 'white',
+      fontWeight: '500',
+      borderRadius: 'md',
       _hover: {
         bg: whiten('black.500', 15),
         _disabled: {
@@ -23,6 +25,8 @@ export const ButtonStyles = {
     primaryAlt: () => ({
       bg: 'purple.500',
       color: 'purple.100',
+      fontWeight: '500',
+      borderRadius: 'md',
       _hover: {
         bg: whiten('purple.500', 15),
         _disabled: {
@@ -36,6 +40,8 @@ export const ButtonStyles = {
     secondary: () => ({
       bg: 'yellow.500',
       color: 'black.500',
+      fontWeight: '500',
+      borderRadius: 'md',
       _hover: {
         bg: whiten('yellow.500', 15),
         _disabled: {
@@ -49,6 +55,7 @@ export const ButtonStyles = {
     plain: () => ({
       bg: 'gray.50',
       color: 'black.500',
+      borderRadius: 'md',
       _hover: {
         bg: whiten('gray.50', 15),
         _disabled: {

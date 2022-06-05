@@ -35,7 +35,7 @@ const SpecialCampaignCard = ({
   <Box
     h='452px'
     borderRadius='lg'
-    backgroundImage={image || '/default-campaign-banner.svg'}
+    backgroundImage={image || '/images/default-campaign-banner.svg'}
     backgroundPosition='center center'
     backgroundSize='cover'
     backgroundRepeat='no-repeat'
@@ -109,7 +109,7 @@ const AltCampaignCard = ({
   >
     <Box height='175px'>
       <Image
-        src={image || '/default-campaign-banner.svg'}
+        src={image || '/images/default-campaign-banner.svg'}
         alt={heading}
         width='398'
         height='175'
@@ -193,7 +193,12 @@ const AltCampaignCard = ({
                 borderRadius='md'
                 p={2}
               >
-                <Image src='/pax.svg' height='20px' width='20px' alt='token' />
+                <Image
+                  src='/images/pax.svg'
+                  height='20px'
+                  width='20px'
+                  alt='token'
+                />
               </Center>
               <Text
                 as='span'
@@ -217,7 +222,7 @@ const AltCampaignCard = ({
                 p={2}
               >
                 <Image
-                  src='/logo-alt.svg'
+                  src='/images/logo-alt.svg'
                   height='20px'
                   width='20px'
                   alt='token'

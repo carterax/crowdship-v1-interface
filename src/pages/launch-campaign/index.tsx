@@ -20,7 +20,6 @@ import {
   AlertDescription,
   CloseButton,
 } from '@chakra-ui/react';
-import { nanoid } from 'nanoid';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -35,19 +34,18 @@ import { CampaignCard } from '@/components/CampaignCard';
 import { RadioGroup } from '@/components/RadioGroup';
 import { CategoryIcon } from '@/components/CategoryIcon';
 
-import useGlobalState from '@/hooks/globalState';
+import { useGlobalState } from '@/hooks/globalState';
 import { ReducerTypes } from '@/reducer';
 
-import { gun } from '@/lib/gun';
+import { gun, user } from '@/lib/gun';
 import { uploadFile } from '@/lib/xhr/upload-file';
 
-import {
-  useAuthenticate,
-  useAuthenticated,
-  useAddress,
-} from '@/hooks/web3Onboard';
-import { useCampaignFactory } from '@/hooks/contract';
+import { useAuthenticate, useWalletAddress } from '@/hooks/web3Onboard';
+import { useCampaignFactory } from '@/hooks/contracts';
 import useCampaignFactoryAddress from '@/hooks/campaignFactoryAddress';
+import { useInjectCrowdshipQuery } from '@/hooks/injectCrowdshipQuery';
+
+import nanoid from '@/utils/nanoid';
 
 const Content = ({
   index,
@@ -138,10 +136,12 @@ const Launch: NextPage = () => {
   const { dispatch } = useGlobalState();
 
   const campaignFactoryAddress = useCampaignFactoryAddress();
-  const [authenticate, authenticating] = useAuthenticate();
-  const isLoggedIn = useAuthenticated();
   const campaignFactory = useCampaignFactory(campaignFactoryAddress);
-  const address = useAddress();
+
+  const [authenticate, authenticating, authenticated] = useAuthenticate();
+  const address = useWalletAddress();
+
+  const injectCrowdshipQuery = useInjectCrowdshipQuery();
 
   const {
     register,
@@ -414,7 +414,12 @@ const Launch: NextPage = () => {
   const steps = [
     {
       header: (
-        <Image src='/logo-single.svg' width='73' height='61' alt='Crowdship' />
+        <Image
+          src='/images/logo-single.svg'
+          width='73'
+          height='61'
+          alt='Crowdship'
+        />
       ),
       content: stepContents['campaignCategory'],
       fields: ['campaignCategory'],
@@ -444,22 +449,11 @@ const Launch: NextPage = () => {
     },
   ];
 
-  const toggleCreateProfileDrawer = (isOpen: boolean) => {
-    dispatch({
-      type: ReducerTypes.TOGGLE_CREATE_PROFILE_DRAWER,
-      payload: {
-        createProfileDrawer: {
-          isOpen,
-        },
-      },
-    });
-  };
-
   const setProfileDrawerLoading = (loading: boolean) => {
     dispatch({
-      type: ReducerTypes.PROFILE_DRAWER_LOADING,
+      type: ReducerTypes.TOGGLE_NOTIFICATION_LOADING,
       payload: {
-        createProfileDrawer: {
+        notification: {
           loading,
         },
       },
@@ -469,30 +463,29 @@ const Launch: NextPage = () => {
   const createProfile = async (user: any) => {
     setProfileDrawerLoading(true);
 
-    (await campaignFactory)
+    await campaignFactory
       .signUp(user.is.alias)
       .then(() => {
         dispatch({
-          type: ReducerTypes.TOGGLE_CREATE_PROFILE_DRAWER,
+          type: ReducerTypes.TOGGLE_NOTIFICATION,
           payload: {
-            createProfileDrawer: {
+            notification: {
               type: 'success',
               isOpen: true,
-              title: 'Huzzah! Your profile was huge success.',
-              icon: <CheckCircle size={25} color='#FFFFFF' />,
+              title: 'Huzzah! Your profile was much success.',
               showButton: false,
             },
           },
         });
       })
-      .catch((err: Error) => {
+      .catch((err) => {
         dispatch({
-          type: ReducerTypes.TOGGLE_CREATE_PROFILE_DRAWER,
+          type: ReducerTypes.TOGGLE_NOTIFICATION,
           payload: {
-            createProfileDrawer: {
+            notification: {
               type: 'error',
               isOpen: true,
-              title: err.message,
+              title: err.error.message,
               icon: <XCircle color='#FFFFFF' size={25} />,
               buttonText: 'Try again',
               buttonAction: async () => createProfile(user),
@@ -523,7 +516,7 @@ const Launch: NextPage = () => {
       if (!result) return;
 
       try {
-        if (!isLoggedIn) await authenticate();
+        if (!authenticated) await authenticate();
 
         setCampaignForm({
           ...campaignForm,
@@ -533,11 +526,7 @@ const Launch: NextPage = () => {
 
         if (!campaignFactory) throw new Error('Campaign factory not found');
 
-        const userExists: boolean = await (
-          await campaignFactory
-        ).userExists(address);
-
-        const user = gun.user().recall({ sessionStorage: true });
+        const userExists = await campaignFactory.userExists(address);
 
         if (userExists) {
           launchCampaign(user);
@@ -549,17 +538,31 @@ const Launch: NextPage = () => {
 
           // ask user to create a profile
           dispatch({
-            type: ReducerTypes.TOGGLE_CREATE_PROFILE_DRAWER,
+            type: ReducerTypes.TOGGLE_NOTIFICATION,
             payload: {
-              createProfileDrawer: {
+              notification: {
                 isOpen: true,
+                type: 'info',
+                title: "Seems like you don't have a profile yet.",
+                buttonText: "Let's do it!",
+                showButton: true,
                 buttonAction: async () => createProfile(user),
               },
             },
           });
         }
-      } catch (error) {
-        console.log(error);
+      } catch (err) {
+        dispatch({
+          type: ReducerTypes.TOGGLE_NOTIFICATION,
+          payload: {
+            notification: {
+              type: 'error',
+              isOpen: true,
+              title: err.message,
+              showButton: false,
+            },
+          },
+        });
         setCampaignForm({
           ...campaignForm,
           isLoading: false,
@@ -579,7 +582,7 @@ const Launch: NextPage = () => {
       campaignCategory,
       campaignListing,
     } = watchAllFields;
-
+    const isPrivateCampaign = campaignListing === 'private';
     let cid = null;
 
     if (file.length) {
@@ -614,22 +617,23 @@ const Launch: NextPage = () => {
       description: campaignDescription,
       thumbnail: cid ? cid.response : '',
       category: campaignCategory,
-      listing: campaignListing,
+      private: isPrivateCampaign,
     });
     gun.get('campaigns').set(campaign);
 
     try {
       // save to contract
-      (await campaignFactory).createCampaign(
+      await campaignFactory.createCampaign(
         campaignCategory,
-        campaignListing === 'public' ? true : false,
+        isPrivateCampaign,
         _id
       );
 
-      (await campaignFactory).on('CampaignDeployed', (campaign) => {
-        Router.push(
-          `/my-crowdship/${campaignFactoryAddress}/campaign/${campaign}/${campaignSlug}`
+      campaignFactory.on('CampaignDeployed', (_campaignFactory) => {
+        const campaignUrl = injectCrowdshipQuery(
+          `/campaign/${_id}/${campaignSlug}`
         );
+        Router.push(campaignUrl);
       });
     } catch (error) {
       setTransactionError(error);
@@ -668,7 +672,7 @@ const Launch: NextPage = () => {
         _after={{
           content: `""`,
           position: 'fixed',
-          backgroundImage: 'url(/map-light.svg)',
+          backgroundImage: 'url(/images/map-light.svg)',
           backgroundPosition: 'bottom right',
           backgroundRepeat: 'no-repeat',
           opacity: '0.2',

@@ -8,7 +8,6 @@ import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers';
 import { Contract, ContractInterface } from '@ethersproject/contracts';
 
 import { useOnboardContext } from '@/context/OnboardContext';
-import { gun } from '@/lib/gun';
 
 export const useWallet = (): WalletState => {
   const { wallet } = useOnboardContext();
@@ -26,17 +25,16 @@ export const useConnectedChain = (): ConnectedChain => {
   }
 };
 
-export const useAuthenticate = (): [() => Promise<void>, boolean] => {
-  const { authenticate, authenticating } = useOnboardContext();
+export const useConnectedChainError = (): Error | undefined => {
+  const { connectedChainError } = useOnboardContext();
 
-  return [authenticate, authenticating];
+  return connectedChainError;
 };
 
-export const useAuthenticated = (): boolean => {
-  const address = useAddress();
-  const user = gun.user().recall({ sessionStorage: true });
+export const useAuthenticate = (): [() => Promise<void>, boolean, boolean] => {
+  const { authenticate, authenticating, authenticated } = useOnboardContext();
 
-  return address && user.is;
+  return [authenticate, authenticating, authenticated];
 };
 
 export const useLogout = (): (() => void) => {
@@ -44,7 +42,7 @@ export const useLogout = (): (() => void) => {
   return logout;
 };
 
-export const useAddress = (): string => {
+export const useWalletAddress = (): string => {
   const { accounts } = useWallet() || {};
 
   if (accounts) {

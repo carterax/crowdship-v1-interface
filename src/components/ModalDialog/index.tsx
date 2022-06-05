@@ -23,22 +23,20 @@ export const ModalDialog: FC<IModalDialog> = ({
   ...rest
 }) => {
   return (
-    <>
-      <Modal
-        isCentered={isCentered}
-        blockScrollOnMount={blockScrollOnMount}
-        isOpen={isOpen}
-        onClose={onClose}
-        size={size}
-        closeOnEsc={closeOnEsc}
-        closeOnOverlayClick={closeOnOverlayClick}
-      >
-        <ModalOverlay backgroundColor={overlayBgColor} />
-        <ModalContent {...rest}>
-          {showCloseButton ? <ModalCloseButton /> : ''}
-          <ModalBody>{children}</ModalBody>
-        </ModalContent>
-      </Modal>
-    </>
+    <Modal
+      isCentered={isCentered}
+      blockScrollOnMount={blockScrollOnMount}
+      isOpen={isOpen}
+      onClose={onClose}
+      size={size}
+      closeOnEsc={closeOnEsc}
+      closeOnOverlayClick={closeOnOverlayClick}
+    >
+      <ModalOverlay backgroundColor={overlayBgColor} />
+      <ModalContent {...rest}>
+        {showCloseButton ? <ModalCloseButton /> : ''}
+        <ModalBody>{children}</ModalBody>
+      </ModalContent>
+    </Modal>
   );
 };

@@ -1,52 +1,56 @@
 /** @type {import('next').NextConfig} */
 module.exports = {
   env: {
+    defaultChain: 'rinkeby',
     ethereum: {
-      rpcurl: 'https://mainnet.infura.io/v3/acf6da770e604c3192b10bfdc30b296a',
-      factoryAddress: '',
-      campaignFactoryAddress: '',
-      campaignImplementationAddress: '',
-      campaignRequestImplementationAddress: '',
-      campaignRewardImplementationAddress: '',
-      campaignVoteImplementationAddress: '',
+      rpcUrl: 'https://mainnet.infura.io/v3/acf6da770e604c3192b10bfdc30b296a',
+      factoryImplementation: '',
+      campaignFactoryImplementation: '',
+      campaignImplementation: '',
+      campaignRequestImplementation: '',
+      campaignRewardImplementation: '',
+      campaignVoteImplementation: '',
+      myCrowdship: '', // generated via Factory
     },
     polygon: {
-      rpcurl:
+      rpcUrl:
         'https://polygon-mainnet.infura.io/v3/acf6da770e604c3192b10bfdc30b296a',
-      factoryAddress: '',
-      campaignFactoryAddress: '',
-      campaignImplementationAddress: '',
-      campaignRequestImplementationAddress: '',
-      campaignRewardImplementationAddress: '',
-      campaignVoteImplementationAddress: '',
+      factoryImplementation: '',
+      campaignFactoryImplementation: '',
+      campaignImplementation: '',
+      campaignRequestImplementation: '',
+      campaignRewardImplementation: '',
+      campaignVoteImplementation: '',
+      myCrowdship: '', // generated via Factory
     },
     bsc: {
       rpcUrl: 'https://bsc-dataseed1.ninicoin.io',
-      factoryAddress: '',
-      campaignFactoryAddress: '',
-      campaignImplementationAddress: '',
-      campaignRequestImplementationAddress: '',
-      campaignRewardImplementationAddress: '',
-      campaignVoteImplementationAddress: '',
+      factoryImplementation: '',
+      campaignFactoryImplementation: '',
+      campaignImplementation: '',
+      campaignRequestImplementation: '',
+      campaignRewardImplementation: '',
+      campaignVoteImplementation: '',
+      myCrowdship: '', // generated via Factory
     },
     rinkeby: {
-      rpcurl: 'https://rinkeby.infura.io/v3/acf6da770e604c3192b10bfdc30b296a',
-      factoryAddress: '',
-      campaignFactoryAddress: '',
-      campaignImplementationAddress:
-        '0x1D6e7a4d9faf971A3A47Dc74cdcC1C0C769700dE',
-      campaignRequestImplementationAddress:
-        '0xfFe06357756e156474378D3F2f32c72a7065CD1f',
-      campaignRewardImplementationAddress:
-        '0xD5A893dE91856DE51bF68A6104AaFa80f4E8C75e',
-      campaignVoteImplementationAddress:
-        '0x10c7897De25f2a2bEdc6590F6d5788B536c805F6',
+      rpcUrl: 'https://rinkeby.infura.io/v3/acf6da770e604c3192b10bfdc30b296a',
+      factoryImplementation: '0x31be600172587AB86105A5524F5D9B81274C7f23',
+      campaignFactoryImplementation:
+        '0x416AaB05175a1e363bC5FB3cB6D11EAECcD2980F',
+      campaignImplementation: '0x363233576d7736132A2a3E2036a47955E43dD50b',
+      campaignRequestImplementation:
+        '0x998e166A3fAbc419352C63E68A95EEE1a6052793',
+      campaignRewardImplementation:
+        '0x356A41ac9f14D680408782E43a81E9e8c34809E5',
+      campaignVoteImplementation: '0x73C18a454688B17EDB302A8d6509Cab23F28a785',
+      myCrowdship: '', // generated via Factory
     },
   },
   images: {
     domains: ['ipfs.io'],
   },
-  reactStrictMode: true,
+  reactStrictMode: false,
   webpack(config, options) {
     config.module.rules.push({
       test: /\.svg$/,

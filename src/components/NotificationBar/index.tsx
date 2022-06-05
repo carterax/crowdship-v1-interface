@@ -7,13 +7,14 @@ import {
   DrawerOverlay,
   DrawerContent,
   DrawerBody,
+  DrawerCloseButton,
   Box,
 } from '@chakra-ui/react';
 import { Info } from 'phosphor-react';
 
 import { IModalDrawer } from '@/types/common/modal-drawer';
 
-export interface ICreateProfileDrawer extends IModalDrawer {
+export interface INotificationBar extends IModalDrawer {
   title?: string;
   icon?: ReactNode;
   buttonText?: string;
@@ -24,20 +25,20 @@ export interface ICreateProfileDrawer extends IModalDrawer {
   type?: 'success' | 'info' | 'error';
 }
 
-export const initialProps: ICreateProfileDrawer = {
-  title: 'Seems you are without a profile, create one right here.',
+export const initialProps: INotificationBar = {
+  title: 'Notification',
   icon: <Info size={25} />,
-  buttonText: 'Create',
+  buttonText: 'Dismiss',
   buttonAction: () => Promise.resolve(),
   buttonLoadingText: 'Creating...',
-  showButton: true,
+  showButton: false,
   loading: false,
   isOpen: false,
   position: 'top',
   type: 'info',
 };
 
-export const CreateProfileDrawer: FC<ICreateProfileDrawer> = ({
+export const NotificationBar: FC<INotificationBar> = ({
   title,
   icon,
   buttonText,
@@ -81,20 +82,24 @@ export const CreateProfileDrawer: FC<ICreateProfileDrawer> = ({
       placement={position}
       onClose={onClose}
       isOpen={isOpen}
-      closeOnOverlayClick
-      closeOnEsc
+      closeOnOverlayClick={false}
     >
       <DrawerOverlay />
       <DrawerContent backgroundColor={renderBgColor()}>
+        <DrawerCloseButton top='16px' color='#FFFFFF' />
         <DrawerBody>
           <Center
             alignItems='center'
             maxWidth='container.lg'
             margin='0 auto'
-            height='55'
+            minHeight='45'
           >
-            <Box display='flex' alignItems='center'>
-              {icon && <Box marginRight={1}>{icon}</Box>}
+            <Box display='flex'>
+              {icon && (
+                <Box marginRight={1} color={renderTextColor()}>
+                  {icon}
+                </Box>
+              )}
               <Text
                 as='h3'
                 marginRight={5}
@@ -123,4 +128,4 @@ export const CreateProfileDrawer: FC<ICreateProfileDrawer> = ({
   );
 };
 
-CreateProfileDrawer.defaultProps = initialProps;
+NotificationBar.defaultProps = initialProps;

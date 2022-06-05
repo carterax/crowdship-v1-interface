@@ -1,8 +1,11 @@
-import { ContextReader, ContextWriter } from './../context/GlobalContext';
-import { useGlobalContext } from '@/context/GlobalContext';
+import {
+  useGlobalContext,
+  ContextReader,
+  ContextWriter,
+} from '@/context/GlobalContext';
 import { Dispatch } from 'react';
 
-const useGlobalState = (): {
+export const useGlobalState = (): {
   state: ContextReader;
   dispatch: Dispatch<ContextWriter>;
 } => {
@@ -10,5 +13,3 @@ const useGlobalState = (): {
 
   return { state, dispatch };
 };
-
-export default useGlobalState;

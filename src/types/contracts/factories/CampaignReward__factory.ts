@@ -369,7 +369,7 @@ const _abi = [
       },
       {
         internalType: "string",
-        name: "hashed",
+        name: "hashedReward",
         type: "string",
       },
       {
