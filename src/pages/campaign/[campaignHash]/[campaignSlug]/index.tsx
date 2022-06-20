@@ -194,6 +194,8 @@ const Campaign: NextPage = (props) => {
     }
   }, []);
 
+  const acceptedCurrency = 'BUSD';
+
   return (
     <Box>
       <Hero
@@ -272,7 +274,7 @@ const Campaign: NextPage = (props) => {
               <Tooltip
                 hasArrow
                 placement='bottom'
-                label='BUSD accepted'
+                label={<Trans>{acceptedCurrency} accepted</Trans>}
                 bg='black.500'
                 color='white'
               >
@@ -288,20 +290,20 @@ const Campaign: NextPage = (props) => {
               <AdvancedMenu
                 items={[
                   {
-                    text: 'Manage Campaign',
+                    text: <Trans>Manage Campaign</Trans>,
                     icon: <PencilSimpleLine size={20} />,
                   },
                   {
-                    text: 'Create Request',
+                    text: <Trans>Create Request</Trans>,
                     icon: <Receipt size={20} />,
                   },
                   {
-                    text: 'Create Reward',
+                    text: <Trans>Create Reward</Trans>,
                     icon: <Gift size={20} />,
                     hasDivider: true,
                   },
                   {
-                    text: 'Report Campaign',
+                    text: <Trans>Report Campaign</Trans>,
                     icon: <Sword size={20} />,
                   },
                 ]}
@@ -339,7 +341,7 @@ const Campaign: NextPage = (props) => {
                   bg: 'none',
                 }}
               >
-                Save
+                <Trans>Save</Trans>
               </Button>
             </Box>
           </Box>

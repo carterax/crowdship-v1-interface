@@ -12,6 +12,7 @@ import GlobalProvider from '@/context/GlobalContext';
 import { Layout } from '@/components/Layout';
 import theme from '@/theme/theme';
 
+import loadLocale from '@/utils/load-locale';
 import { nextRedirect } from '@/utils/next-redirect';
 
 import '@/styles/global.css';
@@ -28,14 +29,7 @@ const MyApp = ({ Component, pageProps }): JSX.Element => {
   const { ...props } = pageProps;
 
   useEffect(() => {
-    const load = async (locale: string) => {
-      const { messages } = await import(`../locale/${locale}/messages.po`);
-
-      i18n.load(locale, messages);
-      i18n.activate(locale);
-    };
-
-    load(locale);
+    loadLocale(locale);
   }, [locale]);
 
   return (

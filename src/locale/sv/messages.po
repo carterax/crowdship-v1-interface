@@ -13,9 +13,17 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: src/pages/campaign/[campaignHash]/[campaignSlug]/index.tsx:285
+#: src/pages/campaign/[campaignHash]/[campaignSlug]/index.tsx:287
 msgid "Back Campaign"
 msgstr "Tillbaka kampanj"
+
+#: src/pages/campaign/[campaignHash]/[campaignSlug]/index.tsx:297
+msgid "Create Request"
+msgstr "Skapa förfrågan"
+
+#: src/pages/campaign/[campaignHash]/[campaignSlug]/index.tsx:301
+msgid "Create Reward"
+msgstr "Skapa belöning"
 
 #: src/pages/index.tsx:75
 #: src/pages/index.tsx:98
@@ -26,6 +34,10 @@ msgstr "Ta reda på hur"
 msgid "Get your projects funded the crypto way. No BS"
 msgstr "Få dina projekt finansierade på kryptovägen. Ingen BS"
 
+#: src/pages/campaign/[campaignHash]/[campaignSlug]/index.tsx:293
+msgid "Manage Campaign"
+msgstr "Hantera kampanj"
+
 #: src/pages/index.tsx:70
 msgid "No bullsh*t support for your favorite projects"
 msgstr "Inget bullsh*t-stöd för dina favoritprojekt"
@@ -33,6 +45,14 @@ msgstr "Inget bullsh*t-stöd för dina favoritprojekt"
 #: src/pages/index.tsx:190
 msgid "Over 300 crew members joined today"
 msgstr "Över 300 besättningsmedlemmar anslöt sig idag"
+
+#: src/pages/campaign/[campaignHash]/[campaignSlug]/index.tsx:306
+msgid "Report Campaign"
+msgstr "Rapportera kampanj"
+
+#: src/pages/campaign/[campaignHash]/[campaignSlug]/index.tsx:344
+msgid "Save"
+msgstr "Spara"
 
 #: src/pages/index.tsx:240
 #: src/pages/index.tsx:265
@@ -42,3 +62,7 @@ msgstr "Se allt"
 #: src/pages/index.tsx:185
 msgid "Your favourite projects, backed by crypto!"
 msgstr "Dina favoritprojekt, uppbackade av krypto!"
+
+#: src/pages/campaign/[campaignHash]/[campaignSlug]/index.tsx:277
+msgid "{acceptedCurrency} accepted"
+msgstr "{acceptedCurrency} accepterad"

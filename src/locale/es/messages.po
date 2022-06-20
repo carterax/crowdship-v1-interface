@@ -1,11 +1,11 @@
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2022-06-20 08:28+0100\n"
+"POT-Creation-Date: 2022-06-20 13:52+0100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: @lingui/cli\n"
-"Language: en\n"
+"Language: es\n"
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "PO-Revision-Date: \n"
@@ -15,54 +15,54 @@ msgstr ""
 
 #: src/pages/campaign/[campaignHash]/[campaignSlug]/index.tsx:287
 msgid "Back Campaign"
-msgstr "Back Campaign"
+msgstr ""
 
 #: src/pages/campaign/[campaignHash]/[campaignSlug]/index.tsx:297
 msgid "Create Request"
-msgstr "Create Request"
+msgstr ""
 
 #: src/pages/campaign/[campaignHash]/[campaignSlug]/index.tsx:301
 msgid "Create Reward"
-msgstr "Create Reward"
+msgstr ""
 
 #: src/pages/index.tsx:75
 #: src/pages/index.tsx:98
 msgid "Find out how"
-msgstr "Find out how"
+msgstr ""
 
 #: src/pages/index.tsx:93
 msgid "Get your projects funded the crypto way. No BS"
-msgstr "Get your projects funded the crypto way. No BS"
+msgstr ""
 
 #: src/pages/campaign/[campaignHash]/[campaignSlug]/index.tsx:293
 msgid "Manage Campaign"
-msgstr "Manage Campaign"
+msgstr ""
 
 #: src/pages/index.tsx:70
 msgid "No bullsh*t support for your favorite projects"
-msgstr "No bullsh*t support for your favorite projects"
+msgstr ""
 
 #: src/pages/index.tsx:190
 msgid "Over 300 crew members joined today"
-msgstr "Over 300 crew members joined today"
+msgstr ""
 
 #: src/pages/campaign/[campaignHash]/[campaignSlug]/index.tsx:306
 msgid "Report Campaign"
-msgstr "Report Campaign"
+msgstr ""
 
 #: src/pages/campaign/[campaignHash]/[campaignSlug]/index.tsx:344
 msgid "Save"
-msgstr "Save"
+msgstr ""
 
 #: src/pages/index.tsx:240
 #: src/pages/index.tsx:265
 msgid "See all"
-msgstr "See all"
+msgstr ""
 
 #: src/pages/index.tsx:185
 msgid "Your favourite projects, backed by crypto!"
-msgstr "Your favourite projects, backed by crypto!"
+msgstr ""
 
 #: src/pages/campaign/[campaignHash]/[campaignSlug]/index.tsx:277
 msgid "{acceptedCurrency} accepted"
-msgstr "{acceptedCurrency} accepted"
+msgstr ""

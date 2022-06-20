@@ -28,17 +28,17 @@ import {
   ChevronLeftIcon,
 } from '@chakra-ui/icons';
 
-export interface MenuItem {
-  text: string;
+export interface IMenuItem {
+  text?: string | ReactNode;
   icon?: ReactElement<any, string | JSXElementConstructor<any>>;
   onClick?: () => void;
   hasDivider?: boolean;
-  children?: MenuItem[];
+  children?: IMenuItem[];
   render?: () => ReactNode;
 }
 
 export interface IAdvancedMenu {
-  items: MenuItem[];
+  items: IMenuItem[];
   menuButtonStyle: any;
   menuButtonTrigger: ReactNode;
   showOpenIcon?: boolean;
@@ -82,11 +82,20 @@ const AdvancedMenu: FC<IAdvancedMenu> = ({
     }
   };
 
-  const renderText = (text: string, children: any[]): ReactNode => {
+  const renderText = (text: string | ReactNode, children: any[]): ReactNode => {
     return (
       <>
-        <Box display='flex' alignItems='center' justifyContent='space-between'>
-          <Text textTransform='capitalize'>{text}</Text>
+        <Box
+          w='full'
+          display='flex'
+          alignItems='center'
+          justifyContent='space-between'
+        >
+          {typeof text !== 'string' ? (
+            text
+          ) : (
+            <Text textTransform='capitalize'>{text}</Text>
+          )}
           {children && children.length ? (
             <ChevronRightIcon w={4} h={4} />
           ) : null}
@@ -95,18 +104,14 @@ const AdvancedMenu: FC<IAdvancedMenu> = ({
     );
   };
 
-  const renderMenuItem = ({
-    text,
-    icon,
-    onClick,
-    hasDivider,
-    children,
-    render,
-  }: MenuItem): ReactNode => {
-    if (render) return render();
+  const renderMenuItem = (
+    { text, icon, onClick, hasDivider, children, render }: IMenuItem,
+    idx: number | string
+  ): ReactNode => {
+    if (render) return <Box key={idx}>{render()}</Box>;
 
     return (
-      <>
+      <Box key={idx}>
         <MenuItem
           icon={icon}
           w='200px'
@@ -122,16 +127,18 @@ const AdvancedMenu: FC<IAdvancedMenu> = ({
             if (onClick) onClick();
           }}
         >
-          {render ? render() : renderText(text, children)}
+          <>{render ? render() : renderText(text, children)}</>
         </MenuItem>
         {hasDivider ? <MenuDivider /> : null}
-      </>
+      </Box>
     );
   };
 
-  const mainMenu = items.map((menu) => renderMenuItem(menu));
+  const mainMenu = items.map((menu, idx) => renderMenuItem(menu, idx));
 
-  const subMenu = currentSubMenu.map((menu) => renderMenuItem(menu));
+  const subMenu = currentSubMenu.map((menu, idx) =>
+    renderMenuItem(menu, `child-${idx}`)
+  );
 
   // return merged main and sub menu with parent div
   const renderMenuItems = (): ReactNode => (

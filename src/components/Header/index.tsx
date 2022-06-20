@@ -26,6 +26,8 @@ import {
 import Avatar from 'boring-avatars';
 
 import AdvancedMenu from '@/components/AdvancedMenu';
+import ProfileOverviewModal from '@/components/ProfileOverviewModal';
+import languageSwitcher from '@/utils/language-switcher';
 
 import { useLogout, useAuthenticate, useWallet } from '@/hooks/web3Onboard';
 import { generateSlicedAddress } from '@/utils/address';
@@ -33,7 +35,6 @@ import { useGlobalState } from '@/hooks/globalState';
 import { useInjectCrowdshipQuery } from '@/hooks/injectCrowdshipQuery';
 
 import { ReducerTypes } from '@/reducer';
-import ProfileOverviewModal from '../ProfileOverviewModal';
 
 const NavLink = ({
   children,
@@ -159,68 +160,7 @@ export const Header = () => {
       icon: <GlobeSimple size={20} />,
       onClick: () => {},
       hasDivider: false,
-      children: [
-        {
-          text: 'english',
-          icon: null,
-          children: [],
-          render: null,
-        },
-        {
-          text: 'afrikaans',
-          icon: null,
-          children: [],
-          render: null,
-        },
-        {
-          text: 'العربية',
-          icon: null,
-          children: [],
-          render: null,
-        },
-        {
-          text: 'español',
-          icon: null,
-          children: [],
-          render: null,
-        },
-        {
-          text: 'français',
-          icon: null,
-          children: [],
-          render: null,
-        },
-        {
-          text: 'deutsch',
-          icon: null,
-          children: [],
-          render: null,
-        },
-        {
-          text: 'italiano',
-          icon: null,
-          children: [],
-          render: null,
-        },
-        {
-          text: 'português',
-          icon: null,
-          children: [],
-          render: null,
-        },
-        {
-          text: 'Український',
-          icon: null,
-          children: [],
-          render: null,
-        },
-        {
-          text: '简体中文',
-          icon: null,
-          children: [],
-          render: null,
-        },
-      ],
+      children: languageSwitcher(),
       render: null,
     },
     {
