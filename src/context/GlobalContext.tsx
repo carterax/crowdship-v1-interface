@@ -21,10 +21,16 @@ import {
   initialProps as loadingProps,
 } from '@/components/Loading';
 
+import {
+  initialProps as profileOverviewModalProps,
+  IProfileOverviewModal,
+} from '@/components/ProfileOverviewModal';
+
 export interface ContextReader {
   searchModalDialog?: ISearchModalDialog;
   notification?: INotificationBar;
   loading?: ILoading;
+  profileOverviewModal?: IProfileOverviewModal;
 }
 
 export interface ContextWriter {
@@ -42,6 +48,7 @@ const initialCtxProps: IGlobalContext = {
     searchModalDialog: searchModalDialogProps,
     notification: notificationBarProps,
     loading: loadingProps,
+    profileOverviewModal: profileOverviewModalProps,
   },
   dispatch: () => {},
 };

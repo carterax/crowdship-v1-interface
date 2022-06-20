@@ -66,6 +66,21 @@ export const ButtonStyles = {
         boxShadow: 'none',
       },
     }),
+    clear: () => ({
+      bg: 'transparent',
+      color: 'black.500',
+      borderRadius: 'md',
+      _hover: {
+        bg: 'transparent',
+        _disabled: {
+          bg: 'transparent',
+          color: 'blackAlpha.100',
+        },
+      },
+      _focus: {
+        boxShadow: 'none',
+      },
+    }),
   },
   defaultProps: {
     variant: 'primary',

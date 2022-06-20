@@ -42,14 +42,6 @@ export const useLogout = (): (() => void) => {
   return logout;
 };
 
-export const useWalletAddress = (): string => {
-  const { accounts } = useWallet() || {};
-
-  if (accounts) {
-    return accounts[0].address;
-  }
-};
-
 export const useBalance = (): Record<string | number | symbol, string> => {
   const { accounts } = useWallet() || {};
 

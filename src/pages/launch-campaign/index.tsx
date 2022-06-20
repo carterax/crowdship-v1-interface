@@ -40,7 +40,7 @@ import { ReducerTypes } from '@/reducer';
 import { gun, user } from '@/lib/gun';
 import { uploadFile } from '@/lib/xhr/upload-file';
 
-import { useAuthenticate, useWalletAddress } from '@/hooks/web3Onboard';
+import { useAuthenticate, useWallet } from '@/hooks/web3Onboard';
 import { useCampaignFactory } from '@/hooks/contracts';
 import useCampaignFactoryAddress from '@/hooks/campaignFactoryAddress';
 import { useInjectCrowdshipQuery } from '@/hooks/injectCrowdshipQuery';
@@ -139,7 +139,7 @@ const Launch: NextPage = () => {
   const campaignFactory = useCampaignFactory(campaignFactoryAddress);
 
   const [authenticate, authenticating, authenticated] = useAuthenticate();
-  const address = useWalletAddress();
+  const wallet = useWallet();
 
   const injectCrowdshipQuery = useInjectCrowdshipQuery();
 
@@ -526,7 +526,9 @@ const Launch: NextPage = () => {
 
         if (!campaignFactory) throw new Error('Campaign factory not found');
 
-        const userExists = await campaignFactory.userExists(address);
+        const userExists = await campaignFactory.userExists(
+          wallet?.accounts?.[0]?.address
+        );
 
         if (userExists) {
           launchCampaign(user);

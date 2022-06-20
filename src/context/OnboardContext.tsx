@@ -1,10 +1,4 @@
-import React, {
-  useEffect,
-  useState,
-  createContext,
-  useContext,
-  useCallback,
-} from 'react';
+import React, { useEffect, useState, createContext, useContext } from 'react';
 
 import { useConnectWallet, useSetChain } from '@web3-onboard/react';
 import { WalletState } from '@web3-onboard/core';

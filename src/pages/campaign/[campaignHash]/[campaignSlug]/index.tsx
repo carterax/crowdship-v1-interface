@@ -1,3 +1,4 @@
+import { Trans } from '@lingui/macro';
 import type { NextPage } from 'next';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -6,26 +7,18 @@ import { useEffect, useState, ReactNode } from 'react';
 import {
   Box,
   Text,
-  Image,
   Badge,
   Button,
-  IconButton,
   Heading,
   Progress,
   Tabs,
   TabList,
   TabPanels,
-  Tab,
   TabPanel,
   useTab,
   useStyleConfig,
   Tooltip,
   Container,
-  Accordion,
-  AccordionItem,
-  AccordionButton,
-  AccordionPanel,
-  AccordionIcon,
 } from '@chakra-ui/react';
 
 import { Gallery } from '@/components/Gallery';
@@ -36,12 +29,17 @@ import {
   Discussions,
   Faq,
 } from '@/components/CampaignTabs';
+import AdvancedMenu from '@/components/AdvancedMenu';
 
 import { gun } from '@/lib/gun';
 
 import {
   DotsThree,
   BookmarkSimple,
+  Gift,
+  PencilSimpleLine,
+  Sword,
+  Receipt,
   FacebookLogo,
   TwitterLogo,
   LinkSimple,
@@ -284,20 +282,48 @@ const Campaign: NextPage = (props) => {
                   variant='primaryAlt'
                   size='lg'
                 >
-                  Back Campaign
+                  <Trans>Back Campaign</Trans>
                 </Button>
               </Tooltip>
-              <IconButton
-                aria-label='More'
-                icon={<DotsThree size={32} color='black' />}
-                size='lg'
-                borderWidth='1px'
-                borderColor='blackAlpha.300'
-                bg='transparent'
-                ml='3'
-                _hover={{
-                  backgroundColor: 'transparent',
+              <AdvancedMenu
+                items={[
+                  {
+                    text: 'Manage Campaign',
+                    icon: <PencilSimpleLine size={20} />,
+                  },
+                  {
+                    text: 'Create Request',
+                    icon: <Receipt size={20} />,
+                  },
+                  {
+                    text: 'Create Reward',
+                    icon: <Gift size={20} />,
+                    hasDivider: true,
+                  },
+                  {
+                    text: 'Report Campaign',
+                    icon: <Sword size={20} />,
+                  },
+                ]}
+                menuButtonTrigger={
+                  <DotsThree
+                    size={30}
+                    style={{ position: 'absolute' }}
+                    color='black'
+                  />
+                }
+                menuButtonStyle={{
+                  size: 'lg',
+                  'aria-label': 'More',
+                  borderWidth: '1px',
+                  borderColor: 'blackAlpha.300',
+                  bg: 'transparent',
+                  ml: '3',
+                  _hover: {
+                    backgroundColor: 'transparent',
+                  },
                 }}
+                showOpenIcon={false}
               />
             </Box>
             <Box mt='7' mb='7' alignItems='center'>

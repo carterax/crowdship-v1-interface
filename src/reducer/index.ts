@@ -7,6 +7,7 @@ export enum ReducerTypes {
   TOGGLE_NOTIFICATION = 'TOGGLE_NOTIFICATION',
   TOGGLE_NOTIFICATION_LOADING = 'TOGGLE_NOTIFICATION_LOADING',
   SET_LOADING = 'SET_LOADING',
+  TOGGLE_PROFILE_OVERVIEW_MODAL = 'TOGGLE_PROFILE_OVERVIEW_MODAL',
 }
 
 const reducer = (draft: ContextReader, action: ContextWriter): void => {
@@ -23,6 +24,9 @@ const reducer = (draft: ContextReader, action: ContextWriter): void => {
     case ReducerTypes.SET_LOADING:
       draft.loading.isLoading = action.payload.loading.isLoading;
       break;
+    case ReducerTypes.TOGGLE_PROFILE_OVERVIEW_MODAL:
+      draft.profileOverviewModal.isOpen =
+        action.payload.profileOverviewModal.isOpen;
     default:
       break;
   }

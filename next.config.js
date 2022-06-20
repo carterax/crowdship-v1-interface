@@ -1,5 +1,11 @@
+const { locales, sourceLocale } = require('./lingui.config.js');
+
 /** @type {import('next').NextConfig} */
 module.exports = {
+  i18n: {
+    locales,
+    defaultLocale: sourceLocale,
+  },
   env: {
     defaultChain: 'rinkeby',
     ethereum: {
@@ -52,6 +58,11 @@ module.exports = {
   },
   reactStrictMode: false,
   webpack(config, options) {
+    config.module.rules.push({
+      test: /\.po/,
+      use: ['@lingui/loader'],
+    });
+
     config.module.rules.push({
       test: /\.svg$/,
       use: ['@svgr/webpack'],

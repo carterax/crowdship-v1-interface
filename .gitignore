@@ -45,4 +45,8 @@ notes.txt
 *.graphql.d.ts
 *.graphqls.d.ts
 
+# lingui
+locale/_build
+locale/*/*.js
+
 .idea

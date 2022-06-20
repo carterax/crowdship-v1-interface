@@ -499,7 +499,6 @@ const Home: NextPage = (props) => {
                                   />
                                 </FormControl>
                               );
-                              break;
 
                             case 'number':
                               return (
@@ -567,7 +566,6 @@ const Home: NextPage = (props) => {
                                   </Box>
                                 </Box>
                               );
-                              break;
 
                             case 'object':
                               return (
@@ -624,7 +622,6 @@ const Home: NextPage = (props) => {
                                   </Box>
                                 </Box>
                               );
-                              break;
 
                             default:
                               break;

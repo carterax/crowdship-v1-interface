@@ -1,3 +1,4 @@
+import { Trans } from '@lingui/macro';
 import type { NextPage } from 'next';
 import { ReactNode } from 'react';
 import Image from 'next/image';
@@ -66,12 +67,12 @@ const CtaContent = [
   {
     heading: () => (
       <Heading fontSize='lg' lineHeight={1.4}>
-        No bullsh*t support for your favorite projects
+        <Trans>No bullsh*t support for your favorite projects</Trans>
       </Heading>
     ),
     body: () => (
       <Text color='gray.500' fontSize='16px' mt='1.5'>
-        Find out how
+        <Trans>Find out how</Trans>
       </Text>
     ),
     image: () => (
@@ -89,12 +90,12 @@ const CtaContent = [
   {
     heading: () => (
       <Heading fontSize='lg' lineHeight={1.4}>
-        Get your projects funded the crypto way. No BS
+        <Trans>Get your projects funded the crypto way. No BS</Trans>
       </Heading>
     ),
     body: () => (
       <Text color='gray.500' mt='1.5'>
-        Find out how
+        <Trans>Find out how</Trans>
       </Text>
     ),
     image: () => (
@@ -181,10 +182,14 @@ const MyCrowdship: NextPage = () => {
             mb='2'
             fontSize={{ base: '2xl', md: '36px' }}
           >
-            Your favourite projects, backed by crypto!
+            <Trans>Your favourite projects, backed by crypto!</Trans>
           </Heading>
         }
-        body={<Text>Over 300 crew members joined today</Text>}
+        body={
+          <Text>
+            <Trans>Over 300 crew members joined today</Trans>
+          </Text>
+        }
         height='400px'
         bgImage='/images/map-light.svg'
         bgColor='yellow.200'
@@ -232,7 +237,7 @@ const MyCrowdship: NextPage = () => {
             subheading='Up to 20% per hour'
             action={
               <Text display='flex' alignItems='center' as='a' href='#'>
-                <span>See all</span>
+                <Trans>See all</Trans>
                 <ChevronRightIcon h={4} w={4} />
               </Text>
             }
@@ -256,7 +261,9 @@ const MyCrowdship: NextPage = () => {
             subheading='Folks doing crazy things'
             action={
               <Text display='flex' alignItems='center' as='a' href='#'>
-                <span>See all</span>
+                <span>
+                  <Trans>See all</Trans>
+                </span>
                 <ChevronRightIcon h={4} w={4} />
               </Text>
             }

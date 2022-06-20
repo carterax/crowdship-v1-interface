@@ -1,3 +1,7 @@
+import { I18nProvider } from '@lingui/react';
+import { i18n } from '@lingui/core';
+import { useEffect } from 'react';
+import { useRouter } from 'next/router';
 import App from 'next/app';
 import { ChakraProvider } from '@chakra-ui/react';
 import Script from 'next/script';
@@ -17,9 +21,22 @@ import '@fontsource/dm-sans/700.css';
 import '@fontsource/dm-mono/500.css';
 
 import '@/connectors/onboard';
+import '@/connectors/locale-init';
 
 const MyApp = ({ Component, pageProps }): JSX.Element => {
+  const { locale } = useRouter();
   const { ...props } = pageProps;
+
+  useEffect(() => {
+    const load = async (locale: string) => {
+      const { messages } = await import(`../locale/${locale}/messages.po`);
+
+      i18n.load(locale, messages);
+      i18n.activate(locale);
+    };
+
+    load(locale);
+  }, [locale]);
 
   return (
     <>
@@ -35,15 +52,17 @@ const MyApp = ({ Component, pageProps }): JSX.Element => {
         strategy='beforeInteractive'
         src='/scripts/gun/sea.min.js'
       ></Script>
-      <ChakraProvider theme={theme}>
-        <GlobalProvider>
-          <OnboardProvider>
-            <Layout>
-              <Component {...props} />
-            </Layout>
-          </OnboardProvider>
-        </GlobalProvider>
-      </ChakraProvider>
+      <I18nProvider i18n={i18n}>
+        <ChakraProvider theme={theme}>
+          <GlobalProvider>
+            <OnboardProvider>
+              <Layout>
+                <Component {...props} />
+              </Layout>
+            </OnboardProvider>
+          </GlobalProvider>
+        </ChakraProvider>
+      </I18nProvider>
     </>
   );
 };
