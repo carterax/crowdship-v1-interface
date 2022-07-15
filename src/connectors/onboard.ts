@@ -59,6 +59,11 @@ init({
   accountCenter: {
     desktop: {
       enabled: false,
+      containerElement: '',
+    },
+    mobile: {
+      enabled: false,
+      containerElement: '',
     },
   },
   chains: [
