@@ -24,6 +24,7 @@ import type {
   TypedEvent,
   TypedListener,
   OnEvent,
+  PromiseOrValue,
 } from "./common";
 
 export interface CampaignFactoryInterface extends utils.Interface {
@@ -146,19 +147,19 @@ export interface CampaignFactoryInterface extends utils.Interface {
 
   encodeFunctionData(
     functionFragment: "accountInTransit",
-    values: [string]
+    values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "accountTransitStartedBy",
-    values: [string]
+    values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "approvedCampaignTransactionConfig",
-    values: [string]
+    values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "campaignCategories",
-    values: [BigNumberish]
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "campaignCount",
@@ -178,7 +179,7 @@ export interface CampaignFactoryInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "campaignRevenueFromCommissions",
-    values: [string]
+    values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "campaignRewardsImplementation",
@@ -186,20 +187,23 @@ export interface CampaignFactoryInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "campaignTransactionConfig",
-    values: [string]
+    values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "campaignTransactionConfigList",
-    values: [BigNumberish]
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "campaignVotesImplementation",
     values?: undefined
   ): string;
-  encodeFunctionData(functionFragment: "campaigns", values: [string]): string;
+  encodeFunctionData(
+    functionFragment: "campaigns",
+    values: [PromiseOrValue<string>]
+  ): string;
   encodeFunctionData(
     functionFragment: "categoryCommission",
-    values: [BigNumberish]
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "categoryCount",
@@ -207,7 +211,7 @@ export interface CampaignFactoryInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "categoryTitleIsTaken",
-    values: [string]
+    values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "factoryRevenue",
@@ -219,118 +223,160 @@ export interface CampaignFactoryInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "isUserTrustee",
-    values: [string, string]
+    values: [PromiseOrValue<string>, PromiseOrValue<string>]
   ): string;
   encodeFunctionData(functionFragment: "paused", values?: undefined): string;
-  encodeFunctionData(functionFragment: "tokens", values: [string]): string;
+  encodeFunctionData(
+    functionFragment: "tokens",
+    values: [PromiseOrValue<string>]
+  ): string;
   encodeFunctionData(
     functionFragment: "trustees",
-    values: [BigNumberish]
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(functionFragment: "userCount", values?: undefined): string;
-  encodeFunctionData(functionFragment: "userExists", values: [string]): string;
+  encodeFunctionData(
+    functionFragment: "userExists",
+    values: [PromiseOrValue<string>]
+  ): string;
   encodeFunctionData(
     functionFragment: "userTrusteeCount",
-    values: [string]
+    values: [PromiseOrValue<string>]
   ): string;
-  encodeFunctionData(functionFragment: "users", values: [string]): string;
+  encodeFunctionData(
+    functionFragment: "users",
+    values: [PromiseOrValue<string>]
+  ): string;
   encodeFunctionData(
     functionFragment: "__CampaignFactory_init",
-    values: [string, string, string, string, string, BigNumberish[]]
+    values: [
+      PromiseOrValue<string>,
+      PromiseOrValue<string>,
+      PromiseOrValue<string>,
+      PromiseOrValue<string>,
+      PromiseOrValue<string>,
+      PromiseOrValue<BigNumberish>[]
+    ]
   ): string;
   encodeFunctionData(
     functionFragment: "setCampaignImplementation",
-    values: [string]
+    values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "setCampaignRewardImplementation",
-    values: [string]
+    values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "setCampaignRequestImplementation",
-    values: [string]
+    values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "setCampaignVoteImplementation",
-    values: [string]
+    values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "addFactoryTransactionConfig",
-    values: [string]
+    values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "setCampaignTransactionConfig",
-    values: [string, BigNumberish]
+    values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "setDefaultCommission",
-    values: [BigNumberish, BigNumberish]
+    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "setCategoryCommission",
-    values: [BigNumberish, BigNumberish, BigNumberish]
+    values: [
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>
+    ]
   ): string;
   encodeFunctionData(
     functionFragment: "addToken",
-    values: [string, boolean, string]
+    values: [
+      PromiseOrValue<string>,
+      PromiseOrValue<boolean>,
+      PromiseOrValue<string>
+    ]
   ): string;
   encodeFunctionData(
     functionFragment: "toggleAcceptedToken",
-    values: [string, boolean]
+    values: [PromiseOrValue<string>, PromiseOrValue<boolean>]
   ): string;
   encodeFunctionData(
     functionFragment: "canManageCampaigns",
-    values: [string]
+    values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "receiveCampaignCommission",
-    values: [string, BigNumberish]
+    values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
   ): string;
-  encodeFunctionData(functionFragment: "signUp", values: [string]): string;
+  encodeFunctionData(
+    functionFragment: "signUp",
+    values: [PromiseOrValue<string>]
+  ): string;
   encodeFunctionData(
     functionFragment: "userIsVerified",
-    values: [string]
+    values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "initiateUserTransfer",
-    values: [string, boolean]
+    values: [PromiseOrValue<string>, PromiseOrValue<boolean>]
   ): string;
   encodeFunctionData(
     functionFragment: "deactivateAccountTransfer",
     values?: undefined
   ): string;
-  encodeFunctionData(functionFragment: "addTrustee", values: [string]): string;
+  encodeFunctionData(
+    functionFragment: "addTrustee",
+    values: [PromiseOrValue<string>]
+  ): string;
   encodeFunctionData(
     functionFragment: "removeTrustee",
-    values: [BigNumberish]
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "toggleUserApproval",
-    values: [string, boolean]
+    values: [PromiseOrValue<string>, PromiseOrValue<boolean>]
   ): string;
   encodeFunctionData(
     functionFragment: "createCampaign",
-    values: [BigNumberish, boolean, string]
+    values: [
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<boolean>,
+      PromiseOrValue<string>
+    ]
   ): string;
   encodeFunctionData(
     functionFragment: "toggleCampaignActivation",
-    values: [string]
+    values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "toggleCampaignPrivacy",
-    values: [string]
+    values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "modifyCampaignCategory",
-    values: [string, BigNumberish]
+    values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "createCategory",
-    values: [boolean, string, string]
+    values: [
+      PromiseOrValue<boolean>,
+      PromiseOrValue<string>,
+      PromiseOrValue<string>
+    ]
   ): string;
   encodeFunctionData(
     functionFragment: "modifyCategory",
-    values: [BigNumberish, boolean, string]
+    values: [
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<boolean>,
+      PromiseOrValue<string>
+    ]
   ): string;
   encodeFunctionData(
     functionFragment: "unpauseCampaign",
@@ -853,22 +899,22 @@ export interface CampaignFactory extends BaseContract {
 
   functions: {
     accountInTransit(
-      arg0: string,
+      arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<[boolean]>;
 
     accountTransitStartedBy(
-      arg0: string,
+      arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<[string]>;
 
     approvedCampaignTransactionConfig(
-      arg0: string,
+      arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<[boolean]>;
 
     campaignCategories(
-      arg0: BigNumberish,
+      arg0: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<
       [BigNumber, BigNumber, BigNumber, string, string, boolean, boolean] & {
@@ -893,26 +939,26 @@ export interface CampaignFactory extends BaseContract {
     ): Promise<[string]>;
 
     campaignRevenueFromCommissions(
-      arg0: string,
+      arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
     campaignRewardsImplementation(overrides?: CallOverrides): Promise<[string]>;
 
     campaignTransactionConfig(
-      arg0: string,
+      arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
     campaignTransactionConfigList(
-      arg0: BigNumberish,
+      arg0: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<[string]>;
 
     campaignVotesImplementation(overrides?: CallOverrides): Promise<[string]>;
 
     campaigns(
-      arg0: string,
+      arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<
       [string, BigNumber, BigNumber, BigNumber, string, boolean, boolean] & {
@@ -927,14 +973,14 @@ export interface CampaignFactory extends BaseContract {
     >;
 
     categoryCommission(
-      arg0: BigNumberish,
+      arg0: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
     categoryCount(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     categoryTitleIsTaken(
-      arg0: string,
+      arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<[boolean]>;
 
@@ -943,15 +989,15 @@ export interface CampaignFactory extends BaseContract {
     governance(overrides?: CallOverrides): Promise<[string]>;
 
     isUserTrustee(
-      arg0: string,
-      arg1: string,
+      arg0: PromiseOrValue<string>,
+      arg1: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<[boolean]>;
 
     paused(overrides?: CallOverrides): Promise<[boolean]>;
 
     tokens(
-      arg0: string,
+      arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<
       [string, string, boolean] & {
@@ -962,7 +1008,7 @@ export interface CampaignFactory extends BaseContract {
     >;
 
     trustees(
-      arg0: BigNumberish,
+      arg0: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<
       [string, string, BigNumber, boolean] & {
@@ -975,15 +1021,18 @@ export interface CampaignFactory extends BaseContract {
 
     userCount(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    userExists(arg0: string, overrides?: CallOverrides): Promise<[boolean]>;
+    userExists(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
 
     userTrusteeCount(
-      arg0: string,
+      arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
     users(
-      arg0: string,
+      arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<
       [BigNumber, BigNumber, string, boolean] & {
@@ -995,179 +1044,182 @@ export interface CampaignFactory extends BaseContract {
     >;
 
     __CampaignFactory_init(
-      _governance: string,
-      _campaignImplementation: string,
-      _campaignRequestImplementation: string,
-      _campaignVoteImplementation: string,
-      _campaignRewardImplementation: string,
-      _config: BigNumberish[],
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _governance: PromiseOrValue<string>,
+      _campaignImplementation: PromiseOrValue<string>,
+      _campaignRequestImplementation: PromiseOrValue<string>,
+      _campaignVoteImplementation: PromiseOrValue<string>,
+      _campaignRewardImplementation: PromiseOrValue<string>,
+      _config: PromiseOrValue<BigNumberish>[],
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     setCampaignImplementation(
-      _campaignImplementation: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _campaignImplementation: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     setCampaignRewardImplementation(
-      _campaignRewardsImplementation: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _campaignRewardsImplementation: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     setCampaignRequestImplementation(
-      _campaignRequestsImplementation: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _campaignRequestsImplementation: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     setCampaignVoteImplementation(
-      _campaignVotesImplementation: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _campaignVotesImplementation: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     addFactoryTransactionConfig(
-      _prop: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _prop: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     setCampaignTransactionConfig(
-      _prop: string,
-      _value: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _prop: PromiseOrValue<string>,
+      _value: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     setDefaultCommission(
-      _numerator: BigNumberish,
-      _denominator: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _numerator: PromiseOrValue<BigNumberish>,
+      _denominator: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     setCategoryCommission(
-      _categoryId: BigNumberish,
-      _numerator: BigNumberish,
-      _denominator: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _categoryId: PromiseOrValue<BigNumberish>,
+      _numerator: PromiseOrValue<BigNumberish>,
+      _denominator: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     addToken(
-      _token: string,
-      _approved: boolean,
-      _hashedToken: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _token: PromiseOrValue<string>,
+      _approved: PromiseOrValue<boolean>,
+      _hashedToken: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     toggleAcceptedToken(
-      _token: string,
-      _state: boolean,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _token: PromiseOrValue<string>,
+      _state: PromiseOrValue<boolean>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     canManageCampaigns(
-      _user: string,
+      _user: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<[boolean]>;
 
     receiveCampaignCommission(
-      _campaign: string,
-      _amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _campaign: PromiseOrValue<string>,
+      _amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     signUp(
-      _hashedUser: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _hashedUser: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     userIsVerified(
-      _user: string,
+      _user: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<[boolean]>;
 
     initiateUserTransfer(
-      _user: string,
-      _forSelf: boolean,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _user: PromiseOrValue<string>,
+      _forSelf: PromiseOrValue<boolean>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     deactivateAccountTransfer(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     addTrustee(
-      _trustee: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _trustee: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     removeTrustee(
-      _trusteeId: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _trusteeId: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     toggleUserApproval(
-      _user: string,
-      _approval: boolean,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _user: PromiseOrValue<string>,
+      _approval: PromiseOrValue<boolean>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     createCampaign(
-      _categoryId: BigNumberish,
-      _privateCampaign: boolean,
-      _hashedCampaignInfo: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _categoryId: PromiseOrValue<BigNumberish>,
+      _privateCampaign: PromiseOrValue<boolean>,
+      _hashedCampaignInfo: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     toggleCampaignActivation(
-      _campaign: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _campaign: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     toggleCampaignPrivacy(
-      _campaign: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _campaign: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     modifyCampaignCategory(
-      _campaign: string,
-      _newCategoryId: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _campaign: PromiseOrValue<string>,
+      _newCategoryId: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     createCategory(
-      _active: boolean,
-      _title: string,
-      _hashedCategory: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _active: PromiseOrValue<boolean>,
+      _title: PromiseOrValue<string>,
+      _hashedCategory: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     modifyCategory(
-      _categoryId: BigNumberish,
-      _active: boolean,
-      _title: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _categoryId: PromiseOrValue<BigNumberish>,
+      _active: PromiseOrValue<boolean>,
+      _title: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     unpauseCampaign(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     pauseCampaign(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
   };
 
-  accountInTransit(arg0: string, overrides?: CallOverrides): Promise<boolean>;
+  accountInTransit(
+    arg0: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
 
   accountTransitStartedBy(
-    arg0: string,
+    arg0: PromiseOrValue<string>,
     overrides?: CallOverrides
   ): Promise<string>;
 
   approvedCampaignTransactionConfig(
-    arg0: string,
+    arg0: PromiseOrValue<string>,
     overrides?: CallOverrides
   ): Promise<boolean>;
 
   campaignCategories(
-    arg0: BigNumberish,
+    arg0: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
   ): Promise<
     [BigNumber, BigNumber, BigNumber, string, string, boolean, boolean] & {
@@ -1190,26 +1242,26 @@ export interface CampaignFactory extends BaseContract {
   campaignRequestsImplementation(overrides?: CallOverrides): Promise<string>;
 
   campaignRevenueFromCommissions(
-    arg0: string,
+    arg0: PromiseOrValue<string>,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
   campaignRewardsImplementation(overrides?: CallOverrides): Promise<string>;
 
   campaignTransactionConfig(
-    arg0: string,
+    arg0: PromiseOrValue<string>,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
   campaignTransactionConfigList(
-    arg0: BigNumberish,
+    arg0: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
   ): Promise<string>;
 
   campaignVotesImplementation(overrides?: CallOverrides): Promise<string>;
 
   campaigns(
-    arg0: string,
+    arg0: PromiseOrValue<string>,
     overrides?: CallOverrides
   ): Promise<
     [string, BigNumber, BigNumber, BigNumber, string, boolean, boolean] & {
@@ -1224,14 +1276,14 @@ export interface CampaignFactory extends BaseContract {
   >;
 
   categoryCommission(
-    arg0: BigNumberish,
+    arg0: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
   categoryCount(overrides?: CallOverrides): Promise<BigNumber>;
 
   categoryTitleIsTaken(
-    arg0: string,
+    arg0: PromiseOrValue<string>,
     overrides?: CallOverrides
   ): Promise<boolean>;
 
@@ -1240,15 +1292,15 @@ export interface CampaignFactory extends BaseContract {
   governance(overrides?: CallOverrides): Promise<string>;
 
   isUserTrustee(
-    arg0: string,
-    arg1: string,
+    arg0: PromiseOrValue<string>,
+    arg1: PromiseOrValue<string>,
     overrides?: CallOverrides
   ): Promise<boolean>;
 
   paused(overrides?: CallOverrides): Promise<boolean>;
 
   tokens(
-    arg0: string,
+    arg0: PromiseOrValue<string>,
     overrides?: CallOverrides
   ): Promise<
     [string, string, boolean] & {
@@ -1259,7 +1311,7 @@ export interface CampaignFactory extends BaseContract {
   >;
 
   trustees(
-    arg0: BigNumberish,
+    arg0: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
   ): Promise<
     [string, string, BigNumber, boolean] & {
@@ -1272,12 +1324,18 @@ export interface CampaignFactory extends BaseContract {
 
   userCount(overrides?: CallOverrides): Promise<BigNumber>;
 
-  userExists(arg0: string, overrides?: CallOverrides): Promise<boolean>;
+  userExists(
+    arg0: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
 
-  userTrusteeCount(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
+  userTrusteeCount(
+    arg0: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
 
   users(
-    arg0: string,
+    arg0: PromiseOrValue<string>,
     overrides?: CallOverrides
   ): Promise<
     [BigNumber, BigNumber, string, boolean] & {
@@ -1289,176 +1347,182 @@ export interface CampaignFactory extends BaseContract {
   >;
 
   __CampaignFactory_init(
-    _governance: string,
-    _campaignImplementation: string,
-    _campaignRequestImplementation: string,
-    _campaignVoteImplementation: string,
-    _campaignRewardImplementation: string,
-    _config: BigNumberish[],
-    overrides?: Overrides & { from?: string | Promise<string> }
+    _governance: PromiseOrValue<string>,
+    _campaignImplementation: PromiseOrValue<string>,
+    _campaignRequestImplementation: PromiseOrValue<string>,
+    _campaignVoteImplementation: PromiseOrValue<string>,
+    _campaignRewardImplementation: PromiseOrValue<string>,
+    _config: PromiseOrValue<BigNumberish>[],
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   setCampaignImplementation(
-    _campaignImplementation: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    _campaignImplementation: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   setCampaignRewardImplementation(
-    _campaignRewardsImplementation: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    _campaignRewardsImplementation: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   setCampaignRequestImplementation(
-    _campaignRequestsImplementation: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    _campaignRequestsImplementation: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   setCampaignVoteImplementation(
-    _campaignVotesImplementation: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    _campaignVotesImplementation: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   addFactoryTransactionConfig(
-    _prop: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    _prop: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   setCampaignTransactionConfig(
-    _prop: string,
-    _value: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    _prop: PromiseOrValue<string>,
+    _value: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   setDefaultCommission(
-    _numerator: BigNumberish,
-    _denominator: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    _numerator: PromiseOrValue<BigNumberish>,
+    _denominator: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   setCategoryCommission(
-    _categoryId: BigNumberish,
-    _numerator: BigNumberish,
-    _denominator: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    _categoryId: PromiseOrValue<BigNumberish>,
+    _numerator: PromiseOrValue<BigNumberish>,
+    _denominator: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   addToken(
-    _token: string,
-    _approved: boolean,
-    _hashedToken: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    _token: PromiseOrValue<string>,
+    _approved: PromiseOrValue<boolean>,
+    _hashedToken: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   toggleAcceptedToken(
-    _token: string,
-    _state: boolean,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    _token: PromiseOrValue<string>,
+    _state: PromiseOrValue<boolean>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   canManageCampaigns(
-    _user: string,
+    _user: PromiseOrValue<string>,
     overrides?: CallOverrides
   ): Promise<boolean>;
 
   receiveCampaignCommission(
-    _campaign: string,
-    _amount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    _campaign: PromiseOrValue<string>,
+    _amount: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   signUp(
-    _hashedUser: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    _hashedUser: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  userIsVerified(_user: string, overrides?: CallOverrides): Promise<boolean>;
+  userIsVerified(
+    _user: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
 
   initiateUserTransfer(
-    _user: string,
-    _forSelf: boolean,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    _user: PromiseOrValue<string>,
+    _forSelf: PromiseOrValue<boolean>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   deactivateAccountTransfer(
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   addTrustee(
-    _trustee: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    _trustee: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   removeTrustee(
-    _trusteeId: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    _trusteeId: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   toggleUserApproval(
-    _user: string,
-    _approval: boolean,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    _user: PromiseOrValue<string>,
+    _approval: PromiseOrValue<boolean>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   createCampaign(
-    _categoryId: BigNumberish,
-    _privateCampaign: boolean,
-    _hashedCampaignInfo: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    _categoryId: PromiseOrValue<BigNumberish>,
+    _privateCampaign: PromiseOrValue<boolean>,
+    _hashedCampaignInfo: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   toggleCampaignActivation(
-    _campaign: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    _campaign: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   toggleCampaignPrivacy(
-    _campaign: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    _campaign: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   modifyCampaignCategory(
-    _campaign: string,
-    _newCategoryId: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    _campaign: PromiseOrValue<string>,
+    _newCategoryId: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   createCategory(
-    _active: boolean,
-    _title: string,
-    _hashedCategory: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    _active: PromiseOrValue<boolean>,
+    _title: PromiseOrValue<string>,
+    _hashedCategory: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   modifyCategory(
-    _categoryId: BigNumberish,
-    _active: boolean,
-    _title: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    _categoryId: PromiseOrValue<BigNumberish>,
+    _active: PromiseOrValue<boolean>,
+    _title: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   unpauseCampaign(
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   pauseCampaign(
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   callStatic: {
-    accountInTransit(arg0: string, overrides?: CallOverrides): Promise<boolean>;
+    accountInTransit(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
 
     accountTransitStartedBy(
-      arg0: string,
+      arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<string>;
 
     approvedCampaignTransactionConfig(
-      arg0: string,
+      arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<boolean>;
 
     campaignCategories(
-      arg0: BigNumberish,
+      arg0: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<
       [BigNumber, BigNumber, BigNumber, string, string, boolean, boolean] & {
@@ -1481,26 +1545,26 @@ export interface CampaignFactory extends BaseContract {
     campaignRequestsImplementation(overrides?: CallOverrides): Promise<string>;
 
     campaignRevenueFromCommissions(
-      arg0: string,
+      arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     campaignRewardsImplementation(overrides?: CallOverrides): Promise<string>;
 
     campaignTransactionConfig(
-      arg0: string,
+      arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     campaignTransactionConfigList(
-      arg0: BigNumberish,
+      arg0: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<string>;
 
     campaignVotesImplementation(overrides?: CallOverrides): Promise<string>;
 
     campaigns(
-      arg0: string,
+      arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<
       [string, BigNumber, BigNumber, BigNumber, string, boolean, boolean] & {
@@ -1515,14 +1579,14 @@ export interface CampaignFactory extends BaseContract {
     >;
 
     categoryCommission(
-      arg0: BigNumberish,
+      arg0: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     categoryCount(overrides?: CallOverrides): Promise<BigNumber>;
 
     categoryTitleIsTaken(
-      arg0: string,
+      arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<boolean>;
 
@@ -1531,15 +1595,15 @@ export interface CampaignFactory extends BaseContract {
     governance(overrides?: CallOverrides): Promise<string>;
 
     isUserTrustee(
-      arg0: string,
-      arg1: string,
+      arg0: PromiseOrValue<string>,
+      arg1: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<boolean>;
 
     paused(overrides?: CallOverrides): Promise<boolean>;
 
     tokens(
-      arg0: string,
+      arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<
       [string, string, boolean] & {
@@ -1550,7 +1614,7 @@ export interface CampaignFactory extends BaseContract {
     >;
 
     trustees(
-      arg0: BigNumberish,
+      arg0: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<
       [string, string, BigNumber, boolean] & {
@@ -1563,15 +1627,18 @@ export interface CampaignFactory extends BaseContract {
 
     userCount(overrides?: CallOverrides): Promise<BigNumber>;
 
-    userExists(arg0: string, overrides?: CallOverrides): Promise<boolean>;
+    userExists(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
 
     userTrusteeCount(
-      arg0: string,
+      arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     users(
-      arg0: string,
+      arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<
       [BigNumber, BigNumber, string, boolean] & {
@@ -1583,142 +1650,151 @@ export interface CampaignFactory extends BaseContract {
     >;
 
     __CampaignFactory_init(
-      _governance: string,
-      _campaignImplementation: string,
-      _campaignRequestImplementation: string,
-      _campaignVoteImplementation: string,
-      _campaignRewardImplementation: string,
-      _config: BigNumberish[],
+      _governance: PromiseOrValue<string>,
+      _campaignImplementation: PromiseOrValue<string>,
+      _campaignRequestImplementation: PromiseOrValue<string>,
+      _campaignVoteImplementation: PromiseOrValue<string>,
+      _campaignRewardImplementation: PromiseOrValue<string>,
+      _config: PromiseOrValue<BigNumberish>[],
       overrides?: CallOverrides
     ): Promise<void>;
 
     setCampaignImplementation(
-      _campaignImplementation: string,
+      _campaignImplementation: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
 
     setCampaignRewardImplementation(
-      _campaignRewardsImplementation: string,
+      _campaignRewardsImplementation: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
 
     setCampaignRequestImplementation(
-      _campaignRequestsImplementation: string,
+      _campaignRequestsImplementation: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
 
     setCampaignVoteImplementation(
-      _campaignVotesImplementation: string,
+      _campaignVotesImplementation: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
 
     addFactoryTransactionConfig(
-      _prop: string,
+      _prop: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
 
     setCampaignTransactionConfig(
-      _prop: string,
-      _value: BigNumberish,
+      _prop: PromiseOrValue<string>,
+      _value: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
 
     setDefaultCommission(
-      _numerator: BigNumberish,
-      _denominator: BigNumberish,
+      _numerator: PromiseOrValue<BigNumberish>,
+      _denominator: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
 
     setCategoryCommission(
-      _categoryId: BigNumberish,
-      _numerator: BigNumberish,
-      _denominator: BigNumberish,
+      _categoryId: PromiseOrValue<BigNumberish>,
+      _numerator: PromiseOrValue<BigNumberish>,
+      _denominator: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
 
     addToken(
-      _token: string,
-      _approved: boolean,
-      _hashedToken: string,
+      _token: PromiseOrValue<string>,
+      _approved: PromiseOrValue<boolean>,
+      _hashedToken: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
 
     toggleAcceptedToken(
-      _token: string,
-      _state: boolean,
+      _token: PromiseOrValue<string>,
+      _state: PromiseOrValue<boolean>,
       overrides?: CallOverrides
     ): Promise<void>;
 
     canManageCampaigns(
-      _user: string,
+      _user: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<boolean>;
 
     receiveCampaignCommission(
-      _campaign: string,
-      _amount: BigNumberish,
+      _campaign: PromiseOrValue<string>,
+      _amount: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    signUp(_hashedUser: string, overrides?: CallOverrides): Promise<void>;
+    signUp(
+      _hashedUser: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
-    userIsVerified(_user: string, overrides?: CallOverrides): Promise<boolean>;
+    userIsVerified(
+      _user: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
 
     initiateUserTransfer(
-      _user: string,
-      _forSelf: boolean,
+      _user: PromiseOrValue<string>,
+      _forSelf: PromiseOrValue<boolean>,
       overrides?: CallOverrides
     ): Promise<void>;
 
     deactivateAccountTransfer(overrides?: CallOverrides): Promise<void>;
 
-    addTrustee(_trustee: string, overrides?: CallOverrides): Promise<void>;
+    addTrustee(
+      _trustee: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     removeTrustee(
-      _trusteeId: BigNumberish,
+      _trusteeId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
 
     toggleUserApproval(
-      _user: string,
-      _approval: boolean,
+      _user: PromiseOrValue<string>,
+      _approval: PromiseOrValue<boolean>,
       overrides?: CallOverrides
     ): Promise<void>;
 
     createCampaign(
-      _categoryId: BigNumberish,
-      _privateCampaign: boolean,
-      _hashedCampaignInfo: string,
+      _categoryId: PromiseOrValue<BigNumberish>,
+      _privateCampaign: PromiseOrValue<boolean>,
+      _hashedCampaignInfo: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
 
     toggleCampaignActivation(
-      _campaign: string,
+      _campaign: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
 
     toggleCampaignPrivacy(
-      _campaign: string,
+      _campaign: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
 
     modifyCampaignCategory(
-      _campaign: string,
-      _newCategoryId: BigNumberish,
+      _campaign: PromiseOrValue<string>,
+      _newCategoryId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
 
     createCategory(
-      _active: boolean,
-      _title: string,
-      _hashedCategory: string,
+      _active: PromiseOrValue<boolean>,
+      _title: PromiseOrValue<string>,
+      _hashedCategory: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
 
     modifyCategory(
-      _categoryId: BigNumberish,
-      _active: boolean,
-      _title: string,
+      _categoryId: PromiseOrValue<BigNumberish>,
+      _active: PromiseOrValue<boolean>,
+      _title: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -1729,20 +1805,20 @@ export interface CampaignFactory extends BaseContract {
 
   filters: {
     "CampaignActivation(address,bool)"(
-      campaign?: string | null,
+      campaign?: PromiseOrValue<string> | null,
       active?: null
     ): CampaignActivationEventFilter;
     CampaignActivation(
-      campaign?: string | null,
+      campaign?: PromiseOrValue<string> | null,
       active?: null
     ): CampaignActivationEventFilter;
 
     "CampaignCategoryChange(address,uint256)"(
-      campaign?: string | null,
+      campaign?: PromiseOrValue<string> | null,
       newCategory?: null
     ): CampaignCategoryChangeEventFilter;
     CampaignCategoryChange(
-      campaign?: string | null,
+      campaign?: PromiseOrValue<string> | null,
       newCategory?: null
     ): CampaignCategoryChangeEventFilter;
 
@@ -1775,33 +1851,33 @@ export interface CampaignFactory extends BaseContract {
     ): CampaignDeployedEventFilter;
 
     "CampaignImplementationUpdated(address)"(
-      campaignImplementation?: string | null
+      campaignImplementation?: PromiseOrValue<string> | null
     ): CampaignImplementationUpdatedEventFilter;
     CampaignImplementationUpdated(
-      campaignImplementation?: string | null
+      campaignImplementation?: PromiseOrValue<string> | null
     ): CampaignImplementationUpdatedEventFilter;
 
     "CampaignPrivacyChange(address,bool)"(
-      campaign?: string | null,
+      campaign?: PromiseOrValue<string> | null,
       privateCampaign?: null
     ): CampaignPrivacyChangeEventFilter;
     CampaignPrivacyChange(
-      campaign?: string | null,
+      campaign?: PromiseOrValue<string> | null,
       privateCampaign?: null
     ): CampaignPrivacyChangeEventFilter;
 
     "CampaignRequestImplementationUpdated(address)"(
-      campaignRequestImplementation?: string | null
+      campaignRequestImplementation?: PromiseOrValue<string> | null
     ): CampaignRequestImplementationUpdatedEventFilter;
     CampaignRequestImplementationUpdated(
-      campaignRequestImplementation?: string | null
+      campaignRequestImplementation?: PromiseOrValue<string> | null
     ): CampaignRequestImplementationUpdatedEventFilter;
 
     "CampaignRewardImplementationUpdated(address)"(
-      campaignRewardImplementation?: string | null
+      campaignRewardImplementation?: PromiseOrValue<string> | null
     ): CampaignRewardImplementationUpdatedEventFilter;
     CampaignRewardImplementationUpdated(
-      campaignRewardImplementation?: string | null
+      campaignRewardImplementation?: PromiseOrValue<string> | null
     ): CampaignRewardImplementationUpdatedEventFilter;
 
     "CampaignTransactionConfigUpdated(string,uint256)"(
@@ -1814,41 +1890,41 @@ export interface CampaignFactory extends BaseContract {
     ): CampaignTransactionConfigUpdatedEventFilter;
 
     "CampaignVoteImplementationUpdated(address)"(
-      campaignVoteImplementation?: string | null
+      campaignVoteImplementation?: PromiseOrValue<string> | null
     ): CampaignVoteImplementationUpdatedEventFilter;
     CampaignVoteImplementationUpdated(
-      campaignVoteImplementation?: string | null
+      campaignVoteImplementation?: PromiseOrValue<string> | null
     ): CampaignVoteImplementationUpdatedEventFilter;
 
     "CategoryAdded(uint256,bool,string,string)"(
-      categoryId?: BigNumberish | null,
+      categoryId?: PromiseOrValue<BigNumberish> | null,
       active?: null,
       title?: null,
       hashedCategory?: null
     ): CategoryAddedEventFilter;
     CategoryAdded(
-      categoryId?: BigNumberish | null,
+      categoryId?: PromiseOrValue<BigNumberish> | null,
       active?: null,
       title?: null,
       hashedCategory?: null
     ): CategoryAddedEventFilter;
 
     "CategoryCommissionUpdated(uint256,uint256)"(
-      categoryId?: BigNumberish | null,
+      categoryId?: PromiseOrValue<BigNumberish> | null,
       commission?: null
     ): CategoryCommissionUpdatedEventFilter;
     CategoryCommissionUpdated(
-      categoryId?: BigNumberish | null,
+      categoryId?: PromiseOrValue<BigNumberish> | null,
       commission?: null
     ): CategoryCommissionUpdatedEventFilter;
 
     "CategoryModified(uint256,bool,string)"(
-      categoryId?: BigNumberish | null,
+      categoryId?: PromiseOrValue<BigNumberish> | null,
       active?: null,
       title?: null
     ): CategoryModifiedEventFilter;
     CategoryModified(
-      categoryId?: BigNumberish | null,
+      categoryId?: PromiseOrValue<BigNumberish> | null,
       active?: null,
       title?: null
     ): CategoryModifiedEventFilter;
@@ -1857,40 +1933,40 @@ export interface CampaignFactory extends BaseContract {
     Paused(account?: null): PausedEventFilter;
 
     "TokenAdded(address,bool,string)"(
-      token?: string | null,
+      token?: PromiseOrValue<string> | null,
       approval?: null,
       hashedToken?: null
     ): TokenAddedEventFilter;
     TokenAdded(
-      token?: string | null,
+      token?: PromiseOrValue<string> | null,
       approval?: null,
       hashedToken?: null
     ): TokenAddedEventFilter;
 
     "TokenApproval(address,bool)"(
-      token?: string | null,
+      token?: PromiseOrValue<string> | null,
       state?: null
     ): TokenApprovalEventFilter;
     TokenApproval(
-      token?: string | null,
+      token?: PromiseOrValue<string> | null,
       state?: null
     ): TokenApprovalEventFilter;
 
     "TrusteeAdded(uint256,address)"(
-      trusteeId?: BigNumberish | null,
+      trusteeId?: PromiseOrValue<BigNumberish> | null,
       trusteeAddress?: null
     ): TrusteeAddedEventFilter;
     TrusteeAdded(
-      trusteeId?: BigNumberish | null,
+      trusteeId?: PromiseOrValue<BigNumberish> | null,
       trusteeAddress?: null
     ): TrusteeAddedEventFilter;
 
     "TrusteeRemoved(uint256,address)"(
-      trusteeId?: BigNumberish | null,
+      trusteeId?: PromiseOrValue<BigNumberish> | null,
       trusteeAddress?: null
     ): TrusteeRemovedEventFilter;
     TrusteeRemoved(
-      trusteeId?: BigNumberish | null,
+      trusteeId?: PromiseOrValue<BigNumberish> | null,
       trusteeAddress?: null
     ): TrusteeRemovedEventFilter;
 
@@ -1898,39 +1974,42 @@ export interface CampaignFactory extends BaseContract {
     Unpaused(account?: null): UnpausedEventFilter;
 
     "UserAdded(address,string)"(
-      userId?: string | null,
+      userId?: PromiseOrValue<string> | null,
       hashedUser?: null
     ): UserAddedEventFilter;
-    UserAdded(userId?: string | null, hashedUser?: null): UserAddedEventFilter;
+    UserAdded(
+      userId?: PromiseOrValue<string> | null,
+      hashedUser?: null
+    ): UserAddedEventFilter;
 
     "UserApproval(address,bool)"(
-      user?: string | null,
+      user?: PromiseOrValue<string> | null,
       approval?: null
     ): UserApprovalEventFilter;
     UserApproval(
-      user?: string | null,
+      user?: PromiseOrValue<string> | null,
       approval?: null
     ): UserApprovalEventFilter;
   };
 
   estimateGas: {
     accountInTransit(
-      arg0: string,
+      arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     accountTransitStartedBy(
-      arg0: string,
+      arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     approvedCampaignTransactionConfig(
-      arg0: string,
+      arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     campaignCategories(
-      arg0: BigNumberish,
+      arg0: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -1945,7 +2024,7 @@ export interface CampaignFactory extends BaseContract {
     ): Promise<BigNumber>;
 
     campaignRevenueFromCommissions(
-      arg0: string,
+      arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -1954,28 +2033,31 @@ export interface CampaignFactory extends BaseContract {
     ): Promise<BigNumber>;
 
     campaignTransactionConfig(
-      arg0: string,
+      arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     campaignTransactionConfigList(
-      arg0: BigNumberish,
+      arg0: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     campaignVotesImplementation(overrides?: CallOverrides): Promise<BigNumber>;
 
-    campaigns(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
+    campaigns(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     categoryCommission(
-      arg0: BigNumberish,
+      arg0: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     categoryCount(overrides?: CallOverrides): Promise<BigNumber>;
 
     categoryTitleIsTaken(
-      arg0: string,
+      arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -1984,206 +2066,218 @@ export interface CampaignFactory extends BaseContract {
     governance(overrides?: CallOverrides): Promise<BigNumber>;
 
     isUserTrustee(
-      arg0: string,
-      arg1: string,
+      arg0: PromiseOrValue<string>,
+      arg1: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     paused(overrides?: CallOverrides): Promise<BigNumber>;
 
-    tokens(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
-
-    trustees(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
-
-    userCount(overrides?: CallOverrides): Promise<BigNumber>;
-
-    userExists(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
-
-    userTrusteeCount(
-      arg0: string,
+    tokens(
+      arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    users(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
+    trustees(
+      arg0: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    userCount(overrides?: CallOverrides): Promise<BigNumber>;
+
+    userExists(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    userTrusteeCount(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    users(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     __CampaignFactory_init(
-      _governance: string,
-      _campaignImplementation: string,
-      _campaignRequestImplementation: string,
-      _campaignVoteImplementation: string,
-      _campaignRewardImplementation: string,
-      _config: BigNumberish[],
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _governance: PromiseOrValue<string>,
+      _campaignImplementation: PromiseOrValue<string>,
+      _campaignRequestImplementation: PromiseOrValue<string>,
+      _campaignVoteImplementation: PromiseOrValue<string>,
+      _campaignRewardImplementation: PromiseOrValue<string>,
+      _config: PromiseOrValue<BigNumberish>[],
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     setCampaignImplementation(
-      _campaignImplementation: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _campaignImplementation: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     setCampaignRewardImplementation(
-      _campaignRewardsImplementation: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _campaignRewardsImplementation: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     setCampaignRequestImplementation(
-      _campaignRequestsImplementation: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _campaignRequestsImplementation: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     setCampaignVoteImplementation(
-      _campaignVotesImplementation: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _campaignVotesImplementation: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     addFactoryTransactionConfig(
-      _prop: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _prop: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     setCampaignTransactionConfig(
-      _prop: string,
-      _value: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _prop: PromiseOrValue<string>,
+      _value: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     setDefaultCommission(
-      _numerator: BigNumberish,
-      _denominator: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _numerator: PromiseOrValue<BigNumberish>,
+      _denominator: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     setCategoryCommission(
-      _categoryId: BigNumberish,
-      _numerator: BigNumberish,
-      _denominator: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _categoryId: PromiseOrValue<BigNumberish>,
+      _numerator: PromiseOrValue<BigNumberish>,
+      _denominator: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     addToken(
-      _token: string,
-      _approved: boolean,
-      _hashedToken: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _token: PromiseOrValue<string>,
+      _approved: PromiseOrValue<boolean>,
+      _hashedToken: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     toggleAcceptedToken(
-      _token: string,
-      _state: boolean,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _token: PromiseOrValue<string>,
+      _state: PromiseOrValue<boolean>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     canManageCampaigns(
-      _user: string,
+      _user: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     receiveCampaignCommission(
-      _campaign: string,
-      _amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _campaign: PromiseOrValue<string>,
+      _amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     signUp(
-      _hashedUser: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _hashedUser: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     userIsVerified(
-      _user: string,
+      _user: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     initiateUserTransfer(
-      _user: string,
-      _forSelf: boolean,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _user: PromiseOrValue<string>,
+      _forSelf: PromiseOrValue<boolean>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     deactivateAccountTransfer(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     addTrustee(
-      _trustee: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _trustee: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     removeTrustee(
-      _trusteeId: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _trusteeId: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     toggleUserApproval(
-      _user: string,
-      _approval: boolean,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _user: PromiseOrValue<string>,
+      _approval: PromiseOrValue<boolean>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     createCampaign(
-      _categoryId: BigNumberish,
-      _privateCampaign: boolean,
-      _hashedCampaignInfo: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _categoryId: PromiseOrValue<BigNumberish>,
+      _privateCampaign: PromiseOrValue<boolean>,
+      _hashedCampaignInfo: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     toggleCampaignActivation(
-      _campaign: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _campaign: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     toggleCampaignPrivacy(
-      _campaign: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _campaign: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     modifyCampaignCategory(
-      _campaign: string,
-      _newCategoryId: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _campaign: PromiseOrValue<string>,
+      _newCategoryId: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     createCategory(
-      _active: boolean,
-      _title: string,
-      _hashedCategory: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _active: PromiseOrValue<boolean>,
+      _title: PromiseOrValue<string>,
+      _hashedCategory: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     modifyCategory(
-      _categoryId: BigNumberish,
-      _active: boolean,
-      _title: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _categoryId: PromiseOrValue<BigNumberish>,
+      _active: PromiseOrValue<boolean>,
+      _title: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     unpauseCampaign(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     pauseCampaign(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
   };
 
   populateTransaction: {
     accountInTransit(
-      arg0: string,
+      arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     accountTransitStartedBy(
-      arg0: string,
+      arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     approvedCampaignTransactionConfig(
-      arg0: string,
+      arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     campaignCategories(
-      arg0: BigNumberish,
+      arg0: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
@@ -2202,7 +2296,7 @@ export interface CampaignFactory extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     campaignRevenueFromCommissions(
-      arg0: string,
+      arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
@@ -2211,12 +2305,12 @@ export interface CampaignFactory extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     campaignTransactionConfig(
-      arg0: string,
+      arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     campaignTransactionConfigList(
-      arg0: BigNumberish,
+      arg0: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
@@ -2225,19 +2319,19 @@ export interface CampaignFactory extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     campaigns(
-      arg0: string,
+      arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     categoryCommission(
-      arg0: BigNumberish,
+      arg0: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     categoryCount(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     categoryTitleIsTaken(
-      arg0: string,
+      arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
@@ -2246,197 +2340,197 @@ export interface CampaignFactory extends BaseContract {
     governance(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     isUserTrustee(
-      arg0: string,
-      arg1: string,
+      arg0: PromiseOrValue<string>,
+      arg1: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     paused(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     tokens(
-      arg0: string,
+      arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     trustees(
-      arg0: BigNumberish,
+      arg0: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     userCount(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     userExists(
-      arg0: string,
+      arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     userTrusteeCount(
-      arg0: string,
+      arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     users(
-      arg0: string,
+      arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     __CampaignFactory_init(
-      _governance: string,
-      _campaignImplementation: string,
-      _campaignRequestImplementation: string,
-      _campaignVoteImplementation: string,
-      _campaignRewardImplementation: string,
-      _config: BigNumberish[],
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _governance: PromiseOrValue<string>,
+      _campaignImplementation: PromiseOrValue<string>,
+      _campaignRequestImplementation: PromiseOrValue<string>,
+      _campaignVoteImplementation: PromiseOrValue<string>,
+      _campaignRewardImplementation: PromiseOrValue<string>,
+      _config: PromiseOrValue<BigNumberish>[],
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     setCampaignImplementation(
-      _campaignImplementation: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _campaignImplementation: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     setCampaignRewardImplementation(
-      _campaignRewardsImplementation: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _campaignRewardsImplementation: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     setCampaignRequestImplementation(
-      _campaignRequestsImplementation: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _campaignRequestsImplementation: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     setCampaignVoteImplementation(
-      _campaignVotesImplementation: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _campaignVotesImplementation: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     addFactoryTransactionConfig(
-      _prop: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _prop: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     setCampaignTransactionConfig(
-      _prop: string,
-      _value: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _prop: PromiseOrValue<string>,
+      _value: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     setDefaultCommission(
-      _numerator: BigNumberish,
-      _denominator: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _numerator: PromiseOrValue<BigNumberish>,
+      _denominator: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     setCategoryCommission(
-      _categoryId: BigNumberish,
-      _numerator: BigNumberish,
-      _denominator: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _categoryId: PromiseOrValue<BigNumberish>,
+      _numerator: PromiseOrValue<BigNumberish>,
+      _denominator: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     addToken(
-      _token: string,
-      _approved: boolean,
-      _hashedToken: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _token: PromiseOrValue<string>,
+      _approved: PromiseOrValue<boolean>,
+      _hashedToken: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     toggleAcceptedToken(
-      _token: string,
-      _state: boolean,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _token: PromiseOrValue<string>,
+      _state: PromiseOrValue<boolean>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     canManageCampaigns(
-      _user: string,
+      _user: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     receiveCampaignCommission(
-      _campaign: string,
-      _amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _campaign: PromiseOrValue<string>,
+      _amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     signUp(
-      _hashedUser: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _hashedUser: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     userIsVerified(
-      _user: string,
+      _user: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     initiateUserTransfer(
-      _user: string,
-      _forSelf: boolean,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _user: PromiseOrValue<string>,
+      _forSelf: PromiseOrValue<boolean>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     deactivateAccountTransfer(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     addTrustee(
-      _trustee: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _trustee: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     removeTrustee(
-      _trusteeId: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _trusteeId: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     toggleUserApproval(
-      _user: string,
-      _approval: boolean,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _user: PromiseOrValue<string>,
+      _approval: PromiseOrValue<boolean>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     createCampaign(
-      _categoryId: BigNumberish,
-      _privateCampaign: boolean,
-      _hashedCampaignInfo: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _categoryId: PromiseOrValue<BigNumberish>,
+      _privateCampaign: PromiseOrValue<boolean>,
+      _hashedCampaignInfo: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     toggleCampaignActivation(
-      _campaign: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _campaign: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     toggleCampaignPrivacy(
-      _campaign: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _campaign: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     modifyCampaignCategory(
-      _campaign: string,
-      _newCategoryId: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _campaign: PromiseOrValue<string>,
+      _newCategoryId: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     createCategory(
-      _active: boolean,
-      _title: string,
-      _hashedCategory: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _active: PromiseOrValue<boolean>,
+      _title: PromiseOrValue<string>,
+      _hashedCategory: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     modifyCategory(
-      _categoryId: BigNumberish,
-      _active: boolean,
-      _title: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _categoryId: PromiseOrValue<BigNumberish>,
+      _active: PromiseOrValue<boolean>,
+      _title: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     unpauseCampaign(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     pauseCampaign(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
   };
 }

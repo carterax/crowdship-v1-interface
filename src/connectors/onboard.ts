@@ -59,11 +59,11 @@ init({
   accountCenter: {
     desktop: {
       enabled: false,
-      containerElement: '',
+      containerElement: 'body',
     },
     mobile: {
       enabled: false,
-      containerElement: '',
+      containerElement: 'body',
     },
   },
   chains: [

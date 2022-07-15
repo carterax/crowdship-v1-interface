@@ -50,7 +50,7 @@ module.exports = {
       campaignRewardImplementation:
         '0x356A41ac9f14D680408782E43a81E9e8c34809E5',
       campaignVoteImplementation: '0x73C18a454688B17EDB302A8d6509Cab23F28a785',
-      myCrowdship: '', // generated via Factory
+      myCrowdship: '0x774c8a90157c6eff03016bc7069887979f588227', // generated via Factory
     },
   },
   images: {

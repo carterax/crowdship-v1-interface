@@ -24,6 +24,7 @@ import type {
   TypedEvent,
   TypedListener,
   OnEvent,
+  PromiseOrValue,
 } from "./common";
 
 export interface CampaignRequestInterface extends utils.Interface {
@@ -95,31 +96,36 @@ export interface CampaignRequestInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "requests",
-    values: [BigNumberish]
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "__CampaignRequest_init",
-    values: [string, string]
+    values: [PromiseOrValue<string>, PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "createRequest",
-    values: [string, BigNumberish, BigNumberish, string]
+    values: [
+      PromiseOrValue<string>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<string>
+    ]
   ): string;
   encodeFunctionData(
     functionFragment: "voidRequest",
-    values: [BigNumberish]
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "signRequestVote",
-    values: [BigNumberish, BigNumberish]
+    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "cancelVoteSignature",
-    values: [BigNumberish]
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "signRequestFinalization",
-    values: [BigNumberish]
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
 
   decodeFunctionResult(
@@ -272,7 +278,7 @@ export interface CampaignRequest extends BaseContract {
     requestCount(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     requests(
-      arg0: BigNumberish,
+      arg0: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<
       [
@@ -299,38 +305,38 @@ export interface CampaignRequest extends BaseContract {
     >;
 
     __CampaignRequest_init(
-      _campaignFactory: string,
-      _campaign: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _campaignFactory: PromiseOrValue<string>,
+      _campaign: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     createRequest(
-      _recipient: string,
-      _value: BigNumberish,
-      _duration: BigNumberish,
-      _hashedRequest: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _recipient: PromiseOrValue<string>,
+      _value: PromiseOrValue<BigNumberish>,
+      _duration: PromiseOrValue<BigNumberish>,
+      _hashedRequest: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     voidRequest(
-      _requestId: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _requestId: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     signRequestVote(
-      _requestId: BigNumberish,
-      _support: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _requestId: PromiseOrValue<BigNumberish>,
+      _support: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     cancelVoteSignature(
-      _requestId: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _requestId: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     signRequestFinalization(
-      _requestId: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _requestId: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
   };
 
@@ -351,7 +357,7 @@ export interface CampaignRequest extends BaseContract {
   requestCount(overrides?: CallOverrides): Promise<BigNumber>;
 
   requests(
-    arg0: BigNumberish,
+    arg0: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
   ): Promise<
     [
@@ -378,38 +384,38 @@ export interface CampaignRequest extends BaseContract {
   >;
 
   __CampaignRequest_init(
-    _campaignFactory: string,
-    _campaign: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    _campaignFactory: PromiseOrValue<string>,
+    _campaign: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   createRequest(
-    _recipient: string,
-    _value: BigNumberish,
-    _duration: BigNumberish,
-    _hashedRequest: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    _recipient: PromiseOrValue<string>,
+    _value: PromiseOrValue<BigNumberish>,
+    _duration: PromiseOrValue<BigNumberish>,
+    _hashedRequest: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   voidRequest(
-    _requestId: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    _requestId: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   signRequestVote(
-    _requestId: BigNumberish,
-    _support: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    _requestId: PromiseOrValue<BigNumberish>,
+    _support: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   cancelVoteSignature(
-    _requestId: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    _requestId: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   signRequestFinalization(
-    _requestId: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    _requestId: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   callStatic: {
@@ -430,7 +436,7 @@ export interface CampaignRequest extends BaseContract {
     requestCount(overrides?: CallOverrides): Promise<BigNumber>;
 
     requests(
-      arg0: BigNumberish,
+      arg0: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<
       [
@@ -457,37 +463,37 @@ export interface CampaignRequest extends BaseContract {
     >;
 
     __CampaignRequest_init(
-      _campaignFactory: string,
-      _campaign: string,
+      _campaignFactory: PromiseOrValue<string>,
+      _campaign: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
 
     createRequest(
-      _recipient: string,
-      _value: BigNumberish,
-      _duration: BigNumberish,
-      _hashedRequest: string,
+      _recipient: PromiseOrValue<string>,
+      _value: PromiseOrValue<BigNumberish>,
+      _duration: PromiseOrValue<BigNumberish>,
+      _hashedRequest: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
 
     voidRequest(
-      _requestId: BigNumberish,
+      _requestId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
 
     signRequestVote(
-      _requestId: BigNumberish,
-      _support: BigNumberish,
+      _requestId: PromiseOrValue<BigNumberish>,
+      _support: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
 
     cancelVoteSignature(
-      _requestId: BigNumberish,
+      _requestId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
 
     signRequestFinalization(
-      _requestId: BigNumberish,
+      _requestId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
   };
@@ -497,14 +503,14 @@ export interface CampaignRequest extends BaseContract {
     Paused(account?: null): PausedEventFilter;
 
     "RequestAdded(uint256,uint256,uint256,string,address)"(
-      requestId?: BigNumberish | null,
+      requestId?: PromiseOrValue<BigNumberish> | null,
       duration?: null,
       value?: null,
       hashedRequest?: null,
       recipient?: null
     ): RequestAddedEventFilter;
     RequestAdded(
-      requestId?: BigNumberish | null,
+      requestId?: PromiseOrValue<BigNumberish> | null,
       duration?: null,
       value?: null,
       hashedRequest?: null,
@@ -512,9 +518,11 @@ export interface CampaignRequest extends BaseContract {
     ): RequestAddedEventFilter;
 
     "RequestVoided(uint256)"(
-      requestId?: BigNumberish | null
+      requestId?: PromiseOrValue<BigNumberish> | null
     ): RequestVoidedEventFilter;
-    RequestVoided(requestId?: BigNumberish | null): RequestVoidedEventFilter;
+    RequestVoided(
+      requestId?: PromiseOrValue<BigNumberish> | null
+    ): RequestVoidedEventFilter;
 
     "Unpaused(address)"(account?: null): UnpausedEventFilter;
     Unpaused(account?: null): UnpausedEventFilter;
@@ -537,41 +545,44 @@ export interface CampaignRequest extends BaseContract {
 
     requestCount(overrides?: CallOverrides): Promise<BigNumber>;
 
-    requests(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
+    requests(
+      arg0: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     __CampaignRequest_init(
-      _campaignFactory: string,
-      _campaign: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _campaignFactory: PromiseOrValue<string>,
+      _campaign: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     createRequest(
-      _recipient: string,
-      _value: BigNumberish,
-      _duration: BigNumberish,
-      _hashedRequest: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _recipient: PromiseOrValue<string>,
+      _value: PromiseOrValue<BigNumberish>,
+      _duration: PromiseOrValue<BigNumberish>,
+      _hashedRequest: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     voidRequest(
-      _requestId: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _requestId: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     signRequestVote(
-      _requestId: BigNumberish,
-      _support: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _requestId: PromiseOrValue<BigNumberish>,
+      _support: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     cancelVoteSignature(
-      _requestId: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _requestId: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     signRequestFinalization(
-      _requestId: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _requestId: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
   };
 
@@ -601,43 +612,43 @@ export interface CampaignRequest extends BaseContract {
     requestCount(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     requests(
-      arg0: BigNumberish,
+      arg0: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     __CampaignRequest_init(
-      _campaignFactory: string,
-      _campaign: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _campaignFactory: PromiseOrValue<string>,
+      _campaign: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     createRequest(
-      _recipient: string,
-      _value: BigNumberish,
-      _duration: BigNumberish,
-      _hashedRequest: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _recipient: PromiseOrValue<string>,
+      _value: PromiseOrValue<BigNumberish>,
+      _duration: PromiseOrValue<BigNumberish>,
+      _hashedRequest: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     voidRequest(
-      _requestId: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _requestId: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     signRequestVote(
-      _requestId: BigNumberish,
-      _support: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _requestId: PromiseOrValue<BigNumberish>,
+      _support: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     cancelVoteSignature(
-      _requestId: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _requestId: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     signRequestFinalization(
-      _requestId: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _requestId: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
   };
 }

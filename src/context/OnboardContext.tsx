@@ -65,7 +65,12 @@ export const OnboardProvider = ({ children }) => {
         },
       });
     } else {
-      await connect({});
+      await connect({
+        autoSelect: {
+          disableModals: false,
+          label: 'Connect Wallet',
+        },
+      });
     }
   };
 

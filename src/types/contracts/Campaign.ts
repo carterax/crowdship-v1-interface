@@ -25,6 +25,7 @@ import type {
   TypedEvent,
   TypedListener,
   OnEvent,
+  PromiseOrValue,
 } from "./common";
 
 export interface CampaignInterface extends utils.Interface {
@@ -176,7 +177,7 @@ export interface CampaignInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "addRole",
-    values: [string, BytesLike]
+    values: [PromiseOrValue<string>, PromiseOrValue<BytesLike>]
   ): string;
   encodeFunctionData(
     functionFragment: "allowContributionAfterTargetIsMet",
@@ -184,9 +185,12 @@ export interface CampaignInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "allowedToContribute",
-    values: [string]
+    values: [PromiseOrValue<string>]
   ): string;
-  encodeFunctionData(functionFragment: "approvers", values: [string]): string;
+  encodeFunctionData(
+    functionFragment: "approvers",
+    values: [PromiseOrValue<string>]
+  ): string;
   encodeFunctionData(
     functionFragment: "approversCount",
     values?: undefined
@@ -217,7 +221,7 @@ export interface CampaignInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "contributionId",
-    values: [string]
+    values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(functionFragment: "deadline", values?: undefined): string;
   encodeFunctionData(
@@ -226,16 +230,16 @@ export interface CampaignInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "getRoleAdmin",
-    values: [BytesLike]
+    values: [PromiseOrValue<BytesLike>]
   ): string;
   encodeFunctionData(functionFragment: "goalType", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "grantRole",
-    values: [BytesLike, string]
+    values: [PromiseOrValue<BytesLike>, PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "hasRole",
-    values: [BytesLike, string]
+    values: [PromiseOrValue<BytesLike>, PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "minimumContribution",
@@ -249,7 +253,7 @@ export interface CampaignInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "removeRole",
-    values: [string, BytesLike]
+    values: [PromiseOrValue<string>, PromiseOrValue<BytesLike>]
   ): string;
   encodeFunctionData(
     functionFragment: "renounceAdmin",
@@ -257,33 +261,45 @@ export interface CampaignInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "renounceRole",
-    values: [BytesLike, string]
+    values: [PromiseOrValue<BytesLike>, PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "reportCount",
     values?: undefined
   ): string;
-  encodeFunctionData(functionFragment: "reportHash", values: [string]): string;
-  encodeFunctionData(functionFragment: "reported", values: [string]): string;
+  encodeFunctionData(
+    functionFragment: "reportHash",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "reported",
+    values: [PromiseOrValue<string>]
+  ): string;
   encodeFunctionData(
     functionFragment: "reviewCount",
     values?: undefined
   ): string;
-  encodeFunctionData(functionFragment: "reviewHash", values: [string]): string;
-  encodeFunctionData(functionFragment: "reviewed", values: [string]): string;
+  encodeFunctionData(
+    functionFragment: "reviewHash",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "reviewed",
+    values: [PromiseOrValue<string>]
+  ): string;
   encodeFunctionData(
     functionFragment: "revokeRole",
-    values: [BytesLike, string]
+    values: [PromiseOrValue<BytesLike>, PromiseOrValue<string>]
   ): string;
   encodeFunctionData(functionFragment: "root", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "supportsInterface",
-    values: [BytesLike]
+    values: [PromiseOrValue<BytesLike>]
   ): string;
   encodeFunctionData(functionFragment: "target", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "timeUntilNextTransferConfirmation",
-    values: [string]
+    values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "totalCampaignContribution",
@@ -291,7 +307,7 @@ export interface CampaignInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "transferAttemptCount",
-    values: [string]
+    values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "withdrawalsPaused",
@@ -299,15 +315,21 @@ export interface CampaignInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "__Campaign_init",
-    values: [string, string, string, string, string]
+    values: [
+      PromiseOrValue<string>,
+      PromiseOrValue<string>,
+      PromiseOrValue<string>,
+      PromiseOrValue<string>,
+      PromiseOrValue<string>
+    ]
   ): string;
   encodeFunctionData(
     functionFragment: "isCampaignAdmin",
-    values: [string]
+    values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "isCampaignManager",
-    values: [string]
+    values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "getCampaignGoalType",
@@ -315,54 +337,58 @@ export interface CampaignInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "getCampaignState",
-    values: [BigNumberish]
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "transferCampaignOwnership",
-    values: [string, string]
+    values: [PromiseOrValue<string>, PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "transferCampaignUserData",
-    values: [string, string]
+    values: [PromiseOrValue<string>, PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "setCampaignSettings",
     values: [
-      BigNumberish,
-      BigNumberish,
-      BigNumberish,
-      BigNumberish,
-      string,
-      boolean
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<string>,
+      PromiseOrValue<boolean>
     ]
   ): string;
   encodeFunctionData(
     functionFragment: "extendDeadline",
-    values: [BigNumberish]
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "setDeadlineSetTimes",
-    values: [BigNumberish]
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "toggleContributorApproval",
-    values: [string]
+    values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "contribute",
-    values: [string, BigNumberish, boolean]
+    values: [
+      PromiseOrValue<string>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<boolean>
+    ]
   ): string;
   encodeFunctionData(
     functionFragment: "withdrawContribution",
-    values: [string]
+    values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "userContributionLoss",
-    values: [string]
+    values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "finalizeRequest",
-    values: [BigNumberish]
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "reviewMode",
@@ -370,7 +396,7 @@ export interface CampaignInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "reviewCampaignPerformance",
-    values: [string]
+    values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "markCampaignComplete",
@@ -378,15 +404,15 @@ export interface CampaignInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "reportCampaign",
-    values: [string]
+    values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "setCampaignState",
-    values: [BigNumberish]
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "toggleWithdrawalState",
-    values: [boolean]
+    values: [PromiseOrValue<boolean>]
   ): string;
   encodeFunctionData(
     functionFragment: "unpauseCampaign",
@@ -901,9 +927,9 @@ export interface Campaign extends BaseContract {
     acceptedToken(overrides?: CallOverrides): Promise<[string]>;
 
     addRole(
-      _account: string,
-      _role: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _account: PromiseOrValue<string>,
+      _role: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     allowContributionAfterTargetIsMet(
@@ -911,11 +937,14 @@ export interface Campaign extends BaseContract {
     ): Promise<[boolean]>;
 
     allowedToContribute(
-      arg0: string,
+      arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<[boolean]>;
 
-    approvers(arg0: string, overrides?: CallOverrides): Promise<[boolean]>;
+    approvers(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
 
     approversCount(overrides?: CallOverrides): Promise<[BigNumber]>;
 
@@ -932,7 +961,7 @@ export interface Campaign extends BaseContract {
     campaignVoteContract(overrides?: CallOverrides): Promise<[string]>;
 
     contributionId(
-      arg0: string,
+      arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
@@ -940,19 +969,22 @@ export interface Campaign extends BaseContract {
 
     deadlineSetTimes(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    getRoleAdmin(role: BytesLike, overrides?: CallOverrides): Promise<[string]>;
+    getRoleAdmin(
+      role: PromiseOrValue<BytesLike>,
+      overrides?: CallOverrides
+    ): Promise<[string]>;
 
     goalType(overrides?: CallOverrides): Promise<[number]>;
 
     grantRole(
-      role: BytesLike,
-      account: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      role: PromiseOrValue<BytesLike>,
+      account: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     hasRole(
-      role: BytesLike,
-      account: string,
+      role: PromiseOrValue<BytesLike>,
+      account: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<[boolean]>;
 
@@ -965,181 +997,193 @@ export interface Campaign extends BaseContract {
     percentBase(overrides?: CallOverrides): Promise<[number]>;
 
     removeRole(
-      _account: string,
-      _role: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _account: PromiseOrValue<string>,
+      _role: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     renounceAdmin(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     renounceRole(
-      role: BytesLike,
-      account: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      role: PromiseOrValue<BytesLike>,
+      account: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     reportCount(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    reportHash(arg0: string, overrides?: CallOverrides): Promise<[string]>;
+    reportHash(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[string]>;
 
-    reported(arg0: string, overrides?: CallOverrides): Promise<[boolean]>;
+    reported(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
 
     reviewCount(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    reviewHash(arg0: string, overrides?: CallOverrides): Promise<[string]>;
+    reviewHash(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[string]>;
 
-    reviewed(arg0: string, overrides?: CallOverrides): Promise<[boolean]>;
+    reviewed(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
 
     revokeRole(
-      role: BytesLike,
-      account: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      role: PromiseOrValue<BytesLike>,
+      account: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     root(overrides?: CallOverrides): Promise<[string]>;
 
     supportsInterface(
-      interfaceId: BytesLike,
+      interfaceId: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<[boolean]>;
 
     target(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     timeUntilNextTransferConfirmation(
-      arg0: string,
+      arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
     totalCampaignContribution(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     transferAttemptCount(
-      arg0: string,
+      arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
     withdrawalsPaused(overrides?: CallOverrides): Promise<[boolean]>;
 
     __Campaign_init(
-      _campaignFactory: string,
-      _campaignRewards: string,
-      _campaignRequests: string,
-      _campaignVotes: string,
-      _root: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _campaignFactory: PromiseOrValue<string>,
+      _campaignRewards: PromiseOrValue<string>,
+      _campaignRequests: PromiseOrValue<string>,
+      _campaignVotes: PromiseOrValue<string>,
+      _root: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     isCampaignAdmin(
-      _user: string,
+      _user: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<[boolean]>;
 
     isCampaignManager(
-      _user: string,
+      _user: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<[boolean]>;
 
     getCampaignGoalType(overrides?: CallOverrides): Promise<[number]>;
 
     getCampaignState(
-      _state: BigNumberish,
+      _state: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<[number]>;
 
     transferCampaignOwnership(
-      _oldRoot: string,
-      _newRoot: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _oldRoot: PromiseOrValue<string>,
+      _newRoot: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     transferCampaignUserData(
-      _oldAddress: string,
-      _newAddress: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _oldAddress: PromiseOrValue<string>,
+      _newAddress: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     setCampaignSettings(
-      _target: BigNumberish,
-      _minimumContribution: BigNumberish,
-      _duration: BigNumberish,
-      _goalType: BigNumberish,
-      _token: string,
-      _allowContributionAfterTargetIsMet: boolean,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _target: PromiseOrValue<BigNumberish>,
+      _minimumContribution: PromiseOrValue<BigNumberish>,
+      _duration: PromiseOrValue<BigNumberish>,
+      _goalType: PromiseOrValue<BigNumberish>,
+      _token: PromiseOrValue<string>,
+      _allowContributionAfterTargetIsMet: PromiseOrValue<boolean>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     extendDeadline(
-      _time: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _time: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     setDeadlineSetTimes(
-      _count: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _count: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     toggleContributorApproval(
-      _contributor: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _contributor: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     contribute(
-      _token: string,
-      _rewardId: BigNumberish,
-      _withReward: boolean,
-      overrides?: PayableOverrides & { from?: string | Promise<string> }
+      _token: PromiseOrValue<string>,
+      _rewardId: PromiseOrValue<BigNumberish>,
+      _withReward: PromiseOrValue<boolean>,
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     withdrawContribution(
-      _wallet: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _wallet: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     userContributionLoss(
-      _user: string,
+      _user: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
     finalizeRequest(
-      _requestId: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _requestId: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     reviewMode(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     reviewCampaignPerformance(
-      _hashedReview: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _hashedReview: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     markCampaignComplete(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     reportCampaign(
-      _hashedReport: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _hashedReport: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     setCampaignState(
-      _state: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _state: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     toggleWithdrawalState(
-      _state: boolean,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _state: PromiseOrValue<boolean>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     unpauseCampaign(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     pauseCampaign(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
   };
 
@@ -1150,9 +1194,9 @@ export interface Campaign extends BaseContract {
   acceptedToken(overrides?: CallOverrides): Promise<string>;
 
   addRole(
-    _account: string,
-    _role: BytesLike,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    _account: PromiseOrValue<string>,
+    _role: PromiseOrValue<BytesLike>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   allowContributionAfterTargetIsMet(
@@ -1160,11 +1204,14 @@ export interface Campaign extends BaseContract {
   ): Promise<boolean>;
 
   allowedToContribute(
-    arg0: string,
+    arg0: PromiseOrValue<string>,
     overrides?: CallOverrides
   ): Promise<boolean>;
 
-  approvers(arg0: string, overrides?: CallOverrides): Promise<boolean>;
+  approvers(
+    arg0: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
 
   approversCount(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -1180,25 +1227,31 @@ export interface Campaign extends BaseContract {
 
   campaignVoteContract(overrides?: CallOverrides): Promise<string>;
 
-  contributionId(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
+  contributionId(
+    arg0: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
 
   deadline(overrides?: CallOverrides): Promise<BigNumber>;
 
   deadlineSetTimes(overrides?: CallOverrides): Promise<BigNumber>;
 
-  getRoleAdmin(role: BytesLike, overrides?: CallOverrides): Promise<string>;
+  getRoleAdmin(
+    role: PromiseOrValue<BytesLike>,
+    overrides?: CallOverrides
+  ): Promise<string>;
 
   goalType(overrides?: CallOverrides): Promise<number>;
 
   grantRole(
-    role: BytesLike,
-    account: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    role: PromiseOrValue<BytesLike>,
+    account: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   hasRole(
-    role: BytesLike,
-    account: string,
+    role: PromiseOrValue<BytesLike>,
+    account: PromiseOrValue<string>,
     overrides?: CallOverrides
   ): Promise<boolean>;
 
@@ -1211,175 +1264,193 @@ export interface Campaign extends BaseContract {
   percentBase(overrides?: CallOverrides): Promise<number>;
 
   removeRole(
-    _account: string,
-    _role: BytesLike,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    _account: PromiseOrValue<string>,
+    _role: PromiseOrValue<BytesLike>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   renounceAdmin(
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   renounceRole(
-    role: BytesLike,
-    account: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    role: PromiseOrValue<BytesLike>,
+    account: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   reportCount(overrides?: CallOverrides): Promise<BigNumber>;
 
-  reportHash(arg0: string, overrides?: CallOverrides): Promise<string>;
+  reportHash(
+    arg0: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<string>;
 
-  reported(arg0: string, overrides?: CallOverrides): Promise<boolean>;
+  reported(
+    arg0: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
 
   reviewCount(overrides?: CallOverrides): Promise<BigNumber>;
 
-  reviewHash(arg0: string, overrides?: CallOverrides): Promise<string>;
+  reviewHash(
+    arg0: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<string>;
 
-  reviewed(arg0: string, overrides?: CallOverrides): Promise<boolean>;
+  reviewed(
+    arg0: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
 
   revokeRole(
-    role: BytesLike,
-    account: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    role: PromiseOrValue<BytesLike>,
+    account: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   root(overrides?: CallOverrides): Promise<string>;
 
   supportsInterface(
-    interfaceId: BytesLike,
+    interfaceId: PromiseOrValue<BytesLike>,
     overrides?: CallOverrides
   ): Promise<boolean>;
 
   target(overrides?: CallOverrides): Promise<BigNumber>;
 
   timeUntilNextTransferConfirmation(
-    arg0: string,
+    arg0: PromiseOrValue<string>,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
   totalCampaignContribution(overrides?: CallOverrides): Promise<BigNumber>;
 
   transferAttemptCount(
-    arg0: string,
+    arg0: PromiseOrValue<string>,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
   withdrawalsPaused(overrides?: CallOverrides): Promise<boolean>;
 
   __Campaign_init(
-    _campaignFactory: string,
-    _campaignRewards: string,
-    _campaignRequests: string,
-    _campaignVotes: string,
-    _root: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    _campaignFactory: PromiseOrValue<string>,
+    _campaignRewards: PromiseOrValue<string>,
+    _campaignRequests: PromiseOrValue<string>,
+    _campaignVotes: PromiseOrValue<string>,
+    _root: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  isCampaignAdmin(_user: string, overrides?: CallOverrides): Promise<boolean>;
+  isCampaignAdmin(
+    _user: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
 
-  isCampaignManager(_user: string, overrides?: CallOverrides): Promise<boolean>;
+  isCampaignManager(
+    _user: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
 
   getCampaignGoalType(overrides?: CallOverrides): Promise<number>;
 
   getCampaignState(
-    _state: BigNumberish,
+    _state: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
   ): Promise<number>;
 
   transferCampaignOwnership(
-    _oldRoot: string,
-    _newRoot: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    _oldRoot: PromiseOrValue<string>,
+    _newRoot: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   transferCampaignUserData(
-    _oldAddress: string,
-    _newAddress: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    _oldAddress: PromiseOrValue<string>,
+    _newAddress: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   setCampaignSettings(
-    _target: BigNumberish,
-    _minimumContribution: BigNumberish,
-    _duration: BigNumberish,
-    _goalType: BigNumberish,
-    _token: string,
-    _allowContributionAfterTargetIsMet: boolean,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    _target: PromiseOrValue<BigNumberish>,
+    _minimumContribution: PromiseOrValue<BigNumberish>,
+    _duration: PromiseOrValue<BigNumberish>,
+    _goalType: PromiseOrValue<BigNumberish>,
+    _token: PromiseOrValue<string>,
+    _allowContributionAfterTargetIsMet: PromiseOrValue<boolean>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   extendDeadline(
-    _time: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    _time: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   setDeadlineSetTimes(
-    _count: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    _count: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   toggleContributorApproval(
-    _contributor: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    _contributor: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   contribute(
-    _token: string,
-    _rewardId: BigNumberish,
-    _withReward: boolean,
-    overrides?: PayableOverrides & { from?: string | Promise<string> }
+    _token: PromiseOrValue<string>,
+    _rewardId: PromiseOrValue<BigNumberish>,
+    _withReward: PromiseOrValue<boolean>,
+    overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   withdrawContribution(
-    _wallet: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    _wallet: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   userContributionLoss(
-    _user: string,
+    _user: PromiseOrValue<string>,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
   finalizeRequest(
-    _requestId: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    _requestId: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   reviewMode(
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   reviewCampaignPerformance(
-    _hashedReview: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    _hashedReview: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   markCampaignComplete(
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   reportCampaign(
-    _hashedReport: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    _hashedReport: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   setCampaignState(
-    _state: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    _state: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   toggleWithdrawalState(
-    _state: boolean,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    _state: PromiseOrValue<boolean>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   unpauseCampaign(
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   pauseCampaign(
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   callStatic: {
@@ -1390,8 +1461,8 @@ export interface Campaign extends BaseContract {
     acceptedToken(overrides?: CallOverrides): Promise<string>;
 
     addRole(
-      _account: string,
-      _role: BytesLike,
+      _account: PromiseOrValue<string>,
+      _role: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -1400,11 +1471,14 @@ export interface Campaign extends BaseContract {
     ): Promise<boolean>;
 
     allowedToContribute(
-      arg0: string,
+      arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<boolean>;
 
-    approvers(arg0: string, overrides?: CallOverrides): Promise<boolean>;
+    approvers(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
 
     approversCount(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -1420,25 +1494,31 @@ export interface Campaign extends BaseContract {
 
     campaignVoteContract(overrides?: CallOverrides): Promise<string>;
 
-    contributionId(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
+    contributionId(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     deadline(overrides?: CallOverrides): Promise<BigNumber>;
 
     deadlineSetTimes(overrides?: CallOverrides): Promise<BigNumber>;
 
-    getRoleAdmin(role: BytesLike, overrides?: CallOverrides): Promise<string>;
+    getRoleAdmin(
+      role: PromiseOrValue<BytesLike>,
+      overrides?: CallOverrides
+    ): Promise<string>;
 
     goalType(overrides?: CallOverrides): Promise<number>;
 
     grantRole(
-      role: BytesLike,
-      account: string,
+      role: PromiseOrValue<BytesLike>,
+      account: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
 
     hasRole(
-      role: BytesLike,
-      account: string,
+      role: PromiseOrValue<BytesLike>,
+      account: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<boolean>;
 
@@ -1451,163 +1531,178 @@ export interface Campaign extends BaseContract {
     percentBase(overrides?: CallOverrides): Promise<number>;
 
     removeRole(
-      _account: string,
-      _role: BytesLike,
+      _account: PromiseOrValue<string>,
+      _role: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<void>;
 
     renounceAdmin(overrides?: CallOverrides): Promise<void>;
 
     renounceRole(
-      role: BytesLike,
-      account: string,
+      role: PromiseOrValue<BytesLike>,
+      account: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
 
     reportCount(overrides?: CallOverrides): Promise<BigNumber>;
 
-    reportHash(arg0: string, overrides?: CallOverrides): Promise<string>;
+    reportHash(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<string>;
 
-    reported(arg0: string, overrides?: CallOverrides): Promise<boolean>;
+    reported(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
 
     reviewCount(overrides?: CallOverrides): Promise<BigNumber>;
 
-    reviewHash(arg0: string, overrides?: CallOverrides): Promise<string>;
+    reviewHash(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<string>;
 
-    reviewed(arg0: string, overrides?: CallOverrides): Promise<boolean>;
+    reviewed(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
 
     revokeRole(
-      role: BytesLike,
-      account: string,
+      role: PromiseOrValue<BytesLike>,
+      account: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
 
     root(overrides?: CallOverrides): Promise<string>;
 
     supportsInterface(
-      interfaceId: BytesLike,
+      interfaceId: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<boolean>;
 
     target(overrides?: CallOverrides): Promise<BigNumber>;
 
     timeUntilNextTransferConfirmation(
-      arg0: string,
+      arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     totalCampaignContribution(overrides?: CallOverrides): Promise<BigNumber>;
 
     transferAttemptCount(
-      arg0: string,
+      arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     withdrawalsPaused(overrides?: CallOverrides): Promise<boolean>;
 
     __Campaign_init(
-      _campaignFactory: string,
-      _campaignRewards: string,
-      _campaignRequests: string,
-      _campaignVotes: string,
-      _root: string,
+      _campaignFactory: PromiseOrValue<string>,
+      _campaignRewards: PromiseOrValue<string>,
+      _campaignRequests: PromiseOrValue<string>,
+      _campaignVotes: PromiseOrValue<string>,
+      _root: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    isCampaignAdmin(_user: string, overrides?: CallOverrides): Promise<boolean>;
+    isCampaignAdmin(
+      _user: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
 
     isCampaignManager(
-      _user: string,
+      _user: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<boolean>;
 
     getCampaignGoalType(overrides?: CallOverrides): Promise<number>;
 
     getCampaignState(
-      _state: BigNumberish,
+      _state: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<number>;
 
     transferCampaignOwnership(
-      _oldRoot: string,
-      _newRoot: string,
+      _oldRoot: PromiseOrValue<string>,
+      _newRoot: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
 
     transferCampaignUserData(
-      _oldAddress: string,
-      _newAddress: string,
+      _oldAddress: PromiseOrValue<string>,
+      _newAddress: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
 
     setCampaignSettings(
-      _target: BigNumberish,
-      _minimumContribution: BigNumberish,
-      _duration: BigNumberish,
-      _goalType: BigNumberish,
-      _token: string,
-      _allowContributionAfterTargetIsMet: boolean,
+      _target: PromiseOrValue<BigNumberish>,
+      _minimumContribution: PromiseOrValue<BigNumberish>,
+      _duration: PromiseOrValue<BigNumberish>,
+      _goalType: PromiseOrValue<BigNumberish>,
+      _token: PromiseOrValue<string>,
+      _allowContributionAfterTargetIsMet: PromiseOrValue<boolean>,
       overrides?: CallOverrides
     ): Promise<void>;
 
     extendDeadline(
-      _time: BigNumberish,
+      _time: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
 
     setDeadlineSetTimes(
-      _count: BigNumberish,
+      _count: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
 
     toggleContributorApproval(
-      _contributor: string,
+      _contributor: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
 
     contribute(
-      _token: string,
-      _rewardId: BigNumberish,
-      _withReward: boolean,
+      _token: PromiseOrValue<string>,
+      _rewardId: PromiseOrValue<BigNumberish>,
+      _withReward: PromiseOrValue<boolean>,
       overrides?: CallOverrides
     ): Promise<void>;
 
     withdrawContribution(
-      _wallet: string,
+      _wallet: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
 
     userContributionLoss(
-      _user: string,
+      _user: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     finalizeRequest(
-      _requestId: BigNumberish,
+      _requestId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
 
     reviewMode(overrides?: CallOverrides): Promise<void>;
 
     reviewCampaignPerformance(
-      _hashedReview: string,
+      _hashedReview: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
 
     markCampaignComplete(overrides?: CallOverrides): Promise<void>;
 
     reportCampaign(
-      _hashedReport: string,
+      _hashedReport: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
 
     setCampaignState(
-      _state: BigNumberish,
+      _state: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
 
     toggleWithdrawalState(
-      _state: boolean,
+      _state: PromiseOrValue<boolean>,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -1680,27 +1775,27 @@ export interface Campaign extends BaseContract {
     ): CampaignUserDataTransferredEventFilter;
 
     "ContributionMade(uint256,uint256,uint256,uint256,bool)"(
-      contributionId?: BigNumberish | null,
+      contributionId?: PromiseOrValue<BigNumberish> | null,
       amount?: null,
-      rewardId?: BigNumberish | null,
-      rewardRecipientId?: BigNumberish | null,
+      rewardId?: PromiseOrValue<BigNumberish> | null,
+      rewardRecipientId?: PromiseOrValue<BigNumberish> | null,
       withReward?: null
     ): ContributionMadeEventFilter;
     ContributionMade(
-      contributionId?: BigNumberish | null,
+      contributionId?: PromiseOrValue<BigNumberish> | null,
       amount?: null,
-      rewardId?: BigNumberish | null,
-      rewardRecipientId?: BigNumberish | null,
+      rewardId?: PromiseOrValue<BigNumberish> | null,
+      rewardRecipientId?: PromiseOrValue<BigNumberish> | null,
       withReward?: null
     ): ContributionMadeEventFilter;
 
     "ContributionWithdrawn(uint256,uint256,address)"(
-      contributionId?: BigNumberish | null,
+      contributionId?: PromiseOrValue<BigNumberish> | null,
       amount?: null,
       user?: null
     ): ContributionWithdrawnEventFilter;
     ContributionWithdrawn(
-      contributionId?: BigNumberish | null,
+      contributionId?: PromiseOrValue<BigNumberish> | null,
       amount?: null,
       user?: null
     ): ContributionWithdrawnEventFilter;
@@ -1725,43 +1820,43 @@ export interface Campaign extends BaseContract {
     Paused(account?: null): PausedEventFilter;
 
     "RequestComplete(uint256)"(
-      requestId?: BigNumberish | null
+      requestId?: PromiseOrValue<BigNumberish> | null
     ): RequestCompleteEventFilter;
     RequestComplete(
-      requestId?: BigNumberish | null
+      requestId?: PromiseOrValue<BigNumberish> | null
     ): RequestCompleteEventFilter;
 
     "RoleAdminChanged(bytes32,bytes32,bytes32)"(
-      role?: BytesLike | null,
-      previousAdminRole?: BytesLike | null,
-      newAdminRole?: BytesLike | null
+      role?: PromiseOrValue<BytesLike> | null,
+      previousAdminRole?: PromiseOrValue<BytesLike> | null,
+      newAdminRole?: PromiseOrValue<BytesLike> | null
     ): RoleAdminChangedEventFilter;
     RoleAdminChanged(
-      role?: BytesLike | null,
-      previousAdminRole?: BytesLike | null,
-      newAdminRole?: BytesLike | null
+      role?: PromiseOrValue<BytesLike> | null,
+      previousAdminRole?: PromiseOrValue<BytesLike> | null,
+      newAdminRole?: PromiseOrValue<BytesLike> | null
     ): RoleAdminChangedEventFilter;
 
     "RoleGranted(bytes32,address,address)"(
-      role?: BytesLike | null,
-      account?: string | null,
-      sender?: string | null
+      role?: PromiseOrValue<BytesLike> | null,
+      account?: PromiseOrValue<string> | null,
+      sender?: PromiseOrValue<string> | null
     ): RoleGrantedEventFilter;
     RoleGranted(
-      role?: BytesLike | null,
-      account?: string | null,
-      sender?: string | null
+      role?: PromiseOrValue<BytesLike> | null,
+      account?: PromiseOrValue<string> | null,
+      sender?: PromiseOrValue<string> | null
     ): RoleGrantedEventFilter;
 
     "RoleRevoked(bytes32,address,address)"(
-      role?: BytesLike | null,
-      account?: string | null,
-      sender?: string | null
+      role?: PromiseOrValue<BytesLike> | null,
+      account?: PromiseOrValue<string> | null,
+      sender?: PromiseOrValue<string> | null
     ): RoleRevokedEventFilter;
     RoleRevoked(
-      role?: BytesLike | null,
-      account?: string | null,
-      sender?: string | null
+      role?: PromiseOrValue<BytesLike> | null,
+      account?: PromiseOrValue<string> | null,
+      sender?: PromiseOrValue<string> | null
     ): RoleRevokedEventFilter;
 
     "Unpaused(address)"(account?: null): UnpausedEventFilter;
@@ -1783,9 +1878,9 @@ export interface Campaign extends BaseContract {
     acceptedToken(overrides?: CallOverrides): Promise<BigNumber>;
 
     addRole(
-      _account: string,
-      _role: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _account: PromiseOrValue<string>,
+      _role: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     allowContributionAfterTargetIsMet(
@@ -1793,11 +1888,14 @@ export interface Campaign extends BaseContract {
     ): Promise<BigNumber>;
 
     allowedToContribute(
-      arg0: string,
+      arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    approvers(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
+    approvers(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     approversCount(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -1813,28 +1911,31 @@ export interface Campaign extends BaseContract {
 
     campaignVoteContract(overrides?: CallOverrides): Promise<BigNumber>;
 
-    contributionId(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
+    contributionId(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     deadline(overrides?: CallOverrides): Promise<BigNumber>;
 
     deadlineSetTimes(overrides?: CallOverrides): Promise<BigNumber>;
 
     getRoleAdmin(
-      role: BytesLike,
+      role: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     goalType(overrides?: CallOverrides): Promise<BigNumber>;
 
     grantRole(
-      role: BytesLike,
-      account: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      role: PromiseOrValue<BytesLike>,
+      account: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     hasRole(
-      role: BytesLike,
-      account: string,
+      role: PromiseOrValue<BytesLike>,
+      account: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -1847,181 +1948,193 @@ export interface Campaign extends BaseContract {
     percentBase(overrides?: CallOverrides): Promise<BigNumber>;
 
     removeRole(
-      _account: string,
-      _role: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _account: PromiseOrValue<string>,
+      _role: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     renounceAdmin(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     renounceRole(
-      role: BytesLike,
-      account: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      role: PromiseOrValue<BytesLike>,
+      account: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     reportCount(overrides?: CallOverrides): Promise<BigNumber>;
 
-    reportHash(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
+    reportHash(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
-    reported(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
+    reported(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     reviewCount(overrides?: CallOverrides): Promise<BigNumber>;
 
-    reviewHash(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
+    reviewHash(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
-    reviewed(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
+    reviewed(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     revokeRole(
-      role: BytesLike,
-      account: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      role: PromiseOrValue<BytesLike>,
+      account: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     root(overrides?: CallOverrides): Promise<BigNumber>;
 
     supportsInterface(
-      interfaceId: BytesLike,
+      interfaceId: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     target(overrides?: CallOverrides): Promise<BigNumber>;
 
     timeUntilNextTransferConfirmation(
-      arg0: string,
+      arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     totalCampaignContribution(overrides?: CallOverrides): Promise<BigNumber>;
 
     transferAttemptCount(
-      arg0: string,
+      arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     withdrawalsPaused(overrides?: CallOverrides): Promise<BigNumber>;
 
     __Campaign_init(
-      _campaignFactory: string,
-      _campaignRewards: string,
-      _campaignRequests: string,
-      _campaignVotes: string,
-      _root: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _campaignFactory: PromiseOrValue<string>,
+      _campaignRewards: PromiseOrValue<string>,
+      _campaignRequests: PromiseOrValue<string>,
+      _campaignVotes: PromiseOrValue<string>,
+      _root: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     isCampaignAdmin(
-      _user: string,
+      _user: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     isCampaignManager(
-      _user: string,
+      _user: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     getCampaignGoalType(overrides?: CallOverrides): Promise<BigNumber>;
 
     getCampaignState(
-      _state: BigNumberish,
+      _state: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     transferCampaignOwnership(
-      _oldRoot: string,
-      _newRoot: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _oldRoot: PromiseOrValue<string>,
+      _newRoot: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     transferCampaignUserData(
-      _oldAddress: string,
-      _newAddress: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _oldAddress: PromiseOrValue<string>,
+      _newAddress: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     setCampaignSettings(
-      _target: BigNumberish,
-      _minimumContribution: BigNumberish,
-      _duration: BigNumberish,
-      _goalType: BigNumberish,
-      _token: string,
-      _allowContributionAfterTargetIsMet: boolean,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _target: PromiseOrValue<BigNumberish>,
+      _minimumContribution: PromiseOrValue<BigNumberish>,
+      _duration: PromiseOrValue<BigNumberish>,
+      _goalType: PromiseOrValue<BigNumberish>,
+      _token: PromiseOrValue<string>,
+      _allowContributionAfterTargetIsMet: PromiseOrValue<boolean>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     extendDeadline(
-      _time: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _time: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     setDeadlineSetTimes(
-      _count: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _count: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     toggleContributorApproval(
-      _contributor: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _contributor: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     contribute(
-      _token: string,
-      _rewardId: BigNumberish,
-      _withReward: boolean,
-      overrides?: PayableOverrides & { from?: string | Promise<string> }
+      _token: PromiseOrValue<string>,
+      _rewardId: PromiseOrValue<BigNumberish>,
+      _withReward: PromiseOrValue<boolean>,
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     withdrawContribution(
-      _wallet: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _wallet: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     userContributionLoss(
-      _user: string,
+      _user: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     finalizeRequest(
-      _requestId: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _requestId: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     reviewMode(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     reviewCampaignPerformance(
-      _hashedReview: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _hashedReview: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     markCampaignComplete(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     reportCampaign(
-      _hashedReport: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _hashedReport: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     setCampaignState(
-      _state: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _state: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     toggleWithdrawalState(
-      _state: boolean,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _state: PromiseOrValue<boolean>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     unpauseCampaign(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     pauseCampaign(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
   };
 
@@ -2035,9 +2148,9 @@ export interface Campaign extends BaseContract {
     acceptedToken(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     addRole(
-      _account: string,
-      _role: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _account: PromiseOrValue<string>,
+      _role: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     allowContributionAfterTargetIsMet(
@@ -2045,12 +2158,12 @@ export interface Campaign extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     allowedToContribute(
-      arg0: string,
+      arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     approvers(
-      arg0: string,
+      arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
@@ -2077,7 +2190,7 @@ export interface Campaign extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     contributionId(
-      arg0: string,
+      arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
@@ -2086,21 +2199,21 @@ export interface Campaign extends BaseContract {
     deadlineSetTimes(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     getRoleAdmin(
-      role: BytesLike,
+      role: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     goalType(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     grantRole(
-      role: BytesLike,
-      account: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      role: PromiseOrValue<BytesLike>,
+      account: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     hasRole(
-      role: BytesLike,
-      account: string,
+      role: PromiseOrValue<BytesLike>,
+      account: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
@@ -2115,62 +2228,62 @@ export interface Campaign extends BaseContract {
     percentBase(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     removeRole(
-      _account: string,
-      _role: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _account: PromiseOrValue<string>,
+      _role: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     renounceAdmin(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     renounceRole(
-      role: BytesLike,
-      account: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      role: PromiseOrValue<BytesLike>,
+      account: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     reportCount(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     reportHash(
-      arg0: string,
+      arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     reported(
-      arg0: string,
+      arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     reviewCount(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     reviewHash(
-      arg0: string,
+      arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     reviewed(
-      arg0: string,
+      arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     revokeRole(
-      role: BytesLike,
-      account: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      role: PromiseOrValue<BytesLike>,
+      account: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     root(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     supportsInterface(
-      interfaceId: BytesLike,
+      interfaceId: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     target(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     timeUntilNextTransferConfirmation(
-      arg0: string,
+      arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
@@ -2179,28 +2292,28 @@ export interface Campaign extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     transferAttemptCount(
-      arg0: string,
+      arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     withdrawalsPaused(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     __Campaign_init(
-      _campaignFactory: string,
-      _campaignRewards: string,
-      _campaignRequests: string,
-      _campaignVotes: string,
-      _root: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _campaignFactory: PromiseOrValue<string>,
+      _campaignRewards: PromiseOrValue<string>,
+      _campaignRequests: PromiseOrValue<string>,
+      _campaignVotes: PromiseOrValue<string>,
+      _root: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     isCampaignAdmin(
-      _user: string,
+      _user: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     isCampaignManager(
-      _user: string,
+      _user: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
@@ -2209,103 +2322,103 @@ export interface Campaign extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     getCampaignState(
-      _state: BigNumberish,
+      _state: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     transferCampaignOwnership(
-      _oldRoot: string,
-      _newRoot: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _oldRoot: PromiseOrValue<string>,
+      _newRoot: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     transferCampaignUserData(
-      _oldAddress: string,
-      _newAddress: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _oldAddress: PromiseOrValue<string>,
+      _newAddress: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     setCampaignSettings(
-      _target: BigNumberish,
-      _minimumContribution: BigNumberish,
-      _duration: BigNumberish,
-      _goalType: BigNumberish,
-      _token: string,
-      _allowContributionAfterTargetIsMet: boolean,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _target: PromiseOrValue<BigNumberish>,
+      _minimumContribution: PromiseOrValue<BigNumberish>,
+      _duration: PromiseOrValue<BigNumberish>,
+      _goalType: PromiseOrValue<BigNumberish>,
+      _token: PromiseOrValue<string>,
+      _allowContributionAfterTargetIsMet: PromiseOrValue<boolean>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     extendDeadline(
-      _time: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _time: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     setDeadlineSetTimes(
-      _count: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _count: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     toggleContributorApproval(
-      _contributor: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _contributor: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     contribute(
-      _token: string,
-      _rewardId: BigNumberish,
-      _withReward: boolean,
-      overrides?: PayableOverrides & { from?: string | Promise<string> }
+      _token: PromiseOrValue<string>,
+      _rewardId: PromiseOrValue<BigNumberish>,
+      _withReward: PromiseOrValue<boolean>,
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     withdrawContribution(
-      _wallet: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _wallet: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     userContributionLoss(
-      _user: string,
+      _user: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     finalizeRequest(
-      _requestId: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _requestId: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     reviewMode(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     reviewCampaignPerformance(
-      _hashedReview: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _hashedReview: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     markCampaignComplete(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     reportCampaign(
-      _hashedReport: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _hashedReport: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     setCampaignState(
-      _state: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _state: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     toggleWithdrawalState(
-      _state: boolean,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _state: PromiseOrValue<boolean>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     unpauseCampaign(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     pauseCampaign(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
   };
 }

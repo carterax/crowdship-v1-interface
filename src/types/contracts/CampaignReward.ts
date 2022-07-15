@@ -24,6 +24,7 @@ import type {
   TypedEvent,
   TypedListener,
   OnEvent,
+  PromiseOrValue,
 } from "./common";
 
 export interface CampaignRewardInterface extends utils.Interface {
@@ -88,66 +89,76 @@ export interface CampaignRewardInterface extends utils.Interface {
   encodeFunctionData(functionFragment: "paused", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "rewardRecipients",
-    values: [BigNumberish]
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "rewardToRewardRecipientCount",
-    values: [BigNumberish]
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "rewards",
-    values: [BigNumberish]
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "userRewardCount",
-    values: [string]
+    values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "__CampaignReward_init",
-    values: [string, string]
+    values: [PromiseOrValue<string>, PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "createReward",
-    values: [BigNumberish, BigNumberish, BigNumberish, string, boolean]
+    values: [
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<string>,
+      PromiseOrValue<boolean>
+    ]
   ): string;
   encodeFunctionData(
     functionFragment: "assignReward",
-    values: [BigNumberish, BigNumberish, string]
+    values: [
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<string>
+    ]
   ): string;
   encodeFunctionData(
     functionFragment: "modifyReward",
     values: [
-      BigNumberish,
-      BigNumberish,
-      BigNumberish,
-      BigNumberish,
-      boolean,
-      string
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<boolean>,
+      PromiseOrValue<string>
     ]
   ): string;
   encodeFunctionData(
     functionFragment: "increaseRewardStock",
-    values: [BigNumberish, BigNumberish]
+    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "destroyReward",
-    values: [BigNumberish]
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "campaignSentReward",
-    values: [BigNumberish, boolean]
+    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<boolean>]
   ): string;
   encodeFunctionData(
     functionFragment: "userReceivedCampaignReward",
-    values: [BigNumberish]
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "renounceRewards",
-    values: [string]
+    values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "transferRewards",
-    values: [string, string]
+    values: [PromiseOrValue<string>, PromiseOrValue<string>]
   ): string;
 
   decodeFunctionResult(functionFragment: "campaign", data: BytesLike): Result;
@@ -394,7 +405,7 @@ export interface CampaignReward extends BaseContract {
     paused(overrides?: CallOverrides): Promise<[boolean]>;
 
     rewardRecipients(
-      arg0: BigNumberish,
+      arg0: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<
       [BigNumber, string, boolean, boolean] & {
@@ -406,12 +417,12 @@ export interface CampaignReward extends BaseContract {
     >;
 
     rewardToRewardRecipientCount(
-      arg0: BigNumberish,
+      arg0: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
     rewards(
-      arg0: BigNumberish,
+      arg0: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<
       [BigNumber, BigNumber, BigNumber, string, boolean, boolean] & {
@@ -425,73 +436,73 @@ export interface CampaignReward extends BaseContract {
     >;
 
     userRewardCount(
-      arg0: string,
+      arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
     __CampaignReward_init(
-      _campaignFactory: string,
-      _campaign: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _campaignFactory: PromiseOrValue<string>,
+      _campaign: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     createReward(
-      _value: BigNumberish,
-      _deliveryDate: BigNumberish,
-      _stock: BigNumberish,
-      _hashedReward: string,
-      _active: boolean,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _value: PromiseOrValue<BigNumberish>,
+      _deliveryDate: PromiseOrValue<BigNumberish>,
+      _stock: PromiseOrValue<BigNumberish>,
+      _hashedReward: PromiseOrValue<string>,
+      _active: PromiseOrValue<boolean>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     assignReward(
-      _rewardId: BigNumberish,
-      _amount: BigNumberish,
-      _user: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _rewardId: PromiseOrValue<BigNumberish>,
+      _amount: PromiseOrValue<BigNumberish>,
+      _user: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     modifyReward(
-      _rewardId: BigNumberish,
-      _value: BigNumberish,
-      _deliveryDate: BigNumberish,
-      _stock: BigNumberish,
-      _active: boolean,
-      _hashedReward: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _rewardId: PromiseOrValue<BigNumberish>,
+      _value: PromiseOrValue<BigNumberish>,
+      _deliveryDate: PromiseOrValue<BigNumberish>,
+      _stock: PromiseOrValue<BigNumberish>,
+      _active: PromiseOrValue<boolean>,
+      _hashedReward: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     increaseRewardStock(
-      _rewardId: BigNumberish,
-      _count: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _rewardId: PromiseOrValue<BigNumberish>,
+      _count: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     destroyReward(
-      _rewardId: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _rewardId: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     campaignSentReward(
-      _rewardRecipientId: BigNumberish,
-      _status: boolean,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _rewardRecipientId: PromiseOrValue<BigNumberish>,
+      _status: PromiseOrValue<boolean>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     userReceivedCampaignReward(
-      _rewardRecipientId: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _rewardRecipientId: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     renounceRewards(
-      _user: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _user: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     transferRewards(
-      _oldAddress: string,
-      _newAddress: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _oldAddress: PromiseOrValue<string>,
+      _newAddress: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
   };
 
@@ -506,7 +517,7 @@ export interface CampaignReward extends BaseContract {
   paused(overrides?: CallOverrides): Promise<boolean>;
 
   rewardRecipients(
-    arg0: BigNumberish,
+    arg0: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
   ): Promise<
     [BigNumber, string, boolean, boolean] & {
@@ -518,12 +529,12 @@ export interface CampaignReward extends BaseContract {
   >;
 
   rewardToRewardRecipientCount(
-    arg0: BigNumberish,
+    arg0: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
   rewards(
-    arg0: BigNumberish,
+    arg0: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
   ): Promise<
     [BigNumber, BigNumber, BigNumber, string, boolean, boolean] & {
@@ -536,71 +547,74 @@ export interface CampaignReward extends BaseContract {
     }
   >;
 
-  userRewardCount(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
+  userRewardCount(
+    arg0: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
 
   __CampaignReward_init(
-    _campaignFactory: string,
-    _campaign: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    _campaignFactory: PromiseOrValue<string>,
+    _campaign: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   createReward(
-    _value: BigNumberish,
-    _deliveryDate: BigNumberish,
-    _stock: BigNumberish,
-    _hashedReward: string,
-    _active: boolean,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    _value: PromiseOrValue<BigNumberish>,
+    _deliveryDate: PromiseOrValue<BigNumberish>,
+    _stock: PromiseOrValue<BigNumberish>,
+    _hashedReward: PromiseOrValue<string>,
+    _active: PromiseOrValue<boolean>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   assignReward(
-    _rewardId: BigNumberish,
-    _amount: BigNumberish,
-    _user: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    _rewardId: PromiseOrValue<BigNumberish>,
+    _amount: PromiseOrValue<BigNumberish>,
+    _user: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   modifyReward(
-    _rewardId: BigNumberish,
-    _value: BigNumberish,
-    _deliveryDate: BigNumberish,
-    _stock: BigNumberish,
-    _active: boolean,
-    _hashedReward: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    _rewardId: PromiseOrValue<BigNumberish>,
+    _value: PromiseOrValue<BigNumberish>,
+    _deliveryDate: PromiseOrValue<BigNumberish>,
+    _stock: PromiseOrValue<BigNumberish>,
+    _active: PromiseOrValue<boolean>,
+    _hashedReward: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   increaseRewardStock(
-    _rewardId: BigNumberish,
-    _count: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    _rewardId: PromiseOrValue<BigNumberish>,
+    _count: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   destroyReward(
-    _rewardId: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    _rewardId: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   campaignSentReward(
-    _rewardRecipientId: BigNumberish,
-    _status: boolean,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    _rewardRecipientId: PromiseOrValue<BigNumberish>,
+    _status: PromiseOrValue<boolean>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   userReceivedCampaignReward(
-    _rewardRecipientId: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    _rewardRecipientId: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   renounceRewards(
-    _user: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    _user: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   transferRewards(
-    _oldAddress: string,
-    _newAddress: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    _oldAddress: PromiseOrValue<string>,
+    _newAddress: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   callStatic: {
@@ -615,7 +629,7 @@ export interface CampaignReward extends BaseContract {
     paused(overrides?: CallOverrides): Promise<boolean>;
 
     rewardRecipients(
-      arg0: BigNumberish,
+      arg0: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<
       [BigNumber, string, boolean, boolean] & {
@@ -627,12 +641,12 @@ export interface CampaignReward extends BaseContract {
     >;
 
     rewardToRewardRecipientCount(
-      arg0: BigNumberish,
+      arg0: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     rewards(
-      arg0: BigNumberish,
+      arg0: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<
       [BigNumber, BigNumber, BigNumber, string, boolean, boolean] & {
@@ -646,69 +660,72 @@ export interface CampaignReward extends BaseContract {
     >;
 
     userRewardCount(
-      arg0: string,
+      arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     __CampaignReward_init(
-      _campaignFactory: string,
-      _campaign: string,
+      _campaignFactory: PromiseOrValue<string>,
+      _campaign: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
 
     createReward(
-      _value: BigNumberish,
-      _deliveryDate: BigNumberish,
-      _stock: BigNumberish,
-      _hashedReward: string,
-      _active: boolean,
+      _value: PromiseOrValue<BigNumberish>,
+      _deliveryDate: PromiseOrValue<BigNumberish>,
+      _stock: PromiseOrValue<BigNumberish>,
+      _hashedReward: PromiseOrValue<string>,
+      _active: PromiseOrValue<boolean>,
       overrides?: CallOverrides
     ): Promise<void>;
 
     assignReward(
-      _rewardId: BigNumberish,
-      _amount: BigNumberish,
-      _user: string,
+      _rewardId: PromiseOrValue<BigNumberish>,
+      _amount: PromiseOrValue<BigNumberish>,
+      _user: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     modifyReward(
-      _rewardId: BigNumberish,
-      _value: BigNumberish,
-      _deliveryDate: BigNumberish,
-      _stock: BigNumberish,
-      _active: boolean,
-      _hashedReward: string,
+      _rewardId: PromiseOrValue<BigNumberish>,
+      _value: PromiseOrValue<BigNumberish>,
+      _deliveryDate: PromiseOrValue<BigNumberish>,
+      _stock: PromiseOrValue<BigNumberish>,
+      _active: PromiseOrValue<boolean>,
+      _hashedReward: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
 
     increaseRewardStock(
-      _rewardId: BigNumberish,
-      _count: BigNumberish,
+      _rewardId: PromiseOrValue<BigNumberish>,
+      _count: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
 
     destroyReward(
-      _rewardId: BigNumberish,
+      _rewardId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
 
     campaignSentReward(
-      _rewardRecipientId: BigNumberish,
-      _status: boolean,
+      _rewardRecipientId: PromiseOrValue<BigNumberish>,
+      _status: PromiseOrValue<boolean>,
       overrides?: CallOverrides
     ): Promise<void>;
 
     userReceivedCampaignReward(
-      _rewardRecipientId: BigNumberish,
+      _rewardRecipientId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    renounceRewards(_user: string, overrides?: CallOverrides): Promise<void>;
+    renounceRewards(
+      _user: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     transferRewards(
-      _oldAddress: string,
-      _newAddress: string,
+      _oldAddress: PromiseOrValue<string>,
+      _newAddress: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
   };
@@ -723,7 +740,7 @@ export interface CampaignReward extends BaseContract {
     Paused(account?: null): PausedEventFilter;
 
     "RewardCreated(uint256,uint256,uint256,uint256,string,bool)"(
-      rewardId?: BigNumberish | null,
+      rewardId?: PromiseOrValue<BigNumberish> | null,
       value?: null,
       deliveryDate?: null,
       stock?: null,
@@ -731,7 +748,7 @@ export interface CampaignReward extends BaseContract {
       active?: null
     ): RewardCreatedEventFilter;
     RewardCreated(
-      rewardId?: BigNumberish | null,
+      rewardId?: PromiseOrValue<BigNumberish> | null,
       value?: null,
       deliveryDate?: null,
       stock?: null,
@@ -740,19 +757,21 @@ export interface CampaignReward extends BaseContract {
     ): RewardCreatedEventFilter;
 
     "RewardDestroyed(uint256)"(
-      rewardId?: BigNumberish | null
+      rewardId?: PromiseOrValue<BigNumberish> | null
     ): RewardDestroyedEventFilter;
-    RewardDestroyed(rewardId?: BigNumberish | null): RewardDestroyedEventFilter;
+    RewardDestroyed(
+      rewardId?: PromiseOrValue<BigNumberish> | null
+    ): RewardDestroyedEventFilter;
 
     "RewardModified(uint256,uint256,uint256,uint256,bool)"(
-      rewardId?: BigNumberish | null,
+      rewardId?: PromiseOrValue<BigNumberish> | null,
       value?: null,
       deliveryDate?: null,
       stock?: null,
       active?: null
     ): RewardModifiedEventFilter;
     RewardModified(
-      rewardId?: BigNumberish | null,
+      rewardId?: PromiseOrValue<BigNumberish> | null,
       value?: null,
       deliveryDate?: null,
       stock?: null,
@@ -760,40 +779,40 @@ export interface CampaignReward extends BaseContract {
     ): RewardModifiedEventFilter;
 
     "RewardRecipientAdded(uint256,uint256,uint256,address)"(
-      rewardRecipientId?: BigNumberish | null,
-      rewardId?: BigNumberish | null,
+      rewardRecipientId?: PromiseOrValue<BigNumberish> | null,
+      rewardId?: PromiseOrValue<BigNumberish> | null,
       amount?: null,
-      user?: string | null
+      user?: PromiseOrValue<string> | null
     ): RewardRecipientAddedEventFilter;
     RewardRecipientAdded(
-      rewardRecipientId?: BigNumberish | null,
-      rewardId?: BigNumberish | null,
+      rewardRecipientId?: PromiseOrValue<BigNumberish> | null,
+      rewardId?: PromiseOrValue<BigNumberish> | null,
       amount?: null,
-      user?: string | null
+      user?: PromiseOrValue<string> | null
     ): RewardRecipientAddedEventFilter;
 
     "RewardRecipientApproval(uint256)"(
-      rewardRecipientId?: BigNumberish | null
+      rewardRecipientId?: PromiseOrValue<BigNumberish> | null
     ): RewardRecipientApprovalEventFilter;
     RewardRecipientApproval(
-      rewardRecipientId?: BigNumberish | null
+      rewardRecipientId?: PromiseOrValue<BigNumberish> | null
     ): RewardRecipientApprovalEventFilter;
 
     "RewardStockIncreased(uint256,uint256)"(
-      rewardId?: BigNumberish | null,
+      rewardId?: PromiseOrValue<BigNumberish> | null,
       count?: null
     ): RewardStockIncreasedEventFilter;
     RewardStockIncreased(
-      rewardId?: BigNumberish | null,
+      rewardId?: PromiseOrValue<BigNumberish> | null,
       count?: null
     ): RewardStockIncreasedEventFilter;
 
     "RewarderApproval(uint256,bool)"(
-      rewardRecipientId?: BigNumberish | null,
+      rewardRecipientId?: PromiseOrValue<BigNumberish> | null,
       status?: null
     ): RewarderApprovalEventFilter;
     RewarderApproval(
-      rewardRecipientId?: BigNumberish | null,
+      rewardRecipientId?: PromiseOrValue<BigNumberish> | null,
       status?: null
     ): RewarderApprovalEventFilter;
 
@@ -813,85 +832,88 @@ export interface CampaignReward extends BaseContract {
     paused(overrides?: CallOverrides): Promise<BigNumber>;
 
     rewardRecipients(
-      arg0: BigNumberish,
+      arg0: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     rewardToRewardRecipientCount(
-      arg0: BigNumberish,
+      arg0: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    rewards(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
+    rewards(
+      arg0: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     userRewardCount(
-      arg0: string,
+      arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     __CampaignReward_init(
-      _campaignFactory: string,
-      _campaign: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _campaignFactory: PromiseOrValue<string>,
+      _campaign: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     createReward(
-      _value: BigNumberish,
-      _deliveryDate: BigNumberish,
-      _stock: BigNumberish,
-      _hashedReward: string,
-      _active: boolean,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _value: PromiseOrValue<BigNumberish>,
+      _deliveryDate: PromiseOrValue<BigNumberish>,
+      _stock: PromiseOrValue<BigNumberish>,
+      _hashedReward: PromiseOrValue<string>,
+      _active: PromiseOrValue<boolean>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     assignReward(
-      _rewardId: BigNumberish,
-      _amount: BigNumberish,
-      _user: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _rewardId: PromiseOrValue<BigNumberish>,
+      _amount: PromiseOrValue<BigNumberish>,
+      _user: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     modifyReward(
-      _rewardId: BigNumberish,
-      _value: BigNumberish,
-      _deliveryDate: BigNumberish,
-      _stock: BigNumberish,
-      _active: boolean,
-      _hashedReward: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _rewardId: PromiseOrValue<BigNumberish>,
+      _value: PromiseOrValue<BigNumberish>,
+      _deliveryDate: PromiseOrValue<BigNumberish>,
+      _stock: PromiseOrValue<BigNumberish>,
+      _active: PromiseOrValue<boolean>,
+      _hashedReward: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     increaseRewardStock(
-      _rewardId: BigNumberish,
-      _count: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _rewardId: PromiseOrValue<BigNumberish>,
+      _count: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     destroyReward(
-      _rewardId: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _rewardId: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     campaignSentReward(
-      _rewardRecipientId: BigNumberish,
-      _status: boolean,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _rewardRecipientId: PromiseOrValue<BigNumberish>,
+      _status: PromiseOrValue<boolean>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     userReceivedCampaignReward(
-      _rewardRecipientId: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _rewardRecipientId: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     renounceRewards(
-      _user: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _user: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     transferRewards(
-      _oldAddress: string,
-      _newAddress: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _oldAddress: PromiseOrValue<string>,
+      _newAddress: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
   };
 
@@ -911,88 +933,88 @@ export interface CampaignReward extends BaseContract {
     paused(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     rewardRecipients(
-      arg0: BigNumberish,
+      arg0: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     rewardToRewardRecipientCount(
-      arg0: BigNumberish,
+      arg0: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     rewards(
-      arg0: BigNumberish,
+      arg0: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     userRewardCount(
-      arg0: string,
+      arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     __CampaignReward_init(
-      _campaignFactory: string,
-      _campaign: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _campaignFactory: PromiseOrValue<string>,
+      _campaign: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     createReward(
-      _value: BigNumberish,
-      _deliveryDate: BigNumberish,
-      _stock: BigNumberish,
-      _hashedReward: string,
-      _active: boolean,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _value: PromiseOrValue<BigNumberish>,
+      _deliveryDate: PromiseOrValue<BigNumberish>,
+      _stock: PromiseOrValue<BigNumberish>,
+      _hashedReward: PromiseOrValue<string>,
+      _active: PromiseOrValue<boolean>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     assignReward(
-      _rewardId: BigNumberish,
-      _amount: BigNumberish,
-      _user: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _rewardId: PromiseOrValue<BigNumberish>,
+      _amount: PromiseOrValue<BigNumberish>,
+      _user: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     modifyReward(
-      _rewardId: BigNumberish,
-      _value: BigNumberish,
-      _deliveryDate: BigNumberish,
-      _stock: BigNumberish,
-      _active: boolean,
-      _hashedReward: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _rewardId: PromiseOrValue<BigNumberish>,
+      _value: PromiseOrValue<BigNumberish>,
+      _deliveryDate: PromiseOrValue<BigNumberish>,
+      _stock: PromiseOrValue<BigNumberish>,
+      _active: PromiseOrValue<boolean>,
+      _hashedReward: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     increaseRewardStock(
-      _rewardId: BigNumberish,
-      _count: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _rewardId: PromiseOrValue<BigNumberish>,
+      _count: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     destroyReward(
-      _rewardId: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _rewardId: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     campaignSentReward(
-      _rewardRecipientId: BigNumberish,
-      _status: boolean,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _rewardRecipientId: PromiseOrValue<BigNumberish>,
+      _status: PromiseOrValue<boolean>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     userReceivedCampaignReward(
-      _rewardRecipientId: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _rewardRecipientId: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     renounceRewards(
-      _user: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _user: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     transferRewards(
-      _oldAddress: string,
-      _newAddress: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _oldAddress: PromiseOrValue<string>,
+      _newAddress: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
   };
 }

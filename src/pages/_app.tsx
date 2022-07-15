@@ -61,27 +61,27 @@ const MyApp = ({ Component, pageProps }): JSX.Element => {
   );
 };
 
-MyApp.getInitialProps = async (appContext) => {
-  const env = process.env.NODE_ENV;
-  const pageProps = await App.getInitialProps(appContext);
+// MyApp.getInitialProps = async (appContext) => {
+//   const env = process.env.NODE_ENV;
+//   const pageProps = await App.getInitialProps(appContext);
 
-  if (appContext.ctx && env === 'development') {
-    const { query, req } = appContext.ctx;
+//   if (appContext.ctx && env === 'development') {
+//     const { query, req } = appContext.ctx;
 
-    if (req && query) {
-      if (
-        !query.myCrowdship &&
-        !req.url.includes('404') &&
-        !req.url.includes('create-demo')
-      ) {
-        return nextRedirect({ ctx: appContext.ctx, to: '/404' });
-      }
-    }
-  }
+//     if (req && query) {
+//       if (
+//         !query.myCrowdship &&
+//         !req.url.includes('404') &&
+//         !req.url.includes('create-demo')
+//       ) {
+//         return nextRedirect({ ctx: appContext.ctx, to: '/404' });
+//       }
+//     }
+//   }
 
-  return {
-    ...pageProps,
-  };
-};
+//   return {
+//     ...pageProps,
+//   };
+// };
 
 export default MyApp;

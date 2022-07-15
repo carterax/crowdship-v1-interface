@@ -24,6 +24,7 @@ import type {
   TypedEvent,
   TypedListener,
   OnEvent,
+  PromiseOrValue,
 } from "./common";
 
 export interface FactoryInterface extends utils.Interface {
@@ -46,11 +47,19 @@ export interface FactoryInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "deployedCampaigns",
-    values: [string]
+    values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "createCampaignFactory",
-    values: [string, string, string, string, string, string, BigNumberish[]]
+    values: [
+      PromiseOrValue<string>,
+      PromiseOrValue<string>,
+      PromiseOrValue<string>,
+      PromiseOrValue<string>,
+      PromiseOrValue<string>,
+      PromiseOrValue<string>,
+      PromiseOrValue<BigNumberish>[]
+    ]
   ): string;
 
   decodeFunctionResult(
@@ -120,57 +129,63 @@ export interface Factory extends BaseContract {
     deployedCampaignCount(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     deployedCampaigns(
-      arg0: string,
+      arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<[string] & { factory: string }>;
 
     createCampaignFactory(
-      _campaignFactoryImplementation: string,
-      _campaignImplementation: string,
-      _campaignRequestImplementation: string,
-      _campaignVoteImplementation: string,
-      _campaignRewardImplementation: string,
-      _governance: string,
-      _config: BigNumberish[],
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _campaignFactoryImplementation: PromiseOrValue<string>,
+      _campaignImplementation: PromiseOrValue<string>,
+      _campaignRequestImplementation: PromiseOrValue<string>,
+      _campaignVoteImplementation: PromiseOrValue<string>,
+      _campaignRewardImplementation: PromiseOrValue<string>,
+      _governance: PromiseOrValue<string>,
+      _config: PromiseOrValue<BigNumberish>[],
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
   };
 
   deployedCampaignCount(overrides?: CallOverrides): Promise<BigNumber>;
 
-  deployedCampaigns(arg0: string, overrides?: CallOverrides): Promise<string>;
+  deployedCampaigns(
+    arg0: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<string>;
 
   createCampaignFactory(
-    _campaignFactoryImplementation: string,
-    _campaignImplementation: string,
-    _campaignRequestImplementation: string,
-    _campaignVoteImplementation: string,
-    _campaignRewardImplementation: string,
-    _governance: string,
-    _config: BigNumberish[],
-    overrides?: Overrides & { from?: string | Promise<string> }
+    _campaignFactoryImplementation: PromiseOrValue<string>,
+    _campaignImplementation: PromiseOrValue<string>,
+    _campaignRequestImplementation: PromiseOrValue<string>,
+    _campaignVoteImplementation: PromiseOrValue<string>,
+    _campaignRewardImplementation: PromiseOrValue<string>,
+    _governance: PromiseOrValue<string>,
+    _config: PromiseOrValue<BigNumberish>[],
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   callStatic: {
     deployedCampaignCount(overrides?: CallOverrides): Promise<BigNumber>;
 
-    deployedCampaigns(arg0: string, overrides?: CallOverrides): Promise<string>;
+    deployedCampaigns(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<string>;
 
     createCampaignFactory(
-      _campaignFactoryImplementation: string,
-      _campaignImplementation: string,
-      _campaignRequestImplementation: string,
-      _campaignVoteImplementation: string,
-      _campaignRewardImplementation: string,
-      _governance: string,
-      _config: BigNumberish[],
+      _campaignFactoryImplementation: PromiseOrValue<string>,
+      _campaignImplementation: PromiseOrValue<string>,
+      _campaignRequestImplementation: PromiseOrValue<string>,
+      _campaignVoteImplementation: PromiseOrValue<string>,
+      _campaignRewardImplementation: PromiseOrValue<string>,
+      _governance: PromiseOrValue<string>,
+      _config: PromiseOrValue<BigNumberish>[],
       overrides?: CallOverrides
     ): Promise<void>;
   };
 
   filters: {
     "CampaignFactoryDeployed(address,address,address,address,address,address,uint256)"(
-      campaignFactory?: string | null,
+      campaignFactory?: PromiseOrValue<string> | null,
       governance?: null,
       campaignImplementation?: null,
       campaignRequestImplementation?: null,
@@ -179,7 +194,7 @@ export interface Factory extends BaseContract {
       campaignIndex?: null
     ): CampaignFactoryDeployedEventFilter;
     CampaignFactoryDeployed(
-      campaignFactory?: string | null,
+      campaignFactory?: PromiseOrValue<string> | null,
       governance?: null,
       campaignImplementation?: null,
       campaignRequestImplementation?: null,
@@ -193,19 +208,19 @@ export interface Factory extends BaseContract {
     deployedCampaignCount(overrides?: CallOverrides): Promise<BigNumber>;
 
     deployedCampaigns(
-      arg0: string,
+      arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     createCampaignFactory(
-      _campaignFactoryImplementation: string,
-      _campaignImplementation: string,
-      _campaignRequestImplementation: string,
-      _campaignVoteImplementation: string,
-      _campaignRewardImplementation: string,
-      _governance: string,
-      _config: BigNumberish[],
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _campaignFactoryImplementation: PromiseOrValue<string>,
+      _campaignImplementation: PromiseOrValue<string>,
+      _campaignRequestImplementation: PromiseOrValue<string>,
+      _campaignVoteImplementation: PromiseOrValue<string>,
+      _campaignRewardImplementation: PromiseOrValue<string>,
+      _governance: PromiseOrValue<string>,
+      _config: PromiseOrValue<BigNumberish>[],
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
   };
 
@@ -215,19 +230,19 @@ export interface Factory extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     deployedCampaigns(
-      arg0: string,
+      arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     createCampaignFactory(
-      _campaignFactoryImplementation: string,
-      _campaignImplementation: string,
-      _campaignRequestImplementation: string,
-      _campaignVoteImplementation: string,
-      _campaignRewardImplementation: string,
-      _governance: string,
-      _config: BigNumberish[],
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _campaignFactoryImplementation: PromiseOrValue<string>,
+      _campaignImplementation: PromiseOrValue<string>,
+      _campaignRequestImplementation: PromiseOrValue<string>,
+      _campaignVoteImplementation: PromiseOrValue<string>,
+      _campaignRewardImplementation: PromiseOrValue<string>,
+      _governance: PromiseOrValue<string>,
+      _config: PromiseOrValue<BigNumberish>[],
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
   };
 }
